@@ -1,0 +1,239 @@
+/* Booking Form Container */
+.booking-form {
+  background-color: #5937E0;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.booking-form h4 {
+  color: #fff;
+}
+
+.contact-heading {
+  font-size: 50px;
+  font-weight: 500;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Input Fields and Select */
+.booking-form .form-control,
+.booking-form .form-select {
+  background-color: #f5f2f2; /* light background */
+  color: #7e7c7c;           /* dark text */
+  border: none;
+}
+
+/* Placeholder color inside inputs */
+.booking-form .form-control::placeholder,
+.booking-form .form-select::placeholder {
+  color: #7e7c7c;
+}
+
+/* Input group text icon background */
+.booking-form .input-group-text {
+  background-color: #fff;
+  color: #5937E0; /* match branding */
+  border: none;
+}
+
+/* Booking Button */
+.booking-btn {
+  background-color: #FF9E0C !important;
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.booking-btn:hover {
+  background-color: #e08700 !important;
+  color: #fff;
+}
+
+/* Brand List Section */
+.vehicles-page .brand-list-section {
+  background-color: #f8f9fa;
+  padding: 30px 0;
+  border-radius: 20px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.vehicles-page .brand-list-section ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.vehicles-page .brand-list-section ul li {
+  flex: 0 1 auto;
+}
+
+.vehicles-page .brand-list-section ul li img {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+  margin-left: 50px;
+}
+
+.vehicles-page .brand-list-section ul li img:hover {
+  transform: scale(1.1);
+}
+
+/* Blog Section */
+.blog-section {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.blog-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.blog-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.blog-card {
+  background-color: #fff;
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.blog-card .card-img-top {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.blog-card .card-body {
+  padding: 1rem;
+}
+
+.blog-card .card-body h6 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.blog-card .card-text {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Contact Section */
+.contact-info-section {
+  background-color: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.contact-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.contact-info-box {
+  flex: 1 1 200px;
+  max-width: 300px;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contact-info-box:hover {
+  transform: translateY(-5px);
+}
+
+.contact-info-box i {
+  font-size: 1.8rem;
+  color: #FF9E0C;
+  flex-shrink: 0;
+}
+
+.contact-info-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.contact-info-text h6 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.contact-info-text p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .blog-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .blog-card {
+    width: 90%;
+  }
+  
+  .contact-info-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-info-box {
+    width: 90%;
+    justify-content: center;
+  }
+  
+  .vehicles-page .brand-list-section ul li img {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .vehicles-page .brand-list-section ul li img {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 400px) {
+  .vehicles-page .brand-list-section ul li img {
+    max-width: 200px;
+  }
+}

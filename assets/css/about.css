@@ -1,0 +1,93 @@
+:root {
+    --primary-color: #6c3ce9;
+    --secondary-color: #4a2b9e;
+    --light-purple: #f0ebff;
+    --dark-text: #222222;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-text);
+}
+
+.header-image {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.headline {
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
+.card {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.purple-bg {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 20px;
+}
+
+.stats-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stats-text {
+    font-size: 1rem;
+    color: #666;
+}
+
+.feature-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: var(--primary-color);
+}
+
+.quote {
+    color: var(--primary-color);
+    font-size: 32px;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--light-purple);
+    color: var(--primary-color);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(108, 60, 233, 0.25);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}

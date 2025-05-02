@@ -1,0 +1,587 @@
+/* Global Responsive Adjustments */
+body {
+    overflow-x: hidden;
+  }
+  
+  /* Hero Section Responsiveness */
+  .hero-section {
+    padding: 40px 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 0;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-section {
+      width: 90%;
+      border-radius: 20px;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .hero-section {
+      width: 80%;
+    }
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem;
+    margin-left: 0;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-section h1 {
+      font-size: 2.5rem;
+      margin-left: 15px;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .hero-section h1 {
+      font-size: 3rem;
+    }
+  }
+  
+  .hero-section p {
+    margin-left: 0;
+    font-size: 0.9rem;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-section p {
+      margin-left: 15px;
+      font-size: 1rem;
+    }
+  }
+  
+  .hero-section a {
+    margin-left: 0;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-section a {
+      margin-left: 15px;
+    }
+  }
+  
+  /* Booking Form Responsiveness */
+  .booking-form {
+    padding: 20px;
+  }
+  
+  @media (min-width: 768px) {
+    .booking-form {
+      padding: 30px;
+    }
+  }
+  
+  /* Features Section Responsiveness */
+  .feature-card {
+    padding: 15px;
+    margin-bottom: 20px;
+    height: auto;
+  }
+  
+  @media (min-width: 768px) {
+    .feature-card {
+      padding: 25px;
+      height: 100%;
+    }
+  }
+  
+  /* Testimonials Section Responsiveness */
+  .testimonial-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  @media (min-width: 768px) {
+    .testimonial-item {
+      flex-direction: row;
+      align-items: flex-start;
+      text-align: left;
+      padding: 15px;
+    }
+  }
+  
+  .testimonial-image {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  @media (min-width: 768px) {
+    .testimonial-image {
+      margin-right: 15px;
+      margin-bottom: 0;
+    }
+  }
+  
+  /* Vehicle Cards Responsiveness */
+  .vehicle-card {
+    padding: 15px;
+  }
+  
+  @media (min-width: 768px) {
+    .vehicle-card {
+      padding: 20px;
+    }
+  }
+  
+  .vehicle-details {
+    font-size: 0.9rem;
+  }
+  
+  @media (min-width: 768px) {
+    .vehicle-details {
+      font-size: 1rem;
+    }
+  }
+  
+  .specs-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  @media (min-width: 576px) {
+    .specs-row {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  
+  /* Enhanced Stats Section Responsiveness */
+.stats-section {
+    padding: 30px 15px;
+    border-radius: 0;
+  }
+  
+  @media (min-width: 768px) {
+    .stats-section {
+      padding: 40px 20px;
+      border-radius: 20px;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .stats-section {
+      padding: 60px 30px;
+    }
+  }
+  
+  .stats-title {
+    font-size: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .stats-title {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .stats-title {
+      font-size: 3rem;
+    }
+  }
+  
+  /* Stat card styling improvements */
+  .stat-card {
+    height: auto;
+    min-height: 100px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  @media (min-width: 768px) {
+    .stat-card {
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+  }
+  
+  /* Fix the content display */
+  .stat-card .d-flex {
+    width: 100%;
+    justify-content: center;
+    margin-right: 0 !important; /* Override the me-5 class */
+  }
+  
+  @media (min-width: 576px) {
+    .stat-card .d-flex {
+      justify-content: flex-start;
+    }
+  }
+  
+  /* Icon container styling */
+  .stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+  }
+  
+  .stat-icon img {
+    width: 100%;
+    max-height: 60px;
+    object-fit: contain;
+  }
+  
+  /* Text content container */
+  .stat-card .d-flex > div:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Number and label styles */
+  .stat-number {
+    font-size: 1.4rem;
+    margin-bottom: 0 !important;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  
+  @media (min-width: 768px) {
+    .stat-number {
+      font-size: 1.8rem;
+    }
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    line-height: 1.2;
+  }
+  
+  @media (min-width: 768px) {
+    .stat-label {
+      font-size: 1rem;
+    }
+  }
+  
+  /* Fix for very small screens */
+  @media (max-width: 359px) {
+    .stat-card .d-flex {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .stat-icon {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    
+    .stat-number, .stat-label {
+      text-align: center;
+    }
+  }
+  
+ /* App Section Improved Responsiveness */
+.app-section {
+    padding: 30px 0;
+  }
+  
+  @media (min-width: 768px) {
+    .app-section {
+      padding: 40px 0;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .app-section {
+      padding: 60px 0;
+    }
+  }
+  
+  .app-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .app-content h2 {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .app-content h2 {
+      font-size: 3rem;
+    }
+  }
+  
+  /* Store Buttons Container */
+  .store-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 25px;
+  }
+  
+  @media (min-width: 480px) {
+    .store-buttons {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .store-buttons {
+      justify-content: flex-start;
+    }
+  }
+  
+  /* Individual Store Button */
+  .store-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 220px;
+    text-align: center;
+  }
+  
+  @media (min-width: 480px) {
+    .store-btn {
+      width: 48%;
+      max-width: 180px;
+    }
+  }
+  
+  @media (min-width: 576px) {
+    .store-btn {
+      width: auto;
+      min-width: 160px;
+    }
+  }
+  
+  .store-btn:hover {
+    background-color: #000;
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Button Icon */
+  .store-icon {
+    margin-right: 10px;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  
+  /* Button Text */
+  .store-btn span {
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  
+  @media (min-width: 576px) {
+    .store-btn span {
+      font-size: 1rem;
+    }
+  }
+  
+  /* App Store Button */
+  .app-store {
+    background-color: #000;
+  }
+  
+  .app-store:hover {
+    background-color: #333;
+  }
+  
+  /* Play Store Button */
+  .play-store {
+    background-color: #000;
+  }
+  
+  .play-store:hover {
+    background-color: #333;
+  }
+  
+  /* Phone Stack Section */
+  .device-showcase {
+    padding-left: 0;
+    margin-top: 40px;
+  }
+  
+  @media (min-width: 992px) {
+    .device-showcase {
+      padding-left: 50px;
+      margin-top: 0;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .device-showcase {
+      padding-left: 100px;
+    }
+  }
+  
+  .phone-stack {
+    height: 300px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Phone Images */
+  .phone {
+    position: absolute;
+    opacity: 1;
+    transition: transform 0.5s ease;
+  }
+  
+  .back-phone {
+    left: calc(50% - 140px);
+    transform: rotate(-8deg);
+    z-index: 1;
+  }
+  
+  .front-phone {
+    left: calc(50% - 40px);
+    transform: rotate(8deg);
+    z-index: 2;
+  }
+  
+  @media (min-width: 480px) {
+    .back-phone {
+      left: calc(50% - 160px);
+    }
+    
+    .front-phone {
+      left: calc(50% - 20px);
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .back-phone {
+      left: 0;
+    }
+    
+    .front-phone {
+      left: 120px;
+    }
+  }
+  
+  /* Fix inline width on images */
+  .phone-stack img {
+    width: 140px !important;
+  }
+  
+  @media (min-width: 480px) {
+    .phone-stack img {
+      width: 160px !important;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .phone-stack img {
+      width: 180px !important;
+    }
+  }
+  
+  /* CTA Section Responsiveness */
+  .cta-section {
+    flex-direction: column;
+    padding: 20px;
+    margin: 30px auto;
+  }
+  
+  @media (min-width: 768px) {
+    .cta-section {
+      flex-direction: row;
+      padding: 30px;
+      margin: 40px auto;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .cta-section {
+      padding: 40px;
+      margin: 60px auto;
+    }
+  }
+  
+  .cta-content {
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  @media (min-width: 768px) {
+    .cta-content {
+      padding-right: 20px;
+      margin-bottom: 0;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .cta-content {
+      padding-right: 30px;
+    }
+  }
+  
+  .cta-content h2 {
+    font-size: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .cta-content h2 {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .cta-content h2 {
+      font-size: 3rem;
+    }
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  @media (min-width: 576px) {
+    .cta-buttons {
+      flex-direction: row;
+      gap: 15px;
+    }
+  }
+  
+  .cta-btn {
+    display: block;
+    text-align: center;
+  }
+  
+  /* Fix the mobile display for stats section */
+  @media (max-width: 575px) {
+    .stat-card .d-flex {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .stat-icon {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }

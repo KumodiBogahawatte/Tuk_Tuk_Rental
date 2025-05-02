@@ -1,0 +1,114 @@
+.vehicle-details-section {
+    background-color: #f8f9fa; /* Light background */
+}
+
+.vehicle-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #5937E0; /* Your brand color */
+}
+
+.vehicle-price {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.vehicle-price span {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.vehicle-description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background-color: #5937E0;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #4925c4;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.card-title {
+    font-weight: bold;
+    color: #000000; /* Your brand color */
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555;
+}
+
+.btn-primary {
+    background-color: #5937E0;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #4925c4;
+}
+
+.vehicle-price {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.vehicle-price span {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Style for the main image (Prevent cropping) */
+#mainImage {
+    width: 600px;  
+    height: 400px; 
+    object-fit: contain;  
+    border-radius: 8px; 
+    transition: transform 0.3s ease; 
+}
+
+/* Thumbnails styling */
+.fixed-thumb {
+    width: 100%;  
+    height: 100px; 
+    object-fit: cover; 
+    border-radius: 6px;
+    cursor: pointer; 
+    transition: transform 0.3s ease; 
+}
+
+/* When a thumbnail is clicked (active class) */
+.thumb-img.active {
+    border: 2px solid #4925c4 !important; 
+    transform: scale(1.1);  
+}
+
+/* Hover effect on thumbnails */
+.fixed-thumb:hover {
+    transform: scale(1.05);  
+}
+
+
+@media (max-width: 768px) {
+    .vehicle-details-section .row {
+        flex-direction: column-reverse; /* Stack image on top and details below on smaller screens */
+    }
+}

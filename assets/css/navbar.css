@@ -1,0 +1,29 @@
+/* Initial navbar style */
+.navbar {
+    transition: all 0.3s ease;
+}
+
+/* Shrink effect when scrolled */
+.navbar.scrolled {
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+}
+
+/* Adjust logo height on scroll */
+.navbar.scrolled .navbar-brand img {
+    height: 45px !important;
+    transition: height 0.3s ease;
+}
+
+.navbar .nav-link.active {
+    color: #5937E0 !important;  /* Use your brand color */
+    border-bottom: 2px solid #5937E0; /* Optional underline effect */
+    font-weight: bold;
+}
+
+.nav-link:hover{
+    color: #5937E0;
+}
+

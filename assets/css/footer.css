@@ -1,0 +1,170 @@
+/* General footer styling */
+footer.text-center.text-lg-start.text-black {
+  background-color: rgb(241, 239, 239);
+  font-family: Arial, sans-serif;
+}
+
+/* Main container padding */
+footer .container {
+  padding: 2rem 1rem;
+}
+
+/* Section title styling */
+footer h6.text-uppercase {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+footer hr.mb-4 {
+  width: 60px;
+  background-color: #000000;
+  height: 2px;
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+/* Footer links */
+footer a.text-black {
+  text-decoration: none;
+  color: #212529;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+footer a.text-black:hover {
+  color: #5937E0;
+  transform: translateX(5px);
+}
+
+footer a.text-decoration-none {
+  position: relative;
+}
+
+footer a.text-decoration-none::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #FF9E0C;
+  transition: width 0.3s ease;
+}
+
+footer a.text-decoration-none:hover::after {
+  width: 100%;
+}
+
+/* Social icons */
+footer .me-4 {
+  margin-right: 1rem;
+}
+
+footer .fab {
+  font-size: 18px;
+  transition: color 0.3s ease, transform 0.3s ease;
+  background-color: #000000;
+  color: #fff;
+  padding: 8px;
+  border-radius: 50%; /* makes it round */
+  width: 36px;         /* fixed size */
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+footer a.text-black:hover i.fab {
+  color: #FF9E0C;
+  transform: scale(1.2);
+}
+
+/* App store buttons container */
+.footer-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* left-aligned on desktop */
+}
+
+/* Store button styling */
+.store-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #000;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  text-decoration: none;
+  max-width: 150px;
+}
+
+.store-btn:hover {
+  background-color: #333;
+  transform: scale(1.05);
+}
+
+
+
+/* Copyright section */
+footer .text-center.p-2 {
+  background-color: rgb(255, 255, 255);
+  padding: 0.5rem 0;
+  font-size: 14px;
+  border-top: 1px solid #ddd;
+}
+
+/* Responsive layout for small screens */
+@media (max-width: 767px) {
+  footer .row > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  footer hr.mb-4 {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-buttons {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .store-btn {
+    width: 100%; /* full width on mobile */
+  }
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+  footer .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  footer .col-md-2,
+  footer .col-md-3 {
+    flex: 1 0 auto;
+  }
+
+  .footer-buttons {
+    flex-direction: row;
+    justify-content: flex-start; /* aligned to the left */
+  }
+
+  .store-btn {
+    width: auto;
+  }
+}

@@ -1,0 +1,205 @@
+/* vehicles.css */
+
+/* Scoped styles to the vehicles-page section */
+.vehicles-page .vehicle-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.vehicles-page .section-title {
+    font-size: 40px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.vehicles-page .vehicle-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vehicles-page .vehicle-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.vehicles-page .vehicle-details {
+    padding: 15px;
+}
+
+.vehicles-page .vehicle-brand {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.vehicles-page .vehicle-price {
+    font-size: 16px;
+    color: #5937E0;
+    font-weight: bold;
+}
+
+.vehicles-page .specs-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.vehicles-page .spec-item {
+    font-size: 14px;
+    color: #000000;
+}
+
+.vehicles-page .view-details-btn {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #5937E0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.vehicles-page .view-details-btn:hover {
+    background-color: #4925c4;
+}
+
+/* Brand List Section */
+.vehicles-page .brand-list-section {
+    background-color: #f8f9fa;
+    padding: 30px 0;
+    border-radius: 20px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.vehicles-page .brand-list-section ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vehicles-page .brand-list-section ul li {
+    flex: 0 1 auto;
+}
+
+.vehicles-page .brand-list-section ul li img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+    margin-left: 50px;
+}
+
+.vehicles-page .brand-list-section ul li img:hover {
+    transform: scale(1.1);
+}
+
+/* Custom outline button with your color */
+.vehicles-page .btn-outline-primary {
+    color: #4925c4;
+    border-color: #4925c4;
+}
+
+.vehicles-page .btn-outline-primary:hover,
+.vehicles-page .btn-outline-primary:focus {
+    background-color: #4925c4;
+    color: white;
+    border-color: #4925c4;
+}
+
+/* Active state */
+.vehicles-page .btn-outline-primary.active,
+.vehicles-page .btn-outline-primary:active,
+.vehicles-page .btn-outline-primary:focus.active {
+    background-color: #4925c4;
+    color: white;
+    border-color: #4925c4;
+}
+
+
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .vehicles-page .vehicle-card {
+        margin-bottom: 20px;
+    }
+
+    .vehicles-page .vehicle-details {
+        padding: 12px;
+    }
+
+    .vehicles-page .vehicle-price {
+        font-size: 14px;
+    }
+
+    .vehicles-page .brand-list-section ul li img {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .vehicles-page .vehicle-brand {
+        font-size: 16px;
+    }
+
+    .vehicles-page .vehicle-price {
+        font-size: 13px;
+    }
+
+    .vehicles-page .spec-item {
+        font-size: 12px;
+    }
+
+    .vehicles-page .view-details-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .vehicles-page .brand-list-section ul li img {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 400px) {
+    .vehicles-page .vehicle-brand {
+        font-size: 14px;
+    }
+
+    .vehicles-page .vehicle-price {
+        font-size: 12px;
+    }
+
+    .vehicles-page .spec-item {
+        font-size: 11px;
+        display: block; /* Stack them for more vertical space */
+    }
+
+    .vehicles-page .view-details-btn {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .vehicles-page .vehicle-card {
+        padding: 10px;
+    }
+
+    .vehicles-page .brand-list-section ul li img {
+        max-width: 200px;
+    }
+
+    .vehicles-page .section-title {
+        font-size: 20px;
+        text-align: center;
+    }
+}
+
