@@ -1,95 +1,41 @@
 <?php
-session_start();
+require_once 'admin_auth.php';
 require_once '../config/db_connect.php';
 
-// Check if admin is logged in
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: login.php');
-    exit();
-}
-
-// Handle vehicle deletion
-if (isset($_POST['delete_vehicle'])) {
-    $id = $_POST['vehicle_id'];
-    $stmt = $pdo->prepare("DELETE FROM vehicles WHERE id = ?");
-    $stmt->execute([$id]);
-    header('Location: dashboard.php');
-    exit();
-}
-
-// Fetch all vehicles
-$stmt = $pdo->query("SELECT * FROM vehicles ORDER BY created_at DESC");
-$vehicles = $stmt->fetchAll();
+$total_vehicles = $pdo->query('SELECT COUNT(*) FROM vehicles')->fetchColumn();
+$total_reservations = $pdo->query('SELECT COUNT(*) FROM reservations')->fetchColumn();
+$pending = $pdo->query("SELECT COUNT(*) FROM reservations WHERE status='pending'")->fetchColumn();
+$confirmed = $pdo->query("SELECT COUNT(*) FROM reservations WHERE status='confirmed'")->fetchColumn();
+$cancelled = $pdo->query("SELECT COUNT(*) FROM reservations WHERE status='cancelled'")->fetchColumn();
 ?>
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - TukTuk Rental</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">TukTuk Admin</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="logout.php">Logout</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Vehicle Management</h2>
-            <a href="add_vehicle.php" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Add New Vehicle
-            </a>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Brand</th>
-                        <th>Model</th>
-                        <th>Price/Day</th>
-                        <th>Gear Box</th>
-                        <th>Fuel Type</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($vehicles as $vehicle): ?>
-                    <tr>
-                        <td><?php echo $vehicle['id']; ?></td>
-                        <td><?php echo htmlspecialchars($vehicle['brand']); ?></td>
-                        <td><?php echo htmlspecialchars($vehicle['model']); ?></td>
-                        <td>LKR <?php echo number_format($vehicle['price_per_day'], 2); ?></td>
-                        <td><?php echo htmlspecialchars($vehicle['gear_box']); ?></td>
-                        <td><?php echo htmlspecialchars($vehicle['fuel_type']); ?></td>
-                        <td>
-                            <a href="edit_vehicle.php?id=<?php echo $vehicle['id']; ?>" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
-                                <input type="hidden" name="vehicle_id" value="<?php echo $vehicle['id']; ?>">
-                                <button type="submit" name="delete_vehicle" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+<?php include 'admin_nav.php'; ?>
+<div class="container">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    <div class="row mb-4">
+      <div class="col"><div class="card text-center"><div class="card-body"><h5>Total Vehicles</h5><p class="display-6"><?= $total_vehicles ?></p></div></div></div>
+      <div class="col"><div class="card text-center"><div class="card-body"><h5>Total Reservations</h5><p class="display-6"><?= $total_reservations ?></p></div></div></div>
+      <div class="col"><div class="card text-center"><div class="card-body"><h5>Pending</h5><p class="display-6 text-warning"><?= $pending ?></p></div></div></div>
+      <div class="col"><div class="card text-center"><div class="card-body"><h5>Confirmed</h5><p class="display-6 text-success"><?= $confirmed ?></p></div></div></div>
+      <div class="col"><div class="card text-center"><div class="card-body"><h5>Cancelled</h5><p class="display-6 text-danger"><?= $cancelled ?></p></div></div></div>
     </div>
+    <div class="mb-4">
+      <a href="reservations.php" class="btn btn-primary me-2">Manage Reservations</a>
+      <a href="add_vehicle.php" class="btn btn-secondary">Add Vehicle</a>
+    </div>
+    <!-- You can add more dashboard content here -->
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 

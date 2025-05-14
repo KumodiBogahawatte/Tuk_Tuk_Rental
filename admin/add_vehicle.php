@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once 'admin_auth.php';
+include 'admin_nav.php';
 require_once '../config/db_connect.php';
 
 // Check if admin is logged in
@@ -78,15 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php">TukTuk Admin</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="logout.php">Logout</a>
-            </div>
-        </div>
-    </nav>
-
     <div class="container mt-4">
         <h2>Add New Vehicle</h2>
         <form method="POST" enctype="multipart/form-data" class="mt-4">
