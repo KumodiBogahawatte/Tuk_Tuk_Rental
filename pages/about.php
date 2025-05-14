@@ -77,8 +77,8 @@ $reviews = [
                 <h1 class="fw-bold">About Us</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">About Us</li>
+                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none" style="color: gray;">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" style="color: #5937E0;font-weight: 500;">About Us</li>
                     </ol>
                 </nav>
             </div>
@@ -130,7 +130,7 @@ $reviews = [
             <!-- Stats -->
             <div class="row text-center mb-5">
                 <?php foreach($stats as $key => $value): ?>
-                <div class="col-md-4 mb-4 mb-md-0">
+                <div class="col-md-4 mb-4 mb-md-0" data-aos="zoom-in" data-aos-delay="100">
                     <div class="stats-number"><?php echo $value; ?></div>
                     <div class="stats-text">
                         <?php 
@@ -162,42 +162,42 @@ $reviews = [
                     <p class="text-muted mb-4">Lorem, ipsum dolor sit amet consectetur. Sed suscipit sit velit amet faucibus a porttitor semper hendrerit. Proin dui elit vehicula a.</p>
                     
                     <div class="d-flex mb-3">
-                        <div class="feature-icon me-3">
+                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100">
                             <i class="fas fa-check"></i>
                         </div>
                         <div>
-                            <h5>24/7 customer support</h5>
-                            <p class="text-muted">Our team is available for immediate assistance at any time.</p>
+                            <h5 data-aos="fade-up" data-aos-delay="100">24/7 customer support</h5>
+                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Our team is available for immediate assistance at any time.</p>
                         </div>
                     </div>
                     
                     <div class="d-flex mb-3">
-                        <div class="feature-icon me-3">
+                        <div class="feature-icon me-3"data-aos="fade-up" data-aos-delay="100">
                             <i class="fas fa-car"></i>
                         </div>
                         <div>
-                            <h5>Multiple tuk booking possible</h5>
-                            <p class="text-muted">Need more than one tuk? No problem, book as many as you need.</p>
+                            <h5 data-aos="fade-up" data-aos-delay="100">Multiple tuk booking possible</h5>
+                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Need more than one tuk? No problem, book as many as you need.</p>
                         </div>
                     </div>
                     
                     <div class="d-flex mb-3">
-                        <div class="feature-icon me-3">
+                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div>
-                            <h5>Delivery, return and pickup</h5>
-                            <p class="text-muted">We offer convenient delivery and pickup services for your rental.</p>
+                            <h5 data-aos="fade-up" data-aos-delay="100">Delivery, return and pickup</h5>
+                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">We offer convenient delivery and pickup services for your rental.</p>
                         </div>
                     </div>
                     
                     <div class="d-flex">
-                        <div class="feature-icon me-3">
+                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100">
                             <i class="fas fa-shield-alt"></i>
                         </div>
                         <div>
-                            <h5>Security deposit guides</h5>
-                            <p class="text-muted">Clear information about security deposits and how they work.</p>
+                            <h5 data-aos="fade-up" data-aos-delay="100">Security deposit guides</h5>
+                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Clear information about security deposits and how they work.</p>
                         </div>
                     </div>
                 </div>
@@ -294,7 +294,7 @@ $reviews = [
                     <div class="col-lg-8 mb-4 mb-lg-0">
                         <h2 class="mb-2">Looking for a car?</h2>
                         <div class="d-flex align-items-center mb-3">
-                            <span class="me-2">+94 *** *** **</span>
+                            <span class="me-2">+94 755 555 555</span>
                         </div>
                         <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dignissimos.</p>
                         <button class="btn btn-warning rounded-pill px-4" style="background-color: #FF9E0C;">Book Now</button>

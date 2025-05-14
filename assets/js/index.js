@@ -1,68 +1,45 @@
+// Phone Stack Animation
 document.addEventListener('DOMContentLoaded', function () {
     const backPhone = document.querySelector('.back-phone');
     const frontPhone = document.querySelector('.front-phone');
     const phoneStack = document.querySelector('.phone-stack');
   
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          backPhone.classList.add('visible');
-          frontPhone.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.3 });
-  
-    observer.observe(phoneStack);
-  });  
+    if (backPhone && frontPhone && phoneStack) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    backPhone.classList.add('visible');
+                    frontPhone.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 });
+    
+        observer.observe(phoneStack);
+    }
+});  
 
-
+// Navbar Scroll Effect
 window.addEventListener("scroll", function () {
     const navbar = document.querySelector(".navbar");
-    if (window.scrollY > 50) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
+    if (navbar) {
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
     }
-  });
-
-  //thumbnail click to update main image
-  document.addEventListener("DOMContentLoaded", function () {
-    const mainImage = document.getElementById("mainImage");
-    const thumbnails = document.querySelectorAll(".thumb-img");
-
-    thumbnails.forEach((thumb) => {
-      thumb.addEventListener("click", function () {
-        const newSrc = this.getAttribute("src");
-        mainImage.setAttribute("src", newSrc);
-      });
-    });
-  });
-
-  function changeImage(thumbnail) {
-    // Get the source of the clicked thumbnail
-    var newSrc = thumbnail.src;
-    
-    // Set the main image's src to the clicked thumbnail's src
-    document.getElementById('mainImage').src = newSrc;
-    
-    // Optionally, add the 'active' class to highlight the selected thumbnail
-    var thumbs = document.querySelectorAll('.thumb-img');
-    thumbs.forEach(function(thumb) {
-        thumb.classList.remove('active');
-    });
-    thumbnail.classList.add('active');
-}
-
+});
 
 // Initialize tooltips
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 });
 
 // Initialize accordions
 document.addEventListener('DOMContentLoaded', function() {
-    // Ensure accordions work properly
     var accordionItems = document.querySelectorAll('.accordion-button');
     accordionItems.forEach(function(item) {
         item.addEventListener('click', function() {
@@ -80,29 +57,161 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Location Selection Handlers
+document.addEventListener('DOMContentLoaded', function() {
+    const pickupLocation = document.getElementById('pickup_location');
+    const returnLocation = document.getElementById('return_location');
 
-//Dark and light mode toggle
-//   document.addEventListener('DOMContentLoaded', function () {
-//     const toggleBtn = document.getElementById('themeToggle');
-//     const themeIcon = document.getElementById('themeIcon');
+    if (pickupLocation) {
+        pickupLocation.addEventListener('change', function() {
+            console.log("Pickup location selected:", this.value);
+        });
+    }
 
-//     // Load saved preference
-//     const savedTheme = localStorage.getItem('theme');
-//     if (savedTheme === 'dark') {
-//         document.body.classList.add('dark-mode');
-//         themeIcon.classList.replace('fa-moon', 'fa-sun');
-//     }
+    if (returnLocation) {
+        returnLocation.addEventListener('change', function() {
+            console.log("Return location selected:", this.value);
+        });
+    }
+});
 
-//     toggleBtn.addEventListener('click', () => {
-//         document.body.classList.toggle('dark-mode');
-//         const isDark = document.body.classList.contains('dark-mode');
+// Initialize Date and Time Pickers
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize date pickers
+    flatpickr(".date-input", {
+        dateFormat: "d/m/Y",
+        minDate: "today",
+        disableMobile: "true"
+    });
 
-//         // Toggle icon
-//         themeIcon.classList.toggle('fa-sun', isDark);
-//         themeIcon.classList.toggle('fa-moon', !isDark);
+    // Initialize time pickers
+    flatpickr(".time-input", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "h:i K",
+        time_24hr: false,
+        disableMobile: "true"
+    });
+});
 
-//         // Save preference
-//         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-//     });
-// });
-  
+// Initialize AOS
+document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+    });
+});
+
+// Function to fetch Sri Lanka cities
+async function fetchSriLankaCities() {
+    const pickupSelect = document.getElementById('pickup_location');
+    const returnSelect = document.getElementById('return_location');
+    
+    if (!pickupSelect || !returnSelect) {
+        console.log('Select elements not found');
+        return;
+    }
+    
+    try {
+        const response = await fetch('https://secure.geonames.org/searchJSON?country=LK&featureClass=P&maxRows=1000&username=tuktukrental');
+        const data = await response.json();
+        
+        if (data.geonames && data.geonames.length > 0) {
+            const cities = [...new Set(data.geonames.map(city => city.name))].sort();
+            cities.forEach(city => {
+                pickupSelect.add(new Option(city, city));
+                returnSelect.add(new Option(city, city));
+            });
+            console.log('Cities loaded from API:', cities.length);
+        } else {
+            throw new Error('No cities found in API response');
+        }
+    } catch (error) {
+        console.log('Error fetching cities, using fallback list:', error);
+        // Fallback cities if API fails
+        const fallbackCities = [
+            'Colombo', 'Kandy', 'Galle', 'Jaffna', 'Negombo', 
+            'Kurunegala', 'Anuradhapura', 'Matara', 'Ratnapura', 
+            'Badulla', 'Moratuwa', 'Kalutara', 'Batticaloa', 
+            'Trincomalee', 'Matale', 'Gampaha', 'Kegalle', 
+            'Polonnaruwa', 'Hambantota', 'Ampara'
+        ];
+        
+        fallbackCities.forEach(city => {
+            pickupSelect.add(new Option(city, city));
+            returnSelect.add(new Option(city, city));
+        });
+        console.log('Fallback cities loaded:', fallbackCities.length);
+    }
+}
+
+// Index page specific functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize booking form validation
+    const bookingForm = document.querySelector('form[action="availability.php"]');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+            const pickupDate = this.querySelector('[name="pickup_date"]').value;
+            const returnDate = this.querySelector('[name="return_date"]').value;
+            
+            if (new Date(returnDate) < new Date(pickupDate)) {
+                e.preventDefault();
+                alert('Return date cannot be earlier than pickup date');
+            }
+        });
+    }
+
+    // Fetch and populate locations
+    fetchSriLankaCities();
+    
+    // Initialize phone stack animation
+    const phoneStack = document.querySelector('.phone-stack');
+    if (phoneStack) {
+        gsap.from('.back-phone', {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            ease: 'power2.out'
+        });
+        
+        gsap.from('.front-phone', {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            delay: 0.3,
+            ease: 'power2.out'
+        });
+    }
+});
+
+// Form Validation
+document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        });
+    });
+});
+
+// Smooth Scroll
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});

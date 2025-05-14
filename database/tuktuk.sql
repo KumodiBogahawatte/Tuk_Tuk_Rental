@@ -28,4 +28,22 @@ CREATE TABLE IF NOT EXISTS admin_users (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table to track vehicle reservations
+CREATE TABLE IF NOT EXISTS reservations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vehicle_id INT NOT NULL,
+    pickup_location VARCHAR(100) NOT NULL,
+    pickup_date DATE NOT NULL,
+    pickup_time TIME NOT NULL,
+    return_location VARCHAR(100) NOT NULL,
+    return_date DATE NOT NULL,
+    return_time TIME NOT NULL,
+    customer_name VARCHAR(100),
+    customer_email VARCHAR(100),
+    customer_phone VARCHAR(100),
+    status ENUM('pending', 'confirmed', 'cancelled') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
 ); 

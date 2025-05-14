@@ -26,8 +26,8 @@
                 <h1 class="fw-bold">Contact Us</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+                        <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none" style="color: gray;">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" style="color: #5937E0;font-weight: 500;">Contact Us</li>
                     </ol>
                 </nav>
             </div>

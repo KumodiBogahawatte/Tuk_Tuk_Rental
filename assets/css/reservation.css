@@ -1,0 +1,11 @@
+.btn-confirm-booking {
+    background-color: #5937E0;
+    color: white;
+    border: none;
+  }
+  
+  .btn-confirm-booking:hover {
+    background-color: #1a0863;
+    color: white;
+  }
+  

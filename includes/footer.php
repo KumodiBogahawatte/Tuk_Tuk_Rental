@@ -59,7 +59,7 @@
         <hr class="mb-4 mt-0 d-inline-block mx-auto">
         <p><i class="fas fa-home me-3"></i> Colombo, Sri Lanka</p>
         <p><i class="fas fa-envelope me-3"></i><a href="mailto:support@tuktukrental.lk" class="text-black text-decoration-none">support@tuktukrental.lk</a></p>
-        <p><i class="fas fa-phone me-3"></i><a href="tel:+94123456789" class="text-black text-decoration-none">+94 123 456 789</a></p>
+        <p><i class="fas fa-phone me-3"></i><a href="tel:+94123456789" class="text-black text-decoration-none">+94 755 555 555</a></p>
       </div>
     </div>
   </div>

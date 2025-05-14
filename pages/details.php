@@ -1,10 +1,32 @@
-<!-- Main landing page -->
+<?php
+require_once '../config/db_connect.php';
+
+// Get vehicle ID from URL
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+// Fetch vehicle data
+$stmt = $pdo->prepare("SELECT * FROM vehicles WHERE id = ?");
+$stmt->execute([$id]);
+$vehicle = $stmt->fetch();
+
+// If vehicle not found, redirect to vehicles page
+if (!$vehicle) {
+    header('Location: vehicles.php');
+    exit();
+}
+
+// Fetch other vehicles for the "OTHER THREE WHEELS" section
+$stmt = $pdo->prepare("SELECT * FROM vehicles WHERE id != ? ORDER BY RAND() LIMIT 6");
+$stmt->execute([$id]);
+$other_vehicles = $stmt->fetchAll();
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tuk Tuk Rental -Details </title>
+    <title><?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?> - TukTuk Rental</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <!-- Font Awesome CSS -->
     <!-- Font Awesome CDN -->
@@ -27,26 +49,31 @@
         <div class="container">
             <div class="row">
                 <!-- Vehicle Image on Left -->
-                <h2 class="vehicle-brand">Bajaj</h2>
-                <p class="vehicle-price">LKR 3000.00 <span>/day</span></p>
+                <h2 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?></h2>
+                <p class="vehicle-price">LKR <?php echo number_format($vehicle['price_per_day'], 2); ?> <span>/day</span></p>
                 <div class="col-md-6 mb-4">
-                <!-- Main Image -->
-                <img id="mainImage" src="../assets/images/home/tuktuk.png" alt="Bajaj Tuk Tuk" class="mb-3" data-aos="zoom-in" data-aos-delay="100">
+                    <!-- Main Image -->
+                    <img id="mainImage" src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>" class="mb-3" data-aos="zoom-in" data-aos-delay="100">
 
-                <!-- Thumbnail Images -->
-                <div class="row g-2">
-                    <div class="col-4">
-                        <img src="../assets/images/details/tuktuk1.jpg" class="img-fluid img-thumbnail thumb-img fixed-thumb" alt="Tuk 1" onclick="changeImage(this)">
-                    </div>
-                    <div class="col-4">
-                        <img src="../assets/images/details/tuktuk2.jpg" class="img-fluid img-thumbnail thumb-img fixed-thumb" alt="Tuk 2" onclick="changeImage(this)">
-                    </div>
-                    <div class="col-4">
-                        <img src="../assets/images/details/tuktuk3.jpg" class="img-fluid img-thumbnail thumb-img fixed-thumb" alt="Tuk 3" onclick="changeImage(this)">
+                    <!-- Thumbnail Images -->
+                    <div class="row g-2">
+                        <?php if ($vehicle['image1']): ?>
+                        <div class="col-4">
+                            <img src="../<?php echo htmlspecialchars($vehicle['image1']); ?>" class="img-fluid img-thumbnail thumb-img fixed-thumb" alt="Additional Image 1" onclick="changeImage(this)">
+                        </div>
+                        <?php endif; ?>
+                        <?php if ($vehicle['image2']): ?>
+                        <div class="col-4">
+                            <img src="../<?php echo htmlspecialchars($vehicle['image2']); ?>" class="img-fluid img-thumbnail thumb-img fixed-thumb" alt="Additional Image 2" onclick="changeImage(this)">
+                        </div>
+                        <?php endif; ?>
+                        <?php if ($vehicle['image3']): ?>
+                        <div class="col-4">
+                            <img src="../<?php echo htmlspecialchars($vehicle['image3']); ?>" class="img-fluid img-thumbnail thumb-img fixed-thumb" alt="Additional Image 3" onclick="changeImage(this)">
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
-
-            </div>
 
                 <!-- Vehicle Details on Right -->
                 <div class="col-md-6 mb-4">
@@ -62,7 +89,7 @@
                                 <div class="card-body text-center">
                                     <i class="fas fa-cogs fa-2x mb-2" style="color: #5937E0;"></i>
                                     <h5 class="card-title">Gear Box</h5>
-                                    <p class="card-text">Manual</p>
+                                    <p class="card-text"><?php echo htmlspecialchars($vehicle['gear_box']); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +99,7 @@
                                 <div class="card-body text-center">
                                     <i class="fas fa-gas-pump fa-2x mb-2" style="color: #5937E0;"></i>
                                     <h5 class="card-title">Fuel Type</h5>
-                                    <p class="card-text">Diesel</p>
+                                    <p class="card-text"><?php echo htmlspecialchars($vehicle['fuel_type']); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +109,7 @@
                                 <div class="card-body text-center">
                                     <i class="fas fa-tachometer-alt fa-2x mb-2" style="color: #5937E0;"></i>
                                     <h5 class="card-title">Max Speed</h5>
-                                    <p class="card-text">80 km/h</p>
+                                    <p class="card-text"><?php echo htmlspecialchars($vehicle['max_speed']); ?> km/h</p>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +119,7 @@
                                 <div class="card-body text-center">
                                     <i class="fas fa-users fa-2x mb-2" style="color: #5937E0;"></i>
                                     <h5 class="card-title">Capacity</h5>
-                                    <p class="card-text">4 passengers</p>
+                                    <p class="card-text"><?php echo htmlspecialchars($vehicle['capacity']); ?> passengers</p>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +129,7 @@
                                 <div class="card-body text-center">
                                     <i class="fas fa-gas-pump fa-2x mb-2" style="color: #5937E0;"></i>
                                     <h5 class="card-title">Fuel Tank</h5>
-                                    <p class="card-text">15 liters</p>
+                                    <p class="card-text"><?php echo htmlspecialchars($vehicle['fuel_tank']); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -112,177 +139,131 @@
                                 <div class="card-body text-center">
                                     <i class="fas fa-road fa-2x mb-2" style="color: #5937E0;"></i>
                                     <h5 class="card-title">Mileage</h5>
-                                    <p class="card-text">30 km/l</p>
+                                    <p class="card-text"><?php echo htmlspecialchars($vehicle['mileage']); ?></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Book Now button below the grid -->
                     <div class="mt-4">
-                        <button class="btn btn-sm btn-primary" onclick="window.location.href='../pages/reservationDetails.php';">Book Now</button>
+                        <button class="btn btn-sm btn-primary" onclick="openReservationModal()">Book Now</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
+
+    <!-- Reservation Modal -->
+    <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Book Your Three Wheel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reservationForm" action="availability.php" method="GET">
+                        <input type="hidden" name="vehicle_id" value="<?php echo $vehicle['id']; ?>">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Pick-Up Location</label>
+                                <select class="form-select" name="pickup_location" id="pickup_location" required>
+                                    <option value="">Select pickup location</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Return Location</label>
+                                <select class="form-select" name="return_location" id="return_location" required>
+                                    <option value="">Select return location</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Pick-Up Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0 date-input" name="pickup_date" placeholder="Select Date" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Pick-Up Time</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fa-regular fa-clock"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0 time-input" name="pickup_time" placeholder="Select Time" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Return Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0 date-input" name="return_date" placeholder="Select Date" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Return Time</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fa-regular fa-clock"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0 time-input" name="return_time" placeholder="Select Time" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Check Availability</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Vehicle Selection Section -->
     <section class="container py-5 vehicles-section">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title">OTHER THREE WHEELS</h2>
-            <a href="../pages/vehicles.php" class="text-decoration-none">View All <i class="fas fa-arrow-right ms-2"></i></a>
+            <a href="vehicles.php" class="text-decoration-none">View All <i class="fas fa-arrow-right ms-2"></i></a>
         </div>
         <div class="row">
-            <!-- Vehicle Card 1 -->
+            <?php foreach ($other_vehicles as $other_vehicle): ?>
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="vehicle-card" data-aos="fade-down" data-aos-delay="100">
-                    <img src="../assets/images/home/tuktuk.png"alt="Bajaj Tuk Tuk" class="vehicle-image">
+                    <img src="../<?php echo htmlspecialchars($other_vehicle['main_image']); ?>" alt="<?php echo htmlspecialchars($other_vehicle['brand'] . ' ' . $other_vehicle['model']); ?>" class="vehicle-image">
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="vehicle-brand">Bajaj</h5>
-                            <div class="vehicle-price">LKR3000.00 <span>/day</span></div>
+                            <h5 class="vehicle-brand"><?php echo htmlspecialchars($other_vehicle['brand']); ?></h5>
+                            <div class="vehicle-price">LKR <?php echo number_format($other_vehicle['price_per_day'], 2); ?> <span>/day</span></div>
                         </div>
                         <div class="specs-row">
                             <div class="spec-item">
-                                <i class="fas fa-cog"></i> Manual
+                                <i class="fas fa-cog"></i> <?php echo htmlspecialchars($other_vehicle['gear_box']); ?>
                             </div>
                             <div class="spec-item">
-                                <i class="fas fa-snowflake"></i> PB 92
+                                <i class="fas fa-gas-pump"></i> <?php echo htmlspecialchars($other_vehicle['fuel_type']); ?>
                             </div>
                             <div class="spec-item">
-                                <i class="fas fa-luggage-cart"></i> Hood Rack
+                                <i class="fas fa-users"></i> <?php echo htmlspecialchars($other_vehicle['capacity']); ?> seats
                             </div>
                         </div>
-                        <button class="view-details-btn" onclick="location.href='../pages/details.php'">View Details</button>
+                        <button class="view-details-btn" onclick="location.href='details.php?id=<?php echo $other_vehicle['id']; ?>'">View Details</button>
                     </div>
                 </div>
             </div>
-            
-            <!-- Vehicle Card 2 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="vehicle-card" data-aos="fade-down" data-aos-delay="100">
-                    <img src="../assets/images/home/tuktuk.png" alt="Bajaj Tuk Tuk" class="vehicle-image">
-                    <div class="vehicle-details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="vehicle-brand">Bajaj</h5>
-                            <div class="vehicle-price">LKR3000.00 <span>/day</span></div>
-                        </div>
-                        <div class="specs-row">
-                            <div class="spec-item">
-                                <i class="fas fa-cog"></i> Manual
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-snowflake"></i> PB 92
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-luggage-cart"></i> No Hood Rack
-                            </div>
-                        </div>
-                        <button class="view-details-btn" onclick="location.href='../pages/details.php'">View Details</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Vehicle Card 3 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="vehicle-card" data-aos="fade-down" data-aos-delay="100">
-                    <img src="../assets/images/home/tuktuk.png" alt="Bajaj Tuk Tuk" class="vehicle-image">
-                    <div class="vehicle-details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="vehicle-brand">Bajaj</h5>
-                            <div class="vehicle-price">LKR3000.00 <span>/day</span></div>
-                        </div>
-                        <div class="specs-row">
-                            <div class="spec-item">
-                                <i class="fas fa-cog"></i> Manual
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-snowflake"></i> PB 92
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-luggage-cart"></i> No Hood Rack
-                            </div>
-                        </div>
-                        <button class="view-details-btn" onclick="location.href='../pages/details.php'">View Details</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Vehicle Card 4 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="vehicle-card" data-aos="fade-down" data-aos-delay="100">
-                    <img src="../assets/images/home/tuktuk.png" alt="Bajaj Tuk Tuk" class="vehicle-image">
-                    <div class="vehicle-details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="vehicle-brand">Bajaj</h5>
-                            <div class="vehicle-price">LKR3000.00 <span>/day</span></div>
-                        </div>
-                        <div class="specs-row">
-                            <div class="spec-item">
-                                <i class="fas fa-cog"></i> Manual
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-snowflake"></i> PB 92
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-luggage-cart"></i> Hood Rack
-                            </div>
-                        </div>
-                        <button class="view-details-btn" onclick="location.href='../pages/details.php'">View Details</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Vehicle Card 5 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="vehicle-card" data-aos="fade-down" data-aos-delay="100">
-                    <img src="../assets/images/home/tuktuk.png" alt="Bajaj Tuk Tuk" class="vehicle-image">
-                    <div class="vehicle-details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="vehicle-brand">Bajaj</h5>
-                            <div class="vehicle-price">LKR3000.00 <span>/day</span></div>
-                        </div>
-                        <div class="specs-row">
-                            <div class="spec-item">
-                                <i class="fas fa-cog"></i> Manual
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-snowflake"></i> PB 92
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-luggage-cart"></i> Hood Rack
-                            </div>
-                        </div>
-                        <button class="view-details-btn" onclick="location.href='../pages/details.php'">View Details</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Vehicle Card 6 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="vehicle-card" data-aos="fade-down" data-aos-delay="100">
-                    <img src="../assets/images/home/tuktuk.png" alt="Bajaj Tuk Tuk" class="vehicle-image">
-                    <div class="vehicle-details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="vehicle-brand">Bajaj</h5>
-                            <div class="vehicle-price">LKR3000.00 <span>/day</span></div>
-                        </div>
-                        <div class="specs-row">
-                            <div class="spec-item">
-                                <i class="fas fa-cog"></i> Manual
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-snowflake"></i> PB 92
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-luggage-cart"></i> No Hood Rack
-                            </div>
-                        </div>
-                        <button class="view-details-btn" onclick="location.href='../pages/details.php'">View Details</button>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </section>
 
@@ -290,21 +271,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <!-- GSAP (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-
-    <!-- Your JS File -->
-    <script src="../assets/js/index.js"></script>
     <!-- AOS Library JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <script>
-    AOS.init();
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Custom JS -->
+    <script src="../assets/js/index.js"></script>
+    <script src="../assets/js/details.js"></script>
     <script>
-    flatpickr(".date-input", {
-        dateFormat: "d/m/Y", // or "Y-m-d" etc.
-    });
+        AOS.init();
     </script>
-
   </body>
 </html>

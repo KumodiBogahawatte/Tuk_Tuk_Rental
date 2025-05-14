@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="index.php">
-            <img src="../assets/images/logo.png" alt="Logo" height="60px">
+            <img src="../assets/images/logo.png" alt="Logo" height="80px">
         </a>
 
         <!-- Toggler button for mobile view -->
