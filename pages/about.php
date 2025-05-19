@@ -297,7 +297,7 @@ $reviews = [
                             <span class="me-2">+94 755 555 555</span>
                         </div>
                         <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dignissimos.</p>
-                        <button class="btn btn-warning rounded-pill px-4" style="background-color: #FF9E0C;">Book Now</button>
+                        <a href="../pages/index.php" class="btn btn-warning rounded-pill px-4 book-now-btn" style="background-color: #FF9E0C;">Book Now</a>
                     </div>
                     <div class="col-lg-4">
                         <img src="../assets/images/about/tuk.png" alt="Colorful Tuk Tuk Vehicle" class="img-fluid rounded">

@@ -12,7 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($admin && password_verify($password, $admin['password'])) {
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['admin_username'] = $username;
-        header('Location: dashboard.php');
+        $_SESSION['admin_id'] = $admin['id'];
+        // Redirect to the intended page or the dashboard
+        $redirect = $_GET['redirect'] ?? 'dashboard.php';
+        header("Location: $redirect");
         exit();
     } else {
         $error = 'Invalid username or password.';
@@ -27,7 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    <link rel="stylesheet" href="../admin/css/login.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
 <body class="bg-light">
 <div class="container py-5">
     <div class="row justify-content-center">

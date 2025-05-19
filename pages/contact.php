@@ -1,3 +1,38 @@
+<?php
+include_once '../config/db_connect.php';
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
+
+    // Validate the input
+    if (!empty($name) && !empty($email) && !empty($message)) {
+        // Prepare SQL query
+        $sql = "INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$name, $email, $message]);
+
+        // Execute query
+        if ($stmt->execute()) {
+            // Get the ID of the inserted contact message
+            $contact_message_id = $pdo->lastInsertId();
+            // Add notification for admin
+            $notification_message = $contact_message_id;
+            $notification_sql = "INSERT INTO notifications (type, message) VALUES ('contact_message', ?)";
+            $notification_stmt = $pdo->prepare($notification_sql);
+            $notification_stmt->execute([$notification_message]);
+
+            $success_message = "Your message has been sent successfully!";
+        } else {
+            $error_message = "Failed to send your message. Please try again.";
+        }
+    } else {
+        $error_message = "All fields are required.";
+    }
+}
+?>
+
 <!-- Main landing page -->
 <!doctype html>
 <html lang="en">
@@ -34,59 +69,27 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="booking-form" data-aos="fade-right">
-                        <h4 class="mb-4">Book your ThreeWheel</h4>
-                        <form>
-                            <p class="form-label-title" style="color: #fff;font-weight: 500;margin-bottom: 10px; margin-left:1px;"><i class="fa-solid fa-location-dot me-2"></i>Pick-Up Information</p>
-                            <select class="form-select mb-3">
-                                <option selected>Place of pickup</option>
-                                <option>Maharagama</option>
-                                <option>Kottawa</option>
-                                <option>Homagama</option>
-                            </select>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="input-group mb-3">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <input type="text" class="form-control border-start-0 date-input" placeholder="Rental Date">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text bg-white border-end-0">
-                                        <i class="fa-regular fa-clock"></i>
-                                        </span>
-                                        <input type="text" class="form-control border-start-0 time-input" placeholder="Select Time">
-                                    </div>
-                                </div>
+                        <h4 class="mb-4">Drop a message</h4>
+                        <?php if (isset($success_message)): ?>
+                            <div class="alert alert-success"><?php echo $success_message; ?></div>
+                        <?php elseif (isset($error_message)): ?>
+                            <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                        <?php endif; ?>
+                        <form method="POST" action="">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
                             </div>
-                            <p class="form-label-title" style="color: #fff;font-weight: 500;margin-bottom: 10px; margin-left:1px;"><i class="fa-solid fa-flag-checkered me-2"></i>Return Information</p>
-                            <select class="form-select mb-3">
-                                <option selected>Place of return</option>
-                                <option>Maharagama</option>
-                                <option>Kottawa</option>
-                                <option>Homagama</option>
-                            </select>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="input-group mb-3">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <input type="text" class="form-control border-start-0 date-input" placeholder="Return Date">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text bg-white border-end-0">
-                                        <i class="fa-regular fa-clock"></i>
-                                        </span>
-                                        <input type="text" class="form-control border-start-0 time-input" placeholder="Select Time">
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                             </div>
-                            <button type="submit" class="btn booking-btn w-100">Search</button>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="4" placeholder="Write your message here" required></textarea>
+                            </div>
+                            <button type="submit" class="btn booking-btn">Send</button>
                         </form>
                     </div>
                 </div>

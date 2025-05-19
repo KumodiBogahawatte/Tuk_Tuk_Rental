@@ -29,7 +29,7 @@ $vehicles = $stmt->fetchAll();
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Vehicle Management</h2>
-        <a href="add_vehicle.php" class="btn btn-primary">
+        <a href="../admin/add_vehicle.php" class="btn btn-primary">
             <i class="fas fa-plus"></i> Add New Vehicle
         </a>
     </div>

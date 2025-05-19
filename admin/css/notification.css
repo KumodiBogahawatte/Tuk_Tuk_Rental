@@ -1,0 +1,101 @@
+.page-header {
+    background-color: #fff;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+.notification-list {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+.notification-item {
+  border-left: 4px solid #dee2e6;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+    position: relative;
+    background-color: #f8f9fa;
+}
+.notification-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+.notification-item.unread {
+  background-color: #f0f7ff;
+}
+.notification-contact {
+  border-left-color: #198754;
+}
+.notification-reservation, .notification-booking {
+  border-left-color: #dc3545;
+}
+.notification-system {
+  border-left-color: #6c757d;
+}
+.notification-date {
+    font-size: 0.85rem;
+    color: #6c757d;
+    display: right;
+    margin-left: 945px;
+    align-items: center;
+}
+.notification-type {
+    display: inline-block;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.85rem;
+    margin-right: 0.5rem;
+    border-radius: 50rem;
+}
+.notification-message {
+    margin-top: 0.5rem;
+    color: #212529;
+}
+.notification-content {
+  flex-grow: 1;
+  padding-right: 1rem;
+}
+.btn-view {
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.btn-view:hover {
+  transform: translateX(2px);
+}
+.no-notifications {
+  padding: 3rem;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+.no-notifications i {
+  font-size: 3rem;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+.no-notifications h4 {
+  margin-bottom: 1rem;
+  color: #343a40;
+}
+.notification-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+.notification-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+@media (max-width: 767.98px) {
+    .notification-item {
+    flex-direction: column;
+  }
+  .notification-actions {
+    margin-top: 1rem;
+    align-self: flex-end;
+  }
+}

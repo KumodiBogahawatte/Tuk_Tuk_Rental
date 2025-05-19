@@ -91,3 +91,15 @@ body {
     background-color: var(--primary-color);
     color: white;
 }
+
+.book-now-btn {
+  background-color: #FF9E0C;
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.book-now-btn:hover {
+  background-color: #24201b;
+  color: white;
+  text-decoration: none;
+}

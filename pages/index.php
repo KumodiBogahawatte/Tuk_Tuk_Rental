@@ -333,7 +333,7 @@ $vehicles = $stmt->fetchAll();
             <h2>Enjoy every mile with adorable companionship.</h2>
             <p>Nullam augue felis erat dolor facilisis. Pretium tellus interdum amet eu consectetur imperdiet adipiscing in. Tempus consequat hendrerit amet.</p>
             <div class="cta-buttons">
-                <a href="#" class="cta-btn cta-primary">Book Now</a>
+                <a href="../pages/index.php" class="cta-btn cta-primary">Book Now</a>
                 <a href="../pages/contact.php" class="cta-btn cta-secondary">Contact Us</a>
             </div>
         </div>

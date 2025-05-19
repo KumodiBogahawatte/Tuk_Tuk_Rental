@@ -1,6 +1,6 @@
-/* Booking Form Container */
+/* Form Styling */
 .booking-form {
-  background-color: #5937E0;
+  background-color: #4925c4;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -8,49 +8,51 @@
 
 .booking-form h4 {
   color: #fff;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 
-.contact-heading {
-  font-size: 50px;
+.booking-form .form-label {
+  color: #fff;
   font-weight: 500;
-  margin-bottom: 30px;
-  text-align: center;
 }
 
-/* Input Fields and Select */
-.booking-form .form-control,
-.booking-form .form-select {
-  background-color: #f5f2f2; /* light background */
-  color: #7e7c7c;           /* dark text */
-  border: none;
-}
-
-/* Placeholder color inside inputs */
-.booking-form .form-control::placeholder,
-.booking-form .form-select::placeholder {
+.booking-form .form-control {
+  background-color: #f5f2f2;
   color: #7e7c7c;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1rem;
 }
 
-/* Input group text icon background */
-.booking-form .input-group-text {
-  background-color: #fff;
-  color: #5937E0; /* match branding */
-  border: none;
+.booking-form .form-control:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(89, 55, 224, 0.5);
+  border: 1px solid #4925c4;
 }
 
-/* Booking Button */
-.booking-btn {
-  background-color: #FF9E0C !important;
-  color: #fff;
+.booking-form .form-text {
+  color: #ddd;
+  font-size: 0.85rem;
+}
+
+.booking-form .btn {
+  background-color: #FF9E0C;
+  color: #ffffff;
   border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
   transition: all 0.3s ease;
+  width: 100%;
+  font-weight: bolder;
 }
 
-.booking-btn:hover {
-  background-color: #e08700 !important;
+.booking-form .btn:hover {
+  background-color: #e08700;
   color: #fff;
 }
-
 /* Brand List Section */
 .vehicles-page .brand-list-section {
   background-color: #f8f9fa;
