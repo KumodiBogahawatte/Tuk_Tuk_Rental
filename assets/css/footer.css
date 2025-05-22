@@ -2,6 +2,8 @@
 footer.text-center.text-lg-start.text-black {
   background-color: rgb(241, 239, 239);
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 /* Main container padding */

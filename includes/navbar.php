@@ -18,16 +18,16 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav gap-3">
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>" href="index.php">Home</a>
+                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>" href="index.php">HOME</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'vehicles.php') ? 'active' : ''; ?>" href="vehicles.php">Vehicles</a>
+                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'vehicles.php') ? 'active' : ''; ?>" href="vehicles.php">VEHICLES</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'active' : ''; ?>" href="about.php">About Us</a>
+                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'active' : ''; ?>" href="about.php">ABOUT US</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'contact.php') ? 'active' : ''; ?>" href="contact.php">Contact Us</a>
+                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'contact.php') ? 'active' : ''; ?>" href="contact.php">CONTACT US</a>
                 </li>
             </ul>
         </div>

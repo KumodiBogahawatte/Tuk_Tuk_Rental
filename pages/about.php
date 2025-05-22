@@ -86,7 +86,7 @@ $reviews = [
     </div>
 
     <!-- Main Content -->
-    <section class="py-5">
+    <section class="main_content py-5">
         <div class="container">
             <div class="row align-items-center mb-5">
                 <div class="col-lg-5 mb-4 mb-lg-0">
@@ -124,7 +124,7 @@ $reviews = [
             </div>
             
             <div class="header-image mb-5">
-                <img src="../assets/images/about/ColorfulTuk.png" alt="Electric Vehicle" class="img-fluid w-100">
+                <img src="../assets/images/about/ColorfulTuk.png" alt="Electric Vehicle" class="img-fluid">
             </div>
             
             <!-- Stats -->
@@ -136,13 +136,13 @@ $reviews = [
                         <?php 
                         switch($key) {
                             case 'happy_customers':
-                                echo 'Happy customers';
+                                echo 'HAPPY CUSTOMERS';
                                 break;
                             case 'tuk_count':
-                                echo 'Count of Tuks';
+                                echo 'COUNT OF TUKS';
                                 break;
                             case 'years_experience':
-                                echo 'Years of experience';
+                                echo 'YEAR OF EXPERIENCE';
                                 break;
                         }
                         ?>
@@ -154,7 +154,7 @@ $reviews = [
     </section>
     
     <!-- Memories Section -->
-    <section class="py-5 bg-light">
+    <section class="Memories py-5">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
@@ -202,38 +202,38 @@ $reviews = [
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <img src="../assets/images/about/happy.png" alt="Happy Customer" class="img-fluid rounded">
+                    <img src="../assets/images/about/happy.png" alt="Happy Customer" class="img-fluid rounded" style="width: 1250px;">
                 </div>
             </div>
         </div>
     </section>
     
     <!-- App Download Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="purple-bg p-5">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 mb-4 mb-lg-0">
-                        <img src="../assets/images/home/mobileApp.png" alt="Mobile App" class="img-fluid">
-                    </div>
-                    <div class="col-lg-9">
-                        <h2 class="mb-4">Download our app</h2>
-                        <p class="mb-4">Fusce minim ipsum nibh previous dos tan duris. Transform digitalize remover dolores meti sauis inem duos cultivate malesuada vehicula vis veneris ad finibus augue.</p>
-                        <div class="store-buttons d-flex gap-3">
-                    <a href="#" class="store-btn app-store d-flex align-items-center gap-2">
-                        <i class="fa-brands fa-apple fa-2x store-icon"></i>
-                        <span>App Store</span>
-                    </a>
-                    <a href="#" class="store-btn play-store d-flex align-items-center gap-2">
-                        <i class="fab fa-google-play fa-2x store-icon"></i>
-                        <span>Google Play</span>
-                    </a>
+    <section class="py-4">
+    <div class="container">
+        <div class="purple-bg">
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-5 mb-4 mb-md-0">
+                    <img src="../assets/images/home/mobileApp.png" alt="Mobile App" class="img-fluid">
                 </div>
+                <div class="col-lg-8 col-md-7">
+                    <h2>Download our app</h2>
+                    <p>Fusce minim ipsum nibh previous dos tan duris. Transform digitalize remover dolores meti sauis inem duos cultivate malesuada vehicula vis veneris ad finibus augue.</p>
+                    <div class="store-buttons">
+                        <a href="#" class="store-btn app-store">
+                            <i class="fa-brands fa-apple store-icon me-2"></i>
+                            <span>App Store</span>
+                        </a>
+                        <a href="#" class="store-btn play-store">
+                            <i class="fab fa-google-play store-icon me-2"></i>
+                            <span>Google Play</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
     
     <!-- Reviews Section -->
     <section class="py-5">
@@ -292,12 +292,12 @@ $reviews = [
             <div class="purple-bg p-5">
                 <div class="row align-items-center">
                     <div class="col-lg-8 mb-4 mb-lg-0">
-                        <h2 class="mb-2">Looking for a car?</h2>
+                        <h2 class="mb-3" style="font-size: 60px;font-weight:bold;margin-left:20px;">Looking for a tuk?</h2>
                         <div class="d-flex align-items-center mb-3">
-                            <span class="me-2">+94 755 555 555</span>
+                            <span class="me-2" style="font-size: 30px;font-weight:bold;margin-left:20px;">+94 755 555 555</span>
                         </div>
-                        <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dignissimos.</p>
-                        <a href="../pages/index.php" class="btn btn-warning rounded-pill px-4 book-now-btn" style="background-color: #FF9E0C;">Book Now</a>
+                        <p class="mb-4" style="margin-left:20px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dignissimos.Expedita, libero dignissimos.</p>
+                        <a href="../pages/index.php" class="btn btn-warning rounded-pill px-4 book-now-btn" style="background-color: #FF9E0C;margin-left:20px;">Book Now</a>
                     </div>
                     <div class="col-lg-4">
                         <img src="../assets/images/about/tuk.png" alt="Colorful Tuk Tuk Vehicle" class="img-fluid rounded">

@@ -10,9 +10,23 @@ body {
     color: var(--dark-text);
 }
 
+.Memories{
+    background-color: rgba(245, 240, 240, 0.95);
+}
+
 .header-image {
-    border-radius: 20px;
+    width: 100%;
+    max-width: 1296px;
+    margin: 0 auto;
     overflow: hidden;
+    border-radius: 20px;
+}
+
+.responsive-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
 }
 
 .headline {
@@ -28,10 +42,63 @@ body {
     height: 100%;
 }
 
+/* App download section styles */
+/* App download section styles */
 .purple-bg {
+    padding: 40px;
     background-color: var(--primary-color);
     color: white;
     border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.purple-bg h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.purple-bg p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.purple-bg img {
+    max-height: 300px;
+    width: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
+}
+
+.store-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.store-btn {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-width: 150px;
+}
+
+.store-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.store-icon {
+    font-size: 24px;
 }
 
 .stats-number {
@@ -41,8 +108,9 @@ body {
 }
 
 .stats-text {
-    font-size: 1rem;
-    color: #666;
+    font-size: 2rem;
+    color: #353333;
+    font-weight:500;
 }
 
 .feature-icon {
@@ -99,7 +167,66 @@ body {
 }
 
 .book-now-btn:hover {
-  background-color: #24201b;
-  color: white;
-  text-decoration: none;
+    background-color: #706657;
+    color: rgb(0, 0, 0);
+    transition: all 0.3s ease;
 }
+
+/* Responsive styles */
+@media (max-width: 991px) {
+    .purple-bg {
+        padding: 30px;
+    }
+
+    .purple-bg h2 {
+        font-size: 3rem;
+    }
+
+    .purple-bg img {
+        max-height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .purple-bg {
+        padding: 25px;
+    }
+
+    .purple-bg h2 {
+        font-size: 2rem;
+    }
+
+    .store-buttons {
+        justify-content: center;
+    }
+
+    .store-btn {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .purple-bg img {
+        max-height: 200px;
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 1400px) {
+    .header-image {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-image {
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-image {
+        margin: 0 5px;
+        width: calc(100% - 5px);
+    }
+}
+

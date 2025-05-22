@@ -1,0 +1,333 @@
+<?php
+require_once 'admin_auth.php';
+require_once '../config/db_connect.php';
+
+// Check if admin is logged in
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+// Get vehicle ID from URL
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+// Fetch vehicle data
+$stmt = $pdo->prepare("SELECT * FROM vehicles WHERE id = ?");
+$stmt->execute([$id]);
+$vehicle = $stmt->fetch();
+
+if (!$vehicle) {
+    header('Location: dashboard.php?error=vehicle_not_found');
+    exit();
+}
+
+$success_message = '';
+$error_message = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // Create upload directory if it doesn't exist
+        $upload_dir = '../assets/images/vehicles/';
+        if (!file_exists($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
+        
+        // Function to handle file upload
+        function handleFileUpload($file, $upload_dir) {
+            if ($file['error'] === 0) {
+                // Validate file type
+                $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!in_array($file['type'], $allowed_types)) {
+                    throw new Exception('Invalid file type. Only JPG, PNG, GIF, and WebP are allowed.');
+                }
+                
+                // Check file size (5MB max)
+                if ($file['size'] > 5 * 1024 * 1024) {
+                    throw new Exception('File too large. Maximum size is 5MB.');
+                }
+                
+                $filename = uniqid() . '_' . basename($file['name']);
+                $target_path = $upload_dir . $filename;
+                
+                if (move_uploaded_file($file['tmp_name'], $target_path)) {
+                    return 'assets/images/vehicles/' . $filename;
+                }
+                throw new Exception('Failed to upload file: ' . $file['name']);
+            }
+            return null;
+        }
+
+        // Validate required fields
+        if (empty($_POST['brand']) || empty($_POST['model']) || empty($_POST['price_per_day'])) {
+            throw new Exception('Please fill in all required fields.');
+        }
+
+        // Build update query
+        $sql = "UPDATE vehicles SET 
+                brand = ?, 
+                model = ?, 
+                price_per_day = ?, 
+                gear_box = ?, 
+                fuel_type = ?, 
+                max_speed = ?, 
+                capacity = ?, 
+                fuel_tank = ?, 
+                mileage = ?";
+
+        $params = [
+            $_POST['brand'],
+            $_POST['model'],
+            $_POST['price_per_day'],
+            $_POST['gear_box'],
+            $_POST['fuel_type'],
+            $_POST['max_speed'],
+            $_POST['capacity'],
+            $_POST['fuel_tank'],
+            $_POST['mileage']
+        ];
+
+        // Handle image updates
+        if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] === 0) {
+            $main_image = handleFileUpload($_FILES['main_image'], $upload_dir);
+            if ($main_image) {
+                $sql .= ", main_image = ?";
+                $params[] = $main_image;
+                
+                // Delete old main image
+                if ($vehicle['main_image'] && file_exists('../' . $vehicle['main_image'])) {
+                    unlink('../' . $vehicle['main_image']);
+                }
+            }
+        }
+        
+        if (isset($_FILES['image1']) && $_FILES['image1']['error'] === 0) {
+            $image1 = handleFileUpload($_FILES['image1'], $upload_dir);
+            if ($image1) {
+                $sql .= ", image1 = ?";
+                $params[] = $image1;
+                
+                // Delete old image1
+                if ($vehicle['image1'] && file_exists('../' . $vehicle['image1'])) {
+                    unlink('../' . $vehicle['image1']);
+                }
+            }
+        }
+        
+        if (isset($_FILES['image2']) && $_FILES['image2']['error'] === 0) {
+            $image2 = handleFileUpload($_FILES['image2'], $upload_dir);
+            if ($image2) {
+                $sql .= ", image2 = ?";
+                $params[] = $image2;
+                
+                // Delete old image2
+                if ($vehicle['image2'] && file_exists('../' . $vehicle['image2'])) {
+                    unlink('../' . $vehicle['image2']);
+                }
+            }
+        }
+        
+        if (isset($_FILES['image3']) && $_FILES['image3']['error'] === 0) {
+            $image3 = handleFileUpload($_FILES['image3'], $upload_dir);
+            if ($image3) {
+                $sql .= ", image3 = ?";
+                $params[] = $image3;
+                
+                // Delete old image3
+                if ($vehicle['image3'] && file_exists('../' . $vehicle['image3'])) {
+                    unlink('../' . $vehicle['image3']);
+                }
+            }
+        }
+
+        $sql .= " WHERE id = ?";
+        $params[] = $id;
+
+        $stmt = $pdo->prepare($sql);
+        $success = $stmt->execute($params);
+
+        if ($success) {
+            // Clear any output buffers
+            ob_clean();
+            
+            // Redirect to dashboard with success message
+            header('Location: dashboard.php?success=vehicle_updated');
+            exit();
+        } else {
+            throw new Exception('Failed to update vehicle.');
+        }
+        
+    } catch (Exception $e) {
+        $error_message = $e->getMessage();
+        
+        // Refresh vehicle data after error
+        $stmt = $pdo->prepare("SELECT * FROM vehicles WHERE id = ?");
+        $stmt->execute([$id]);
+        $vehicle = $stmt->fetch();
+    }
+}
+
+// Include navigation after processing to avoid output before headers
+include 'admin_nav.php';
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Vehicle - TukTuk Rental</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Edit Vehicle</h2>
+        
+        <?php if ($success_message): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php echo htmlspecialchars($success_message); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($error_message): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo htmlspecialchars($error_message); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+        
+        <form method="POST" enctype="multipart/form-data" class="mt-4" action="vehicles.php">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="brand" class="form-label">Brand <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="brand" name="brand" 
+                               value="<?php echo htmlspecialchars($vehicle['brand']); ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="model" class="form-label">Model <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="model" name="model" 
+                               value="<?php echo htmlspecialchars($vehicle['model']); ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price_per_day" class="form-label">Price per Day (LKR) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="price_per_day" name="price_per_day" 
+                               step="0.01" min="0" value="<?php echo $vehicle['price_per_day']; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gear_box" class="form-label">Gear Box <span class="text-danger">*</span></label>
+                        <select class="form-select" id="gear_box" name="gear_box" required>
+                            <option value="">Select Gear Box</option>
+                            <option value="Manual" <?php echo $vehicle['gear_box'] === 'Manual' ? 'selected' : ''; ?>>Manual</option>
+                            <option value="Automatic" <?php echo $vehicle['gear_box'] === 'Automatic' ? 'selected' : ''; ?>>Automatic</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="fuel_type" class="form-label">Fuel Type <span class="text-danger">*</span></label>
+                        <select class="form-select" id="fuel_type" name="fuel_type" required>
+                            <option value="">Select Fuel Type</option>
+                            <option value="Petrol" <?php echo $vehicle['fuel_type'] === 'Petrol' ? 'selected' : ''; ?>>Petrol</option>
+                            <option value="Diesel" <?php echo $vehicle['fuel_type'] === 'Diesel' ? 'selected' : ''; ?>>Diesel</option>
+                            <option value="Electric" <?php echo $vehicle['fuel_type'] === 'Electric' ? 'selected' : ''; ?>>Electric</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="max_speed" class="form-label">Max Speed (km/h)</label>
+                        <input type="text" class="form-control" id="max_speed" name="max_speed" 
+                               value="<?php echo htmlspecialchars($vehicle['max_speed']); ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Passenger Capacity <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="capacity" name="capacity" 
+                               min="1" value="<?php echo $vehicle['capacity']; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fuel_tank" class="form-label">Fuel Tank Capacity</label>
+                        <input type="text" class="form-control" id="fuel_tank" name="fuel_tank" 
+                               value="<?php echo htmlspecialchars($vehicle['fuel_tank']); ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mileage" class="form-label">Mileage</label>
+                        <input type="text" class="form-control" id="mileage" name="mileage" 
+                               value="<?php echo htmlspecialchars($vehicle['mileage']); ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="main_image" class="form-label">Main Image</label>
+                        <?php if ($vehicle['main_image']): ?>
+                            <div class="mb-2">
+                                <img src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" 
+                                     alt="Current main image" class="img-thumbnail" style="max-width: 200px;">
+                                <div class="form-text">Current main image (will be replaced if you upload a new one)</div>
+                            </div>
+                        <?php endif; ?>
+                        <input type="file" class="form-control" id="main_image" name="main_image" 
+                               accept="image/jpeg,image/png,image/gif,image/webp">
+                        <div class="form-text">Maximum file size: 5MB. Allowed formats: JPG, PNG, GIF, WebP</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="image1" class="form-label">Additional Image 1</label>
+                        <?php if ($vehicle['image1']): ?>
+                            <div class="mb-2">
+                                <img src="../<?php echo htmlspecialchars($vehicle['image1']); ?>" 
+                                     alt="Current image 1" class="img-thumbnail" style="max-width: 200px;">
+                                <div class="form-text">Current image 1 (will be replaced if you upload a new one)</div>
+                            </div>
+                        <?php endif; ?>
+                        <input type="file" class="form-control" id="image1" name="image1" 
+                               accept="image/jpeg,image/png,image/gif,image/webp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="image2" class="form-label">Additional Image 2</label>
+                        <?php if ($vehicle['image2']): ?>
+                            <div class="mb-2">
+                                <img src="../<?php echo htmlspecialchars($vehicle['image2']); ?>" 
+                                     alt="Current image 2" class="img-thumbnail" style="max-width: 200px;">
+                                <div class="form-text">Current image 2 (will be replaced if you upload a new one)</div>
+                            </div>
+                        <?php endif; ?>
+                        <input type="file" class="form-control" id="image2" name="image2" 
+                               accept="image/jpeg,image/png,image/gif,image/webp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="image3" class="form-label">Additional Image 3</label>
+                        <?php if ($vehicle['image3']): ?>
+                            <div class="mb-2">
+                                <img src="../<?php echo htmlspecialchars($vehicle['image3']); ?>" 
+                                     alt="Current image 3" class="img-thumbnail" style="max-width: 200px;">
+                                <div class="form-text">Current image 3 (will be replaced if you upload a new one)</div>
+                            </div>
+                        <?php endif; ?>
+                        <input type="file" class="form-control" id="image3" name="image3" 
+                               accept="image/jpeg,image/png,image/gif,image/webp">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Vehicle
+                </button>
+                <a href="dashboard.php" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <a href="vehicles.php" class="btn btn-info">
+                    <i class="fas fa-list"></i> View All Vehicles
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

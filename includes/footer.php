@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="text-center text-lg-start text-black" style="background-color:rgb(241, 239, 239);">
+<footer class="text-center text-lg-start text-black">
   <div class="container p-3">
     <div class="row">
       <!-- Company Info -->

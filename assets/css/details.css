@@ -3,6 +3,7 @@
     background-color: #f8f9fa;
     padding: 40px 0;
     transition: all 0.3s ease;
+    max-width: 100%;
 }
 
 /* Main Image Styles */
@@ -257,7 +258,7 @@
     margin-bottom: 30px;
     height: 400px;
     width: 100%;
-    max-width: 350px;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -280,8 +281,8 @@
     border-radius: 10px;
     margin-bottom: 18px;
     display: block;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    background-color: #fff;
+    /* box-shadow: 0 2px 8px rgba(0,0,0,0.04); */
+    /* background-color: #fff; */
 }
 
 .vehicles-section .vehicle-details {

@@ -18,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Get the ID of the inserted contact message
             $contact_message_id = $pdo->lastInsertId();
             // Add notification for admin
-            $notification_message = $contact_message_id;
+            $notification_message = "$contact_message_id New contact message from $name.";
             $notification_sql = "INSERT INTO notifications (type, message) VALUES ('contact_message', ?)";
             $notification_stmt = $pdo->prepare($notification_sql);
             $notification_stmt->execute([$notification_message]);
@@ -93,7 +93,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-left">
+                <div class="contact-image col-lg-6 mb-4 mb-lg-0" data-aos="fade-left">
                     <img src="../assets/images/details/tuktuk.png" alt="tuktuk" class="mb-3" width="100%">
                 </div>
             </div>

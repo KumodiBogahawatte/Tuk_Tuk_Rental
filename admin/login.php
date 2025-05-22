@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../admin/css/login.css">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
+</head>
 <body class="bg-light">
 <div class="container py-5">
     <div class="row justify-content-center">

@@ -25,24 +25,28 @@ $vehicles = $stmt->fetchAll();
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="../assets/css/index-fix.css">
   </head>
   <body>
     <?php include '../includes/navbar.php'; ?>
-<br>
     <!--Hero Section-->
     <section class="container-fluid py-5 hero-section">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
-                    <h1 class="hero-title">Experience the road like never before</h1>
-                    <p class="hero-text">Discover exhilarating ride without hassle. Enjoy the city's greatest attractions at any time, quick and comfortable.</p>
+                    <h1 class="hero-title" style="font-size: 55px;">Experience the road like never before</h1>
+                    <p class="hero-text">Discover exhilarating ride without hassle. <br>
+                        Enjoy the city's greatest attractions at any time, quick and comfortable.</p>
                     <a href="vehicles.php" class="btn booking-btn d-inline-block">View all Three Wheel</a>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
+                    <!-- <div class="tire-background">
+                        <img src="../assets/images/home/tire.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="Decorative Tire">
+                    </div> -->
                     <div class="booking-form">
                         <h4 class="mb-4">Book your ThreeWheel</h4>
                         <form action="availability.php" method="GET">
-                            <p class="form-label-title" style="color: #000;font-weight: 500;margin-bottom: 10px; margin-left:1px;"><i class="fa-solid fa-location-dot me-2"></i>Pick-Up Information</p>
+                            <p class="form-label-title" style="color: black !important;"><i class="fa-solid fa-location-dot me-2"></i>Pick-Up Information</p>
                             <select class="form-select mb-3" name="pickup_location" id="pickup_location" required>
                                 <option value="">Select pickup location</option>
                             </select>
@@ -64,7 +68,7 @@ $vehicles = $stmt->fetchAll();
                                     </div>
                                 </div>
                             </div>
-                            <p class="form-label-title" style="color: #000;font-weight: 500;margin-bottom: 10px; margin-left:1px;"><i class="fa-solid fa-flag-checkered me-2"></i>Return Information</p>
+                            <p class="form-label-title" style="color: black !important;"><i class="fa-solid fa-flag-checkered me-2"></i>Return Information</p>
                             <select class="form-select mb-3" name="return_location" id="return_location" required>
                                 <option value="">Select return location</option>
                             </select>
@@ -88,6 +92,9 @@ $vehicles = $stmt->fetchAll();
                             </div>
                             <button type="submit" class="btn booking-btn w-100">Search</button>
                         </form>
+                    </div>
+                    <div class="hero-image">
+                        <img src="../assets/images/home/transport.png" alt="Colorful Tuk Tuk">
                     </div>
                 </div>
             </div>
@@ -128,46 +135,51 @@ $vehicles = $stmt->fetchAll();
     </section>
 
     <!-- Testimonials Section -->
-    <section class="container py-5 testimonials-section">
-        <div class="row">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="../assets/images/home/tuk-tuk-night.jpg" alt="Tuk Tuk at night" class="img-fluid rounded shadow">
-            </div>
-            <div class="col-lg-6">
-                <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-image">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="testimonial-content">
-                        <h4>Erat et semper</h4>
-                        <p>Mauris vitae dapibus ligula. Praesent aliquam et elit adipiscing. Mi elementum dictum felis.</p>
-                    </div>
+    <section class="container-fluid py-5 testimonials-section">
+        <div class="container">
+            <!-- <div class="testimonial-decoration">
+                <img src="../assets/images/home/coconutTree.png" alt="Decorative coconut tree">
+            </div> -->
+            <div class="row">
+                <div class="col-lg-5 mb-1 mb-lg-0">
+                    <img src="../assets/images/home/tuk-tuk-night.jpg" alt="Tuk Tuk at night" class="img-fluid rounded shadow">
                 </div>
-                <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-image">
-                        <i class="fas fa-map"></i>
+                <div class="col-lg-7">
+                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="testimonial-image">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4>Erat et semper</h4>
+                            <p>Mauris vitae dapibus ligula. Praesent aliquam et elit adipiscing. Mi elementum dictum felis.</p>
+                        </div>
                     </div>
-                    <div class="testimonial-content">
-                        <h4>Urna nec volutpat rhoncus duis arcu</h4>
-                        <p>Nullam at tincidunt enim. Duis viverra metus at dictum porttitor. Proin auctor dolor sodales.</p>
+                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="testimonial-image">
+                            <i class="fas fa-map"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4>Urna nec volutpat rhoncus duis arcu</h4>
+                            <p>Nullam at tincidunt enim. Duis viverra metus at dictum porttitor. Proin auctor dolor sodales.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-image">
-                        <i class="fas fa-heart"></i>
+                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="testimonial-image">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4>Laorette accumsan imperdiet tempus</h4>
+                            <p>Vivamus sollicitudin mauris et dignissim malesuada et. Augue adipiscing nibh. Sed scelerisque orci.</p>
+                        </div>
                     </div>
-                    <div class="testimonial-content">
-                        <h4>Laorette accumsan imperdiet tempus</h4>
-                        <p>Vivamus sollicitudin mauris et dignissim malesuada et. Augue adipiscing nibh. Sed scelerisque orci.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-image">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="testimonial-content">
-                        <h4>Cras nulla aliquet non eleifend amet et</h4>
-                        <p>Praesent adipiscing elit dictum dolore. Fusce nisi diam justo pulvinar dui neque. Euismod mollestia blandit imperdit volutpat nibero.</p>
+                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="testimonial-image">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4>Cras nulla aliquet non eleifend amet et</h4>
+                            <p>Praesent adipiscing elit dictum dolore. Fusce nisi diam justo pulvinar dui neque. Euismod mollestia blandit imperdit volutpat nibero.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -219,69 +231,49 @@ $vehicles = $stmt->fetchAll();
                     volutpat orci et dictum hendrerit amet et aliquet hendrerit.
                 </p>
             </div>
-            <div class="row">
-                <!-- Stat Card 1 -->
-                <div class="col-6 col-md-3 mb-4">
-                    <div class="stat-card bg-white rounded shadow-sm" data-aos="zoom-in" data-aos-delay="100">
-                        <div class="d-flex">
-                            <!-- Icon on the left -->
-                            <div class="stat-icon me-3">
-                                <img src="../assets/images/home/FactIcon-2.png" alt="Tuk Tuks icon" class="img-fluid">
-                            </div>
-                            <!-- Text on the right -->
-                            <div>
-                                <h3 class="stat-number" style="color: black;">540+</h3>
-                                <p class="stat-label" style="color: black;">Tuk Tuks</p>
-                            </div>
+            
+            <div class="stats-container">
+                    <!-- Stat Item 1 -->
+                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="stat-icon">
+                            <i class="fas fa-taxi"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>540+</h3>
+                            <p>Tuk Tuks</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Stat Card 2 -->
-                <div class="col-6 col-md-3 mb-4">
-                    <div class="stat-card bg-white rounded shadow-sm" data-aos="zoom-in" data-aos-delay="100">
-                        <div class="d-flex">
-                            <div class="stat-icon me-3">
-                                <img src="../assets/images/home/FactIcon-1.png" alt="Customers icon" class="img-fluid">
-                            </div>
-                            <div>
-                                <h3 class="stat-number" style="color: black;">20k+</h3>
-                                <p class="stat-label" style="color: black;">Customers</p>
-                            </div>
+                    <!-- Stat Item 2 -->
+                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>20k+</h3>
+                            <p>Customers</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Stat Card 3 -->
-                <div class="col-6 col-md-3 mb-4">
-                    <div class="stat-card bg-white rounded shadow-sm" data-aos="zoom-in" data-aos-delay="100">
-                        <div class="d-flex">
-                            <!-- Icon on the left -->
-                            <div class="stat-icon me-3">
-                                <img src="../assets/images/home/FactIcon-3.png" alt="Years icon" class="img-fluid">
-                            </div>
-                            <!-- Text on the right -->
-                            <div>
-                                <h3 class="stat-number" style="color: black;">25+</h3>
-                                <p class="stat-label" style="color: black;">Years</p>
-                            </div>
+                    <!-- Stat Item 3 -->
+                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>25+</h3>
+                            <p>Years</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Stat Card 4 -->
-                <div class="col-6 col-md-3 mb-4">
-                    <div class="stat-card bg-white rounded shadow-sm" data-aos="zoom-in" data-aos-delay="100">
-                        <div class="d-flex">
-                            <!-- Icon on the left -->
-                            <div class="stat-icon me-3">
-                                <img src="../assets/images/home/FactIcon-4.png" alt="Miles icon" class="img-fluid">
-                            </div>
-                            <!-- Text on the right -->
-                            <div>
-                                <h3 class="stat-number" style="color: black;">200+</h3>
-                                <p class="stat-label" style="color: black;">Miles</p>
-                            </div>
+                    <!-- Stat Item 4 -->
+                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="stat-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>200+</h3>
+                            <p>Miles</p>
                         </div>
                     </div>
                 </div>
@@ -291,57 +283,60 @@ $vehicles = $stmt->fetchAll();
 
 
     <!-- Mobile App Section -->
-    <section class="container py-5 app-section">
-        <div class="row align-items-center">
-            <!-- Text Content -->
-            <div class="col-lg-6 app-content mb-4 mb-lg-0">
-                <h2 class="mb-3">Download Our Mobile App</h2>
-                <p class="mb-4">Experience seamless ordering and tracking. Get exclusive deals right at your fingertips with our mobile app.</p>
-                <div class="store-buttons d-flex gap-3">
-                    <a href="#" class="store-btn app-store d-flex align-items-center gap-2">
-                        <i class="fa-brands fa-apple fa-2x store-icon"></i>
-                        <span>App Store</span>
-                    </a>
-                    <a href="#" class="store-btn play-store d-flex align-items-center gap-2">
-                        <i class="fab fa-google-play fa-2x store-icon"></i>
-                        <span>Google Play</span>
-                    </a>
+    <section class="container-fluid py-5 app-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Text Content -->
+                <div class="col-lg-6 app-content mb-4 mb-lg-0">
+                    <h2 class="mb-3">Download Our Mobile App</h2>
+                    <p class="mb-4">Experience seamless ordering and tracking. Get exclusive deals right at your fingertips with our mobile app.</p>
+                    <div class="store-buttons d-flex gap-3">
+                        <a href="#" class="store-btn app-store d-flex align-items-center gap-2">
+                            <i class="fa-brands fa-apple fa-2x store-icon"></i>
+                            <span>App Store</span>
+                        </a>
+                        <a href="#" class="store-btn play-store d-flex align-items-center gap-2">
+                            <i class="fab fa-google-play fa-2x store-icon"></i>
+                            <span>Google Play</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Phone Stack -->
-            <div class="col-lg-6 text-center device-showcase" data-aos="zoom-in" data-aos-duration="1200">
-                <div class="phone-stack position-relative">
-                    <img src="../assets/images/home/mobileApp.png" 
-                        class="phone back-phone position-absolute img-fluid" 
-                        style="width: 180px;" 
-                        alt="Back phone"
-                        >
-                        
-                    <img src="../assets/images/home/mobileApp.png" 
-                        class="phone front-phone position-absolute img-fluid" 
-                        style="width: 180px;" 
-                        alt="Front phone">
+                <!-- Phone Stack -->
+                <div class="col-lg-6 text-center device-showcase" data-aos="zoom-in" data-aos-duration="1200">
+                    <div class="phone-stack position-relative">
+                        <img src="../assets/images/home/mobileApp.png" 
+                            class="phone back-phone position-absolute img-fluid" 
+                            alt="Back phone"
+                            >
+                            
+                        <img src="../assets/images/home/mobileApp.png" 
+                            class="phone front-phone position-absolute img-fluid" 
+                            alt="Front phone">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="container cta-section">
-        <div class="cta-content">
-            <h2>Enjoy every mile with adorable companionship.</h2>
-            <p>Nullam augue felis erat dolor facilisis. Pretium tellus interdum amet eu consectetur imperdiet adipiscing in. Tempus consequat hendrerit amet.</p>
-            <div class="cta-buttons">
-                <a href="../pages/index.php" class="cta-btn cta-primary">Book Now</a>
-                <a href="../pages/contact.php" class="cta-btn cta-secondary">Contact Us</a>
+    <section class="container-fluid py-5 cta-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 cta-content" data-aos="fade-right">
+                    <h2>Enjoy every mile with adorable companionship.</h2>
+                    <p>Nullam augue felis erat dolor facilisis. Pretium tellus interdum amet eu consectetur imperdiet adipiscing in. Tempus consequat hendrerit amet.</p>
+                    <div class="cta-buttons">
+                        <a href="../pages/index.php" class="cta-btn cta-primary">Book Now</a>
+                        <a href="../pages/contact.php" class="cta-btn cta-secondary">Contact Us</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 cta-image" data-aos="fade-left">
+                    <img src="../assets/images/home/ColorfulTukTuk.png" alt="Colorful Tuk Tuk" class="img-fluid">
+                </div>
             </div>
         </div>
-        <div class="cta-image">
-            <img src="../assets/images/home/ColorfulTukTuk.png" alt="Colorful Tuk Tuk" class="img-fluid" style="width: 350px;">
-        </div>
     </section>
-
     <?php include '../includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <!-- GSAP (CDN) -->
