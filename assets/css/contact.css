@@ -1,23 +1,61 @@
+body{
+  background-color: #faf8f8f1;
+}
+.hero-section {
+    padding: 60px 0;
+    background-color: #375FE0;
+    background-image: url('../images/details/tuktuk.png');
+    background-repeat:no-repeat;  
+    background-size: cover;
+    background-position: left center;
+    background-position: calc(0% - 100px) right;
+    width: 100% !important;
+    border-radius: 0px !important;
+    position: relative;
+    overflow: hidden;
+    margin: 20px auto;
+    height: 50%;
+  }
+  .hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
 /* Form Styling */
-.booking-form {
-  background-color: #4925c4;
+.contact-form {
+  background: linear-gradient(
+    135deg,
+    rgba(233, 228, 228, 0.322),
+    rgba(233, 228, 228, 0.322)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.397);
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
-.booking-form h4 {
+.contact-form h4 {
   color: #fff;
   font-size: 1.5rem;
   margin-bottom: 20px;
 }
 
-.booking-form .form-label {
+.contact-form .form-label {
   color: #fff;
   font-weight: 500;
 }
 
-.booking-form .form-control {
+.contact-form .form-control {
   background-color: #f5f2f2;
   color: #7e7c7c;
   border: none;
@@ -26,19 +64,19 @@
   font-size: 1rem;
 }
 
-.booking-form .form-control:focus {
+.contact-form .form-control:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(89, 55, 224, 0.5);
   border: 1px solid #4925c4;
 }
 
-.booking-form .form-text {
+.contact-form .form-text {
   color: #ddd;
   font-size: 0.85rem;
 }
 
-.booking-form .btn {
-  background-color: #FF9E0C;
+.contact-form .btn {
+  background-color: #375FE0;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
@@ -49,8 +87,8 @@
   font-weight: bolder;
 }
 
-.booking-form .btn:hover {
-  background-color: #e08700;
+.contact-form .btn:hover {
+  background-color: #2c4bcc !important;
   color: #fff;
 }
 
@@ -64,7 +102,7 @@
 }
 /* Brand List Section */
 .vehicles-page .brand-list-section {
-  background-color: #f8f9fa;
+  background-color: #cecbcb;
   padding: 30px 0;
   border-radius: 20px;
   margin: 20px 0;
@@ -102,6 +140,7 @@
 .blog-section {
   padding: 4rem 2rem;
   text-align: center;
+  background-color: rgba(215, 228, 238, 0.95);;
 }
 
 .blog-section h2 {
@@ -156,11 +195,10 @@
 
 /* Contact Section */
 .contact-info-section {
-  background-color: #f0f0f0;
   padding: 4rem 2rem;
   text-align: center;
   margin-bottom: 5px;
-  align-items: center;
+  width: 100%;
 }
 
 .contact-info-row {
@@ -168,19 +206,17 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
+  width: 100%;
 }
 
 .contact-info-box {
-  flex: 1 1 200px;
-  max-width: 300px;
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    flex: 1 1 300px;
+    max-width: 350px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .contact-info-box:hover {
@@ -188,9 +224,16 @@
 }
 
 .contact-info-box i {
-  font-size: 1.8rem;
-  color: #FF9E0C;
+  font-size: 2rem;
+  color: #ffffff;
   flex-shrink: 0;
+  background-color: #375FE0;
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  display: flex;         
+  align-items: center;    
+  justify-content: center; 
 }
 
 .contact-info-text {
@@ -202,65 +245,237 @@
 
 .contact-info-text h6 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #333;
 }
 
 .contact-info-text p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #555;
 }
 
 /* Responsive */
-@media (max-width: 991px) {
-  .contact-image {
-      max-width: 100%;
-      margin-top: 2rem;
-      height: 100%;
-  }
-}
-@media (max-width: 768px) {
-  .contact-image {
-    max-width: 100%;
-  } 
-  .blog-row {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .blog-card {
-    width: 90%;
-  }
-  
-  .contact-info-row {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .contact-info-box {
-    width: 90%;
-    justify-content: center;
-  }
-  
-  .vehicles-page .brand-list-section ul li img {
-    max-width: 200px;
-  }
-}
-
-@media (max-width: 576px) {
-  .vehicles-page .brand-list-section ul li img {
-    max-width: 200px;
-  }
-  .contact-image {
-    max-width: 100%;
-    margin-top: 1.5rem;
-  }
+/* Tablet Styles */
+@media (min-width: 576px) {
+    .contact-form {
+        padding: 25px;
+    }
+    
+    .contact-form h4 {
+        font-size: 1.4rem;
+        text-align: left;
+    }
+    
+    .blog-section h2 {
+        font-size: 1.75rem;
+    }
+    
+    .blog-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .blog-card {
+        max-width: 280px;
+    }
+    
+    .vehicles-page .brand-list-section ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+    
+    .vehicles-page .brand-list-section ul li {
+        max-width: 250px;
+    }
 }
 
-@media (max-width: 400px) {
-  .vehicles-page .brand-list-section ul li img {
-    max-width: 200px;
-  }
+/* Desktop Styles */
+@media (min-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+        background-position: calc(100% + 50px) center;
+        min-height: 500px;
+    }
+    
+    .contact-form {
+        padding: 30px;
+    }
+    
+    .contact-form h4 {
+        font-size: 1.5rem;
+    }
+    
+    .contact-info-section {
+        padding: 3rem 2rem;
+    }
+    
+    .contact-info-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+    }
+    
+    .contact-info-box {
+        flex: 1 1 300px;
+        max-width: 350px;
+        gap: 1.5rem;
+    }
+    
+    .contact-info-box i {
+        height: 60px;
+        width: 60px;
+        font-size: 1.75rem;
+    }
+    
+    .contact-info-text h6 {
+        font-size: 1.25rem;
+    }
+    
+    .contact-info-text p {
+        font-size: 1rem;
+    }
+    
+    .blog-section {
+        padding: 3rem 2rem;
+    }
+    
+    .blog-section h2 {
+        font-size: 2rem;
+    }
+    
+    .blog-card {
+        max-width: 300px;
+    }
+    
+    .text-center h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Large Desktop Styles */
+@media (min-width: 992px) {
+    .hero-section {
+        background-position: right center;
+    }
+    
+    .contact-info-row {
+        gap: 2.5rem;
+    }
+    
+    .contact-info-box i {
+        height: 70px;
+        width: 70px;
+        font-size: 2rem;
+    }
+    
+    .contact-info-text h6 {
+        font-size: 1.5rem;
+    }
+    
+    .vehicles-page .brand-list-section {
+        padding: 30px 0;
+    }
+    
+    .vehicles-page .brand-list-section ul {
+        gap: 2rem;
+    }
+    
+    .vehicles-page .brand-list-section ul li {
+        max-width: 300px;
+    }
+    
+    .vehicles-page .brand-list-section ul li img {
+        margin-left: 50px;
+    }
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1200px) {
+    .contact-info-section {
+        padding: 4rem 2rem;
+    }
+    
+    .blog-section {
+        padding: 4rem 2rem;
+    }
+}
+
+/* Small Mobile Fixes */
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 30px 0;
+        margin: 10px auto;
+    }
+    
+    .contact-form {
+        padding: 15px;
+        margin: 0 10px;
+    }
+    
+    .contact-form h4 {
+        font-size: 1.1rem;
+    }
+    
+    .contact-form .form-control {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    
+    .contact-info-box {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+    
+    .contact-info-box i {
+        height: 45px;
+        width: 45px;
+        font-size: 1.25rem;
+    }
+    
+    .contact-info-text h6 {
+        font-size: 1rem;
+    }
+    
+    .contact-info-text p {
+        font-size: 0.85rem;
+    }
+    
+    .blog-section {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .blog-section h2 {
+        font-size: 1.25rem;
+    }
+    
+    .vehicles-page .brand-list-section {
+        padding: 15px 5px;
+        margin: 10px 0;
+    }
+    
+    .text-center h1 {
+        font-size: 1.5rem;
+    }
+    
+    .breadcrumb {
+        font-size: 0.8rem;
+    }
+}
+
+/* Landscape Mobile */
+@media (max-width: 767px) and (orientation: landscape) {
+    .hero-section {
+        min-height: 300px;
+        background-size: contain;
+    }
+    
+    .contact-form {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
 }

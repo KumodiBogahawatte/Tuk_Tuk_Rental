@@ -5,7 +5,7 @@ require_once '../config/db_connect.php';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: login.php');
+    header('Location: index.php');
     exit();
 }
 

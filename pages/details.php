@@ -87,7 +87,7 @@ $other_vehicles = $stmt->fetchAll();
                         <div class="col">
                             <div class="card h-100">
                                 <div class="card-body text-center">
-                                    <i class="fas fa-cogs fa-2x mb-2" style="color: #5937E0;"></i>
+                                    <i class="fas fa-cogs fa-2x mb-2" style="color: #375FE0;"></i>
                                     <h5 class="card-title">Gear Box</h5>
                                     <p class="card-text"><?php echo htmlspecialchars($vehicle['gear_box']); ?></p>
                                 </div>
@@ -97,7 +97,7 @@ $other_vehicles = $stmt->fetchAll();
                         <div class="col">
                             <div class="card h-100">
                                 <div class="card-body text-center">
-                                    <i class="fas fa-gas-pump fa-2x mb-2" style="color: #5937E0;"></i>
+                                    <i class="fas fa-gas-pump fa-2x mb-2" style="color: #375FE0;"></i>
                                     <h5 class="card-title">Fuel Type</h5>
                                     <p class="card-text"><?php echo htmlspecialchars($vehicle['fuel_type']); ?></p>
                                 </div>
@@ -107,7 +107,7 @@ $other_vehicles = $stmt->fetchAll();
                         <div class="col">
                             <div class="card h-100">
                                 <div class="card-body text-center">
-                                    <i class="fas fa-tachometer-alt fa-2x mb-2" style="color: #5937E0;"></i>
+                                    <i class="fas fa-tachometer-alt fa-2x mb-2" style="color: #375FE0;"></i>
                                     <h5 class="card-title">Max Speed</h5>
                                     <p class="card-text"><?php echo htmlspecialchars($vehicle['max_speed']); ?> km/h</p>
                                 </div>
@@ -117,7 +117,7 @@ $other_vehicles = $stmt->fetchAll();
                         <div class="col">
                             <div class="card h-100">
                                 <div class="card-body text-center">
-                                    <i class="fas fa-users fa-2x mb-2" style="color: #5937E0;"></i>
+                                    <i class="fas fa-users fa-2x mb-2" style="color: #375FE0;"></i>
                                     <h5 class="card-title">Capacity</h5>
                                     <p class="card-text"><?php echo htmlspecialchars($vehicle['capacity']); ?> passengers</p>
                                 </div>
@@ -127,7 +127,7 @@ $other_vehicles = $stmt->fetchAll();
                         <div class="col">
                             <div class="card h-100">
                                 <div class="card-body text-center">
-                                    <i class="fas fa-gas-pump fa-2x mb-2" style="color: #5937E0;"></i>
+                                    <i class="fas fa-gas-pump fa-2x mb-2" style="color: #375FE0;"></i>
                                     <h5 class="card-title">Fuel Tank</h5>
                                     <p class="card-text"><?php echo htmlspecialchars($vehicle['fuel_tank']); ?></p>
                                 </div>
@@ -137,7 +137,7 @@ $other_vehicles = $stmt->fetchAll();
                         <div class="col">
                             <div class="card h-100">
                                 <div class="card-body text-center">
-                                    <i class="fas fa-road fa-2x mb-2" style="color: #5937E0;"></i>
+                                    <i class="fas fa-road fa-2x mb-2" style="color: #375FE0;"></i>
                                     <h5 class="card-title">Mileage</h5>
                                     <p class="card-text"><?php echo htmlspecialchars($vehicle['mileage']); ?></p>
                                 </div>
@@ -241,7 +241,7 @@ $other_vehicles = $stmt->fetchAll();
         <div class="row">
             <?php foreach ($other_vehicles as $other_vehicle): ?>
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="vehicle-card" data-aos="fade-down" data-aos-delay="100">
+                <div class="vehicle-card">
                     <img src="../<?php echo htmlspecialchars($other_vehicle['main_image']); ?>" alt="<?php echo htmlspecialchars($other_vehicle['brand'] . ' ' . $other_vehicle['model']); ?>" class="vehicle-image">
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">

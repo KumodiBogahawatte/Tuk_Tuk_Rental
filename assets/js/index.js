@@ -215,3 +215,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Show or hide the button
+window.addEventListener("scroll", function () {
+    const topButton = document.querySelector(".back-to-top");
+    if (window.scrollY > 300) {
+    topButton.style.display = "block";
+    } else {
+    topButton.style.display = "none";
+    }
+});
+
+// Smooth scroll to top
+document.querySelector(".back-to-top").addEventListener("click", function (e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});

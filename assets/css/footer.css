@@ -1,3 +1,32 @@
+footer {
+    padding-top: 40px;
+}
+
+footer .row {
+    display: flex;
+    align-items: flex-start;
+}
+
+footer .col-md-3{
+    margin-top: 10px;
+}
+
+footer .col-md-2 {
+    margin-top: 30px;
+}
+footer h6 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+}
+
+footer hr {
+    width: 60px;
+    background-color: #5937E0;
+    height: 2px;
+    opacity: 1;
+    margin-top: -5px;
+}
 /* General footer styling */
 footer.text-center.text-lg-start.text-black {
   background-color: rgb(241, 239, 239);
@@ -36,7 +65,7 @@ footer a.text-black {
 }
 
 footer a.text-black:hover {
-  color: #5937E0;
+  color: #375FE0;
   transform: translateX(5px);
 }
 
@@ -51,7 +80,7 @@ footer a.text-decoration-none::after {
   height: 2px;
   bottom: -2px;
   left: 0;
-  background-color: #FF9E0C;
+  background-color: #375FE0;
   transition: width 0.3s ease;
 }
 
@@ -80,7 +109,7 @@ footer .fab {
 
 
 footer a.text-black:hover i.fab {
-  color: #FF9E0C;
+  color: #375FE0;
   transform: scale(1.2);
 }
 
@@ -113,11 +142,33 @@ footer a.text-black:hover i.fab {
   transform: scale(1.05);
 }
 
+.back-to-top{
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+  background-color: #0c6dff;
+  color: white;
+  padding: 12px;
+  border-radius: 50%;
+  font-size: 18px;
+  width: 50px;
+  height: 50px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-align: center;
+  z-index: 999;
+  display: none;
+}
+
+.back-to-top:hover {
+  background-color: #d8eeff;
+  transform: scale(1.1);
+}
 
 
 /* Copyright section */
 footer .text-center.p-2 {
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(6, 24, 44);
+  color: white;
   padding: 0.5rem 0;
   font-size: 14px;
   border-top: 1px solid #ddd;

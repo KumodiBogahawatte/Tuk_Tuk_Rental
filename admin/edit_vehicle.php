@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container mt-4">
         <h2>Edit Vehicle</h2>
-        <form method="POST" enctype="multipart/form-data" class="mt-4">
+        <form method="POST" enctype="multipart/form-data" class="mt-4" action="vehicles.php">
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">

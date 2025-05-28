@@ -4,7 +4,7 @@
     <div class="row">
       <!-- Company Info -->
       <div class="col-md-3 col-lg-3 col-xl-3 mb-4">
-        <img src="../assets/images/logo.png" alt="Tuk Tuk Rental logo" loading="lazy">
+        <img src="../assets/images/TUK TUK LOGO 1.png" alt="Tuk Tuk Rental logo" loading="lazy" height="90px;">
         <p>
           Discover affordable and flexible tuk tuk rentals for your Sri Lankan adventures.
           Reliable service, easy booking, and great support.
@@ -18,7 +18,7 @@
       </div>
 
       <!-- Useful links -->
-      <div class="col-md-2 col-lg-2 col-xl-2 mb-4">
+      <div class="col-md-2 col-lg-2 col-xl-2">
         <h6 class="text-uppercase fw-bold">Useful links</h6>
         <hr class="mb-4 mt-0 d-inline-block mx-auto">
         <p><a href="../pages/about.php" class="text-black text-decoration-none">About Us</a></p>
@@ -28,7 +28,7 @@
       </div>
 
       <!-- Vehicles -->
-      <div class="col-md-2 col-lg-2 col-xl-2 mb-4">
+      <div class="col-md-2 col-lg-2 col-xl-2">
         <h6 class="text-uppercase fw-bold">Vehicles</h6>
         <hr class="mb-4 mt-0 d-inline-block mx-auto">
         <p><a href="#" class="text-black text-decoration-none">Your Account</a></p>
@@ -38,7 +38,7 @@
       </div>
 
       <!-- Download App -->
-      <div class="col-md-2 col-lg-2 col-xl-2 mb-4">
+      <div class="col-md-2 col-lg-2 col-xl-2">
         <h6 class="text-uppercase fw-bold">Download App</h6>
         <hr class="mb-4 mt-0 d-inline-block mx-auto">
         <div class="footer-buttons">
@@ -54,7 +54,7 @@
       </div>
 
       <!-- Contact Us -->
-      <div class="col-md-3 col-lg-3 col-xl-3 mb-4">
+      <div class="col-md-2 col-lg-2 col-xl-2">
         <h6 class="text-uppercase fw-bold">Contact us</h6>
         <hr class="mb-4 mt-0 d-inline-block mx-auto">
         <p><i class="fas fa-home me-3"></i> Colombo, Sri Lanka</p>
@@ -63,6 +63,11 @@
       </div>
     </div>
   </div>
+
+    <!-- Back to Top Button -->
+  <a href="#" class="back-to-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </a>
 
   <!-- Social + Copyright -->
   <div class="text-center p-2 border-top">

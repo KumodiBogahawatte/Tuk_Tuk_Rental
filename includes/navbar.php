@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light py-2 shadow-sm sticky-top" style="z-index: 1030;">
+<nav class="navbar navbar-expand-lg navbar-light py-2 sticky-top">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="index.php">
-            <img src="../assets/images/logo.png" alt="Logo" height="80px">
+            <img src="../assets/images/TUK TUK LOGO 1.png" alt="Logo" height="80px">
         </a>
 
         <!-- Toggler button for mobile view -->

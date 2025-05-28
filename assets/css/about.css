@@ -1,17 +1,42 @@
 :root {
-    --primary-color: #6c3ce9;
-    --secondary-color: #4a2b9e;
-    --light-purple: #f0ebff;
+    --primary-color: #375FE0;
+    --secondary-color: #375FE0;
+    --light-purple: rgba(215, 228, 238, 0.95);
     --dark-text: #222222;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--dark-text);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    background-color: #faf8f8f1;
 }
 
-.Memories{
-    background-color: rgba(245, 240, 240, 0.95);
+.Memories {
+    background-color: rgba(215, 228, 238, 0.95);
+}
+
+.main_content {
+    position: relative;
+    z-index: 0;
+    padding: 0 15px; /* Add base padding */
+}
+
+.main_content::after {
+    content: '';
+    position: absolute;
+    bottom: 48%;
+    left: -55px;
+    width: 1000px;
+    height: 1000px;
+    background-image: url('../images/about/peacock_illustration.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(15deg);
+    transform-origin: center;
+    opacity: 0.1;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .header-image {
@@ -31,8 +56,9 @@ body {
 
 .headline {
     font-weight: 700;
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 4vw, 2.5rem); /* Responsive font size */
     line-height: 1.2;
+    margin-bottom: 1rem;
 }
 
 .card {
@@ -40,9 +66,9 @@ body {
     border: none;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     height: 100%;
+    margin-bottom: 1rem; /* Add margin for mobile stacking */
 }
 
-/* App download section styles */
 /* App download section styles */
 .purple-bg {
     padding: 40px;
@@ -51,16 +77,17 @@ body {
     border-radius: 20px;
     position: relative;
     overflow: hidden;
+    margin: 15px;
 }
 
 .purple-bg h2 {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
     font-weight: 700;
     margin-bottom: 1rem;
 }
 
 .purple-bg p {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     line-height: 1.6;
     margin-bottom: 2rem;
     opacity: 0.9;
@@ -78,39 +105,44 @@ body {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .store-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.3s ease;
     min-width: 150px;
+    font-size: 0.9rem;
 }
 
 .store-btn:hover {
     background-color: rgba(255, 255, 255, 0.2);
     color: white;
+    transform: translateY(-2px);
 }
 
 .store-icon {
     font-size: 24px;
+    margin-right: 8px;
 }
 
 .stats-number {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 5vw, 2.5rem);
     font-weight: 700;
     color: var(--primary-color);
 }
 
 .stats-text {
-    font-size: 2rem;
+    font-size: clamp(1.2rem, 3vw, 2rem);
     color: #353333;
-    font-weight:500;
+    font-weight: 500;
 }
 
 .feature-icon {
@@ -126,7 +158,7 @@ body {
 
 .quote {
     color: var(--primary-color);
-    font-size: 32px;
+    font-size: clamp(24px, 4vw, 32px);
 }
 
 .accordion-button:not(.collapsed) {
@@ -143,90 +175,276 @@ body {
 .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
+    padding: 12px 24px;
+    font-size: 1rem;
 }
 
 .btn-primary:hover {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
+    transform: translateY(-1px);
 }
 
 .btn-outline-primary {
     border-color: var(--primary-color);
     color: var(--primary-color);
+    padding: 12px 24px;
+    font-size: 1rem;
 }
 
 .btn-outline-primary:hover {
     background-color: var(--primary-color);
     color: white;
+    transform: translateY(-1px);
 }
 
 .book-now-btn {
-  background-color: #FF9E0C;
-  color: white;
-  transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: #FF9E0C;
+    color: white;
+    transition: all 0.3s ease;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .book-now-btn:hover {
     background-color: #706657;
-    color: rgb(0, 0, 0);
-    transition: all 0.3s ease;
+    color: white;
+    transform: translateY(-1px);
 }
 
-/* Responsive styles */
-@media (max-width: 991px) {
+/* Container improvements for mobile */
+.container, .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Section spacing */
+.section {
+    padding: 3rem 0;
+}
+
+/* Extra Small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .main_content {
+        padding: 0 10px;
+    }
+    
+    .main_content::after {
+        width: 300px;
+        height: 300px;
+        left: -50px;
+        bottom: 20%;
+        transform: rotate(5deg);
+        opacity: 0.05;
+    }
+    
     .purple-bg {
-        padding: 30px;
+        padding: 20px 15px;
+        margin: 10px;
+        border-radius: 15px;
     }
-
+    
     .purple-bg h2 {
-        font-size: 3rem;
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
     }
-
+    
+    .purple-bg p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+    
     .purple-bg img {
-        max-height: 250px;
+        max-height: 150px;
+        margin-bottom: 15px;
+    }
+    
+    .store-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .store-btn {
+        width: 100%;
+        min-width: auto;
+        padding: 15px;
+        font-size: 1rem;
+    }
+    
+    .header-image {
+        margin: 0 10px;
+        width: calc(100% - 20px);
+        border-radius: 10px;
+    }
+    
+    .headline {
+        font-size: 1.5rem;
+        padding: 0 10px;
+    }
+    
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .feature-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+    
+    .stats-number {
+        font-size: 1.8rem;
+    }
+    
+    .stats-text {
+        font-size: 1rem;
+    }
+    
+    .section {
+        padding: 2rem 0;
     }
 }
 
-@media (max-width: 768px) {
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .main_content::after {
+        width: 400px;
+        height: 400px;
+        left: -80px;
+        bottom: 25%;
+        transform: rotate(8deg);
+    }
+    
     .purple-bg {
-        padding: 25px;
+        padding: 25px 20px;
+        margin: 10px;
     }
-
+    
     .purple-bg h2 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
-
+    
+    .purple-bg img {
+        max-height: 180px;
+    }
+    
     .store-buttons {
         justify-content: center;
     }
-
+    
     .store-btn {
-        width: 100%;
-        justify-content: center;
-        margin-bottom: 10px;
+        flex: 1;
+        max-width: 200px;
     }
-
-    .purple-bg img {
-        max-height: 200px;
-        margin-bottom: 20px;
-    }
-}
-@media (max-width: 1400px) {
-    .header-image {
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
+    
     .header-image {
         border-radius: 15px;
     }
 }
 
-@media (max-width: 576px) {
-    .header-image {
-        margin: 0 5px;
-        width: calc(100% - 5px);
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .main_content::after {
+        width: 600px;
+        height: 600px;
+        left: -120px;
+        bottom: 35%;
+        transform: rotate(12deg);
+    }
+    
+    .purple-bg {
+        padding: 30px 25px;
+    }
+    
+    .purple-bg h2 {
+        font-size: 2rem;
+    }
+    
+    .purple-bg img {
+        max-height: 220px;
+    }
+    
+    .store-buttons {
+        justify-content: center;
+        gap: 20px;
     }
 }
 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .main_content::after {
+        width: 800px;
+        height: 800px;
+        left: -100px;
+        bottom: 42%;
+    }
+    
+    .purple-bg {
+        padding: 35px 30px;
+    }
+    
+    .purple-bg img {
+        max-height: 250px;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .header-image {
+        max-width: 100%;
+    }
+}
+
+/* XXL devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    .header-image {
+        max-width: 1296px;
+    }
+    
+    .main_content {
+        padding: 0 20px;
+    }
+}
+
+/* Utility classes for better mobile experience */
+.text-center-mobile {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .text-center-mobile {
+        text-align: left;
+    }
+}
+
+/* Fix for touch devices */
+@media (hover: none) {
+    .store-btn:hover,
+    .btn-primary:hover,
+    .btn-outline-primary:hover,
+    .book-now-btn:hover {
+        transform: none;
+    }
+}
+
+/* Improve accessibility for smaller screens */
+@media (max-width: 767.98px) {
+    .btn, .store-btn {
+        min-height: 44px; /* Better touch targets */
+        touch-action: manipulation;
+    }
+}
+
+/* Loading performance optimization */
+.main_content::after {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .main_content::after {
+        background-size: contain;
+    }
+}

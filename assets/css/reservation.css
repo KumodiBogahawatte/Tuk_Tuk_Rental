@@ -1,5 +1,8 @@
+body{
+  background-color: #faf8f8f1;
+}
 .btn-confirm-booking {
-    background-color: #5937E0;
+    background-color: #375FE0;
     color: white;
     border: none;
   }

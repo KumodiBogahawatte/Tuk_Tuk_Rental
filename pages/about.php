@@ -78,7 +78,7 @@ $reviews = [
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center">
                         <li class="breadcrumb-item"><a href="#" class="text-decoration-none" style="color: gray;">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" style="color: #5937E0;font-weight: 500;">About Us</li>
+                        <li class="breadcrumb-item active" aria-current="page" style="color: #375FE0;font-weight: 500;">About Us</li>
                     </ol>
                 </nav>
             </div>
@@ -287,10 +287,10 @@ $reviews = [
     </section>
     
     <!-- Looking for a car Section -->
-    <section class="py-5">
+    <section class="py-5" style="background-color:rgba(215, 228, 238, 0.95);">
         <div class="container">
-            <div class="purple-bg p-5">
-                <div class="row align-items-center">
+            <div class="p-5">
+                <div class="row align-items-center"  data-aos="zoom-in" data-aos-delay="100">
                     <div class="col-lg-8 mb-4 mb-lg-0">
                         <h2 class="mb-3" style="font-size: 60px;font-weight:bold;margin-left:20px;">Looking for a tuk?</h2>
                         <div class="d-flex align-items-center mb-3">
@@ -299,7 +299,7 @@ $reviews = [
                         <p class="mb-4" style="margin-left:20px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dignissimos.Expedita, libero dignissimos.</p>
                         <a href="../pages/index.php" class="btn btn-warning rounded-pill px-4 book-now-btn" style="background-color: #FF9E0C;margin-left:20px;">Book Now</a>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4"  data-aos="zoom-in" data-aos-delay="100">
                         <img src="../assets/images/about/tuk.png" alt="Colorful Tuk Tuk Vehicle" class="img-fluid rounded">
                     </div>
                 </div>

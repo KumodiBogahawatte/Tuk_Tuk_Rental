@@ -1,29 +1,50 @@
 /* Initial navbar style */
 .navbar {
+    height: 80px;
+    display: flex;
+    align-items: center;
     transition: all 0.3s ease;
+    background-color: transparent;
+    background: linear-gradient(
+        to bottom,
+        rgba(166, 205, 236, 0.95),
+        #faf8f8f1
+    );
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    
 }
-
 /* Shrink effect when scrolled */
 .navbar.scrolled {
-    background-color: #ffffff !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 60px;
+    /* display: flex;
+    align-items: center; */
+    background: linear-gradient(
+        to bottom,
+        rgba(166, 205, 236, 0.95),
+        #faf8f8f1
+    );
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
     padding-top: 0.4rem !important;
     padding-bottom: 0.4rem !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
+
 
 /* Adjust logo height on scroll */
 .navbar.scrolled .navbar-brand img {
-    height: 45px !important;
+    height: 75px !important;
     transition: height 0.3s ease;
 }
 
 .navbar .nav-link.active {
-    color: #5937E0 !important;  /* Use your brand color */
-    border-bottom: 2px solid #5937E0; /* Optional underline effect */
+    color: #375FE0 !important;  /* Use your brand color */
+    border-bottom: 2px solid #375FE0; /* Optional underline effect */
     font-weight: bold;
 }
 
 .nav-link:hover{
-    color: #5937E0;
+    color: #375FE0;
 }
 

@@ -1,6 +1,10 @@
+body{
+  background-color: #faf8f8f1;
+}
+
 /* Vehicle Details Page Styles */
 .vehicle-details-section {
-    background-color: #f8f9fa;
+    background-color: rgba(255, 255, 255, 0.884);
     padding: 40px 0;
     transition: all 0.3s ease;
     max-width: 100%;
@@ -13,14 +17,8 @@
     object-fit: contain;
     border-radius: 10px;
     margin-bottom: 20px;
-    background-color: #fff;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: zoom-in;
-}
-
-#mainImage:hover {
-    transform: scale(1.02);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Thumbnail Styles */
@@ -30,19 +28,19 @@
     object-fit: contain;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
-    background-color: #fff;
+    border: 1px solid rgb(190, 186, 186);
+    background-color: rgba(255, 255, 255, 0.884);
     border-radius: 8px;
 }
 
 .thumb-img:hover {
-    border-color: #5937E0;
+    border-color: #375FE0;
     transform: translateY(-2px);
     box-shadow: 0 3px 10px rgba(89, 55, 224, 0.2);
 }
 
 .thumb-img.active {
-    border-color: #5937E0;
+    border-color: #375FE0;
     transform: translateY(-2px);
     box-shadow: 0 3px 10px rgba(89, 55, 224, 0.2);
 }
@@ -59,7 +57,7 @@
 .vehicle-price {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #5937E0;
+    color: #375FE0;
     margin-bottom: 20px;
     transition: transform 0.3s ease;
 }
@@ -75,16 +73,10 @@
 
 /* Technical Specifications Card Styles */
 .card {
-    border: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    background: white;
+    background-color: rgb(248, 248, 248);
     border-radius: 12px;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(89, 55, 224, 0.15);
+    border: 1px solid #c9c6c6;
 }
 
 .card-body {
@@ -100,7 +92,7 @@
 }
 
 .card:hover .card-title {
-    color: #5937E0;
+    color: #375FE0;
 }
 
 .card-text {
@@ -111,19 +103,22 @@
 
 /* Book Now Button */
 .btn-primary {
-    background-color: #5937E0;
-    border-color: #5937E0;
+    background-color: #375FE0;
+    border-color: #375FE0;
     padding: 12px 35px;
     font-weight: 600;
     transition: all 0.3s ease;
     border-radius: 8px;
     position: relative;
     overflow: hidden;
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
 }
 
 .btn-primary:hover {
-    background-color: #4925c4;
-    border-color: #4925c4;
+    background-color: #4a69cf;
+    border-color: #375FE0;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(89, 55, 224, 0.3);
 }
@@ -158,7 +153,7 @@
     width: 50px;
     height: 50px;
     border: 3px solid #f3f3f3;
-    border-top: 3px solid #5937E0;
+    border-top: 3px solid #375FE0;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -213,7 +208,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #5937E0;
+    background: #375FE0;
     color: white;
     width: 40px;
     height: 40px;
@@ -248,41 +243,46 @@
     font-weight: 700;
     color: #333;
     margin-bottom: 30px;
+    text-align: center;
 }
 
 /* Uniform Card and Image Styles for Other Vehicles */
 .vehicles-section .vehicle-card {
-    background-color: #f8f9fa;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-    margin-bottom: 30px;
-    height: 400px;
-    width: 100%;
-    max-width: 100%;
+    background-color: #faf8f8f1;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0f3;
+    margin-bottom: 25px;
+    height: 330px; /* Reduced from 400px */
+    flex: 0 0 calc(25% - 15px);
+    min-width: 250px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 24px 18px 18px 18px;
+    padding: 0 !important; /* Force no padding */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .vehicles-section .vehicle-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .vehicles-section .vehicle-image {
-    width: 100%;
-    max-width: 260px;
-    height: 200px;
-    object-fit: contain;
+    width: 100% !important;
+    max-width: none !important;
+    height: 180px;
+    object-fit: cover;
     object-position: center;
-    border-radius: 10px;
-    margin-bottom: 18px;
+    border-radius: 12px 12px 0 0;
+    margin: 0 !important;
+    padding: 0 !important;
     display: block;
-    /* box-shadow: 0 2px 8px rgba(0,0,0,0.04); */
-    /* background-color: #fff; */
+    position: relative;
+    left: 0;
+    right: 0;
 }
 
 .vehicles-section .vehicle-details {
@@ -291,18 +291,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding: 12px 15px; 
+    min-height: 0;
 }
 
 .vehicles-section .vehicle-brand {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    color: #333;
 }
 
 .vehicles-section .vehicle-price {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #5937E0;
+    color: #375FE0;
+    margin-bottom: 15px;
 }
 
 .vehicles-section .vehicle-price span {
@@ -319,20 +323,23 @@
 }
 
 .vehicles-section .spec-item {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #666;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .vehicles-section .spec-item i {
-    color: #5937E0;
+    color: #375FE0;
+    flex-shrink: 0;
 }
 
 .vehicles-section .view-details-btn {
     width: 100%;
-    background-color: #5937E0;
+    background-color: #375FE0;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -343,66 +350,532 @@
 }
 
 .vehicles-section .view-details-btn:hover {
-    background-color: #4925c4;
+    background-color: #2c4bc6;
+    transform: translateY(-1px);
 }
 
-@media (max-width: 991px) {
-  .vehicles-section .vehicle-card {
-    max-width: 100%;
-    height: 350px;
-    padding: 18px 10px 10px 10px;
-  }
-  .vehicles-section .vehicle-image {
-    max-width: 200px;
-    height: 120px;
-  }
+/* ===== ENHANCED MOBILE RESPONSIVE STYLES ===== */
+
+/* Large tablets and small desktops (992px - 1199px) */
+@media (max-width: 1199px) {
+    .vehicle-details-section {
+        padding: 30px 0;
+    }
+    
+    .btn-primary {
+        margin-left: 0;
+        width: 100%;
+        max-width: 300px;
+    }
 }
 
-@media (max-width: 767px) {
-  .vehicles-section .vehicle-card {
-    max-width: 100%;
-    height: 320px;
-    padding: 12px 5px 5px 5px;
-  }
-  .vehicles-section .vehicle-image {
-    max-width: 150px;
-    height: 90px;
-  }
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
+/* Tablets (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+    .vehicle-details-section {
+        padding: 25px 0;
+    }
+    
+    .vehicle-brand {
+        font-size: 1.8rem;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    
+    .vehicle-price {
+        font-size: 1.4rem;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    
     #mainImage {
-        height: 300px;
+        height: 320px;
+        margin-bottom: 25px;
     }
-
+    
     .thumb-img {
-        height: 80px;
+        height: 85px;
+    }
+    
+    /* Technical specifications adjustments - Keep 2 columns */
+    .card-body {
+        padding: 1.2rem;
+    }
+    
+    .card-title {
+        font-size: 0.95rem;
+    }
+    
+    .card-text {
+        font-size: 0.85rem;
+    }
+    .row-cols-md-3 > * {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+    
+    /* Technical Specifications heading */
+    .mb-4.mt-2 h2 {
+        margin-top: 0 !important;
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    /* Center the Book Now button */
+    .btn-primary {
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto 0 auto;
+        padding: 14px;
+        font-size: 1.05rem;
+        display: block;
+    }
+    
+    /* Other vehicles section */
+    .vehicles-section .row > div {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 15px;
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: center;
+    }
+    .vehicles-section .row {
+        margin: 0 -15px;
+    }
+    .vehicles-section .vehicle-card {
+        max-width: 100%;
+        height: 380px;
+        padding: 20px 15px;
+    }
+    
+    .vehicles-section .vehicle-image {
+        max-width: 220px;
+        height: 160px;
+    }
+    
+    .vehicles-section .vehicle-details {
+        padding: 15px;
     }
 
+    .vehicles-section .vehicle-brand {
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+
+    .vehicles-section .vehicle-price {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+
+    .vehicles-section .specs-row {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .vehicles-section .spec-item {
+        font-size: 0.8rem;
+    }
+
+    .vehicles-section .view-details-btn {
+        padding: 10px 0;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile devices (576px - 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+    .vehicle-details-section {
+        padding: 25px 0;
+    }
+    
+    .container {
+        padding: 0 20px;
+    }
+    
+    .vehicle-brand {
+        font-size: 1.6rem;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+    
+    .vehicle-price {
+        font-size: 1.3rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    #mainImage {
+        height: 250px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+    
+    .thumb-img {
+        height: 75px;
+        border-radius: 6px;
+    }
+    
+    /* Keep Technical specifications in 2 columns */
+    .row-cols-md-3 > * {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+    /* .row-cols-md-3 {
+        --bs-columns: 2;
+    } */
+    
+    .card {
+        margin-bottom: 12px;
+    }
+    
+    .card-body {
+        padding: 1rem
+    }
+    
+    .card-title {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+    
+    .card-text {
+        font-size: 0.8rem;
+    }
+    
+    .fa-2x {
+        font-size: 1.6em !important;
+    }
+    
+    /* Technical Specifications heading */
+    .mb-4.mt-2 h2 {
+        font-size: 1.3rem;
+        margin-top: 0 !important;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    
+    /* Center the Book Now button */
+    .btn-primary {
+        width: 100%;
+        max-width: 250px;
+        margin: 15px auto 0 auto;
+        padding: 12px;
+        font-size: 1rem;
+        display: block;
+    }
+    
+    /* Modal adjustments */
+    .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+    
+    .form-select, 
+    .form-control {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+    
+    /* Other vehicles section - Keep specs in one row */
+    .vehicles-section {
+        padding: 40px 0;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+    }
+
+    /* Smaller cards only */
+    .vehicles-section .row {
+        margin: 0 -10px;
+        justify-content: center;
+    }
+
+    .vehicles-section .row > div {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 10px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .vehicles-section .vehicle-card {
+        min-height: 280px;
+        max-width: 280px;
+        width: 100%;
+    }
+    
+    .vehicles-section .vehicle-image {
+        max-width: 180px;
+        height: 130px;
+        margin-bottom: 15px;
+    }
+    
+
+    .vehicles-section .vehicle-brand {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    
+    .vehicles-section .vehicle-price {
+        font-size: 1rem;
+    }
+    
+    /* Keep specs in one row - adjust font size and spacing */
+    .vehicles-section .specs-row {
+        margin: 10px 0;
+        gap: 5px;
+        flex-wrap: nowrap;
+    }
+    
+    .vehicles-section .spec-item {
+        font-size: 0.75rem;
+        /* flex: 1; */
+        text-align: center;
+        flex-direction: row;
+    }
+    
+    .vehicles-section .view-details-btn {
+        padding: 8px 0;
+        font-size: 0.9rem;
+    }
+    
+    /* View All link */
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .d-flex.justify-content-between a {
+        font-size: 0.9rem;
+    }
+}
+
+/* Small mobile devices (up to 575px) */
+@media (max-width: 575px) {
+    .vehicle-details-section {
+        padding: 15px 0;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .vehicle-brand {
+        font-size: 1.4rem;
+        text-align: center;
+        line-height: 1.3;
+        margin-bottom: 10px;
+    }
+    
+    .vehicle-price {
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 18px;
+    }
+    
+    #mainImage {
+        height: 240px;
+        margin-bottom: 18px;
+    }
+    
+    .thumb-img {
+        height: 65px;
+    }
+    
+    /* Keep technical specs in 2 columns even on small screens */
+    
+    .row-cols-md-3 > * {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+    .row-cols-md-3 {
+        --bs-columns: 2;
+    }
+    
+    .card {
+        margin-bottom: 10px;
+    }
+    
+    .card-body {
+        padding: 0.8rem;
+    }
+    
+    .card-title {
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+    
+    .card-text {
+        font-size: 0.75rem;
+    }
+
+    .fa-2x {
+        font-size: 1.4em !important;
+    }
+    
+    .mb-4.mt-2 h2 {
+        font-size: 1.1rem;
+        margin-top: 0 !important;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    /* Center the Book Now button */
+    .btn-primary {
+        width: 100%;
+        max-width: 200px;
+        margin: 10px auto 0 auto;
+        padding: 10px;
+        font-size: 0.9rem;
+        display: block;
+    }
+    
+    /* Other vehicles - Keep specs in one row */
+    .vehicles-section .row > div {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .vehicles-section .vehicle-card {
+        height: 320px;
+        padding: 12px 8px;
+    }
+    
+    .vehicles-section .vehicle-image {
+        max-width: 150px;
+        height: 110px;
+        margin-bottom: 12px;
+    }
+    
+    .vehicles-section .vehicle-brand {
+        font-size: 1rem;
+    }
+    
+    .vehicles-section .vehicle-price {
+        font-size: 0.9rem;
+    }
+    
+    /* Keep specs in one row with smaller font */
+    .vehicles-section .specs-row {
+        gap: 3px;
+        flex-wrap: nowrap;
+    }
+    
+    .vehicles-section .spec-item {
+        font-size: 0.7rem;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    /* Scroll to top button adjustment */
+    .scroll-top {
+        bottom: 15px;
+        right: 15px;
+        width: 35px;
+        height: 35px;
+    }
+    
+    /* Modal further adjustments */
+    .modal-dialog {
+        margin: 5px;
+        max-width: calc(100% - 10px);
+    }
+    
+    .modal-header {
+        padding: 0.8rem;
+    }
+    
+    .modal-title {
+        font-size: 1.1rem;
+    }
+    
+    .modal-body {
+        padding: 0.8rem;
+    }
+    
+    .modal-footer {
+        padding: 0.8rem;
+        gap: 10px;
+    }
+    
+    .modal-footer .btn {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}
+
+/* Extra small devices (up to 400px) */
+@media (max-width: 400px) {
     .vehicle-brand {
         font-size: 1.5rem;
     }
-
+    
     .vehicle-price {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
     }
-}
-
-@media (max-width: 576px) {
+    
     #mainImage {
-        height: 250px;
+        height: 200px;
     }
-
+    
     .thumb-img {
-        height: 70px;
+        height: 50px;
     }
-
-    .vehicle-brand {
-        font-size: 1.3rem;
+    
+    /* Keep specs in one row even on very small screens */
+    .vehicles-section .vehicle-card {
+        height: 300px;
+        padding: 10px 5px;
     }
-
-    .vehicle-price {
-        font-size: 1.1rem;
+    
+    .vehicles-section .vehicle-image {
+        max-width: 130px;
+        height: 100px;
+    }
+    
+    .vehicles-section .specs-row {
+        gap: 2px;
+        flex-wrap: nowrap;
+    }
+    
+    .vehicles-section .spec-item {
+        font-size: 0.65rem;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .card-body {
+        padding: 0.5rem;
+    }
+    
+    /* Center the Book Now button */
+    .btn-primary {
+        width: 100%;
+        max-width: 180px;
+        margin: 8px auto 0 auto;
+        padding: 8px;
+        font-size: 0.85rem;
+        display: block;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
     }
 }

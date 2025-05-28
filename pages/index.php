@@ -189,20 +189,24 @@ $vehicles = $stmt->fetchAll();
     <!-- Vehicle Selection Section -->
     <section class="container py-5 vehicles-section">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="section-title">Choose The Three Wheel That Suits You</h2>
+            <h2 class="section-title">Select Your Ride</h2>
             <a href="vehicles.php" class="text-decoration-none">View All <i class="fas fa-arrow-right ms-2"></i></a>
         </div>
         <div class="row">
             <?php foreach ($vehicles as $vehicle): ?>
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="vehicle-card" data-aos="fade-up" data-aos-delay="100">
-                    <img src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>" class="vehicle-image">
-                    <div class="vehicle-details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand']); ?></h5>
+            <div class="col-md-5 col-lg-4 mb-4">
+                <div class="card vehicle-card" data-aos="fade-up" data-aos-delay="100">
+                    <img src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" 
+                        class="card-img-top vehicle-image" 
+                        alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>">
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title vehicle-brand mb-0"><?php echo htmlspecialchars($vehicle['brand']); ?></h5>
                             <div class="vehicle-price">LKR <?php echo number_format($vehicle['price_per_day'], 2); ?> <span>/day</span></div>
                         </div>
-                        <div class="specs-row">
+                        
+                        <div class="specs-row mb-3">
                             <div class="spec-item">
                                 <i class="fas fa-cog"></i> <?php echo htmlspecialchars($vehicle['gear_box']); ?>
                             </div>
@@ -213,7 +217,10 @@ $vehicles = $stmt->fetchAll();
                                 <i class="fas fa-users"></i> <?php echo htmlspecialchars($vehicle['capacity']); ?> seats
                             </div>
                         </div>
-                        <button class="view-details-btn" onclick="location.href='details.php?id=<?php echo $vehicle['id']; ?>'">View Details</button>
+                        
+                        <a href="details.php?id=<?php echo $vehicle['id']; ?>" class="btn btn-primary w-100 view-details-btn">
+                            View Details
+                        </a>
                     </div>
                 </div>
             </div>
@@ -332,7 +339,7 @@ $vehicles = $stmt->fetchAll();
                     </div>
                 </div>
                 <div class="col-lg-6 cta-image" data-aos="fade-left">
-                    <img src="../assets/images/home/ColorfulTukTuk.png" alt="Colorful Tuk Tuk" class="img-fluid">
+                    <img src="../assets/images/home/transport.png" alt="Colorful Tuk Tuk" class="img-fluid">
                 </div>
             </div>
         </div>

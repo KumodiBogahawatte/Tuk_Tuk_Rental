@@ -1,8 +1,11 @@
+body{
+  background-color: #faf8f8f1;
+}
 /* Custom styles for alignment improvements */
 .hero-section {
     padding: 60px 0;
-    background-color: #5937E0;
-    background-image: url('../images/home/driving-highway.png');
+    background-color: #1066a0;
+    background-image: url('../images/home/driving-highway.jpg');
     background-repeat:no-repeat;  
     background-size: cover;
     width: 100% !important;
@@ -18,7 +21,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #5937E099;
+    background-color: #302f3699;
     z-index: 1;
 }
 .hero-section .container {
@@ -43,7 +46,7 @@
     z-index: 2;
   }
   .hero-section a {
-    background-color: #FF9E0C !important;
+    background-color: #d67921;
     color: #fff;
     border: none;
     padding: 5px 25px;
@@ -86,14 +89,14 @@
   }
   
   .booking-btn {
-    background-color: #FF9E0C !important;
+    background-color: #d67921;
     color: #fff;
     border: none;
     transition: all 0.3s ease;
   }
   
   .booking-btn:hover {
-    background-color: #e08700 !important;
+    background-color: #db914b !important;
     color: #fff;
   }
 .form-label-title {
@@ -128,7 +131,7 @@
 
 .testimonials-section {
     padding: 30px 0;
-    background-color: #5937E0;
+    background-color: #375FE0;
     width: 100% !important;
     border-radius: 0px !important;
     position: relative;
@@ -145,7 +148,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(245, 240, 240, 0.95);
+    background-color: rgba(215, 228, 238, 0.95);
     z-index: 1;
 }
 
@@ -191,7 +194,7 @@
 .testimonial-image {
     margin-right: 0;
     font-size: 1.5rem;
-    color: #FF9E0C;
+    color: #375FE0;
     flex-shrink: 0;
 }
 .testimonial-content h4 {
@@ -206,127 +209,145 @@
     margin-top: 10px;
     line-height: 1.5;
 }
-  
-  .vehicle-card {
-    background-color: #f8f9fa;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-    margin-bottom: 30px;
-    height: 400px;
-    width: 100%;
-    max-width: 100%;
+
+/*Vehicle Card Styles for Bootstrap Cards */
+.vehicle-card {
+    background-color: #faf8f8f1;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0f3;
+    margin-bottom: 25px;
+    height: 320px; /* Reduced from 400px */
+    flex: 0 0 calc(25% - 15px);
+    min-width: 250px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 24px 18px 18px 18px;
+    padding: 0 !important; /* Force no padding */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     overflow: hidden;
-    transition: transform 0.3s ease;
-  }
-
-  .specs-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 15px 0;
-    flex-wrap: nowrap;
-    gap: 10px;
-    width: 100%;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.spec-item {
-    font-size: 0.9rem;
-    color: #666;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    white-space: nowrap;
+.vehicle-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
-  
-  .vehicle-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .vehicle-image {
-    width: 100%;
-    max-width: 260px;
-    height: 200px;
+
+.vehicle-card .card-img-top {
+    height: 180px;
+    width: 100% !important;
     object-fit: cover;
     object-position: center;
-    border-radius: 10px;
-    margin-bottom: 18px;
+    border-radius: 12px 12px 0 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    margin: 0 !important;
+    padding: 0 !important;
     display: block;
-    /*box-shadow: 0 2px 8px rgba(0,0,0,0.04);*/
-  }
-  
-  .vehicle-details {
+    position: relative;
+    left: 0;
+    right: 0;
+}
+
+.vehicle-card .vehicle-image {
+    width: 100% !important;
+    max-width: none !important;
+    height: 180px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px 12px 0 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+    position: relative;
+    left: 0;
+    right: 0;
+}
+
+.vehicle-card .card-body {
     width: 100%;
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-  
-  .vehicle-brand {
-    font-size: 1.2rem;
+    padding: 12px 15px; 
+    min-height: 0; 
+}
+
+.vehicle-card .card-title {
+    font-size: 1.1rem; /* Slightly smaller */
     font-weight: 600;
-    margin-bottom: 10px;
-  }
-  
-  .vehicle-price {
-    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px; /* Reduced margin */
+    line-height: 1.2;
+}
+
+.vehicle-price {
+    font-size: 1rem; /* Slightly smaller */
     font-weight: 600;
-    color: #5937E0;
-  }
-  
-  .vehicle-price span {
-    font-size: 0.9rem;
+    color: #375FE0;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.vehicle-price span {
+    font-size: 0.85rem;
     color: #666;
-  }
-  
-  .specs-row {
+    font-weight: 400;
+}
+
+.specs-row {
     display: flex;
     justify-content: space-between;
-    margin: 15px 0;
-    width: 100%;
-    flex-wrap: nowrap !important;
+    margin: 10px 0; /* Reduced margin */
+    flex-wrap: wrap;
     gap: 8px;
-  }
-  
-  .spec-item {
-    font-size: 0.85rem;
+}
+
+.spec-item {
+    font-size: 0.85rem; /* Slightly smaller */
     color: #666;
     display: flex;
     align-items: center;
     gap: 4px;
-    white-space: nowrap;
-    flex: 1;
-  }
-  
-  .spec-item i {
-    color: #5937E0;
-  }
-  
-  .view-details-btn {
+    line-height: 1.2;
+}
+
+.spec-item i {
+    color: #375FE0;
+    font-size: 0.75rem;
+}
+
+.vehicle-card .card-text {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    flex-grow: 1;
+    margin-bottom: 10px; /* Reduced margin */
+}
+
+.view-details-btn {
     width: 100%;
-    background-color: #5937E0;
+    background-color: #375FE0;
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 10px 0;
+    padding: 8px 0; /* Reduced padding */
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: auto;
-  }
-  
-  .view-details-btn:hover {
-    background-color: #4925c4;
-  }
+    font-size: 0.9rem;
+    font-weight: 500;
+}
 
-  .view-details-btn a{
-    color: #fff;
-    text-decoration: none;
-  }
-  
+.view-details-btn:hover {
+    background-color: #2c4bcc !important;
+    border-color: #2c4bcc !important;
+    transform: translateY(-1px);
+}
+
+.view-details-btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(55, 95, 224, 0.25);
+}
   .stat-card {
     display: flex;
     align-items: center;
@@ -431,13 +452,16 @@
 
 
 .cta-section {
-    background-color: #5937E0;
+    background-color: #375FE0;
     background-repeat: no-repeat;
     background-size: cover;
     width: 100% !important;
     position: relative;
     overflow: hidden;
-    margin: 40px auto;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0 !important;
     padding: 60px 0;
 }
 
@@ -448,13 +472,18 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(245, 240, 240, 0.95);
+    background-color: rgba(215, 228, 238, 0.95);
     z-index: 1;
 } 
 .cta-section .container {
     position: relative;
     z-index: 2;
 }
+.cta-section .container:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
   .cta-content {
     flex: 1;
     padding-right: 30px;
@@ -491,7 +520,7 @@
   }
   
   .cta-primary {
-    background-color: #FF9E0C;
+    background-color: #375FE0;
     color: #fff;
   }
   
@@ -508,7 +537,7 @@
   
 /* Stats section styles - Updated horizontal design */
 .stats-section {
-    background-color: #5937E0;
+    background-color: #375FE0;
     padding: 80px 30px;
     width: 100% !important;
     position: relative;
@@ -527,7 +556,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color:rgba(245, 240, 240, 0.95);
+    background-color:rgba(215, 228, 238, 0.95);
     
 }
 
@@ -559,7 +588,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1000px;
+    max-width: 100%;
     margin: 0 auto;
     gap: 70px;
 }
@@ -576,7 +605,7 @@
 .stat-icon {
     width: 50px;
     height: 50px;
-    background-color: #dcdce7;
+    background-color: #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -586,21 +615,21 @@
 
 .stat-icon i {
     font-size: 24px;
-    color: #5937E0;
+    color: #375FE0;
 }
 
 /* Text content */
 .stat-content h3 {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #5937E0;
+    color: #375FE0;
     margin: 0;
     line-height: 1;
 }
 
 .stat-content p {
     font-size: 0.95rem;
-    color: #735ec5;
+    color: #4e6cce;
     margin: 5px 0 0 0;
     font-weight: 500;
 }
@@ -662,105 +691,204 @@
   }
 }
 
+/* Fix for mobile screens - replace your existing @media (max-width: 767px) hero-image styles */
 @media (max-width: 767px) {
   .hero-section {
     background-image: none;
   }
+  
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: -500px;
+    z-index: 0; /* Changed from 1 to 0 to stay behind content */
+    pointer-events: none; /* This prevents the image from blocking clicks */
+  }
+  
+  .hero-image img {
+    opacity: 0.1;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    right: -20%;
+    top: 0;
+    object-fit: contain;
+    pointer-events: none; /* This also prevents the image from blocking clicks */
+  }
+
+  .hero-section h1,
+  .hero-section p,
+  .hero-section a {
+    opacity: 1 !important;
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 3; /* Ensure content is above everything */
+  }
+  
+  .booking-form {
+    margin-left: 0;
+    position: relative;
+    z-index: 3; /* Increased to ensure it's clickable */
+    background-color: #fff;
+    opacity: 1;
+  }
+
+  /* Rest of your existing mobile styles... */
   .vehicle-card {
     max-width: 100%;
     height: auto;
     min-height: 400px;
     padding: 18px;
   }
+  
   .vehicle-image {
     max-width: 150px;
     height: 110px;
   }
-  .hero-image {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        top: -500px;
-        z-index: 1;
+
+  .specs-row {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+  
+  .spec-item {
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  
+  .booking-form p{
+    color: #000;
+  }
+}
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .vehicle-card {
+        height: 300px;
+        min-height: auto;
+        padding: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
     
-    .hero-image img {
-        opacity: 0.1;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        right: -20%;
-        top: 0;
-        object-fit: contain;
+    .vehicle-card .card-img-top,
+    .vehicle-card .vehicle-image {
+        height: 160px;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        border-radius: 12px 12px 0 0;
     }
+    
+    .vehicle-card .card-body {
+        padding: 10px 12px;
+    }
+}
 
-    .hero-section h1,
-    .hero-section p,
-    .hero-section a {
-        opacity: 1 !important;
-        color: #fff !important;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+@media (max-width: 768px) {
+    .vehicle-card {
+        height: auto;
+        min-height: 280px;
+        max-width: 100%;
+        margin-bottom: 20px;
+        padding: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
-    .booking-form {
-        margin-left: 0;
-        position: relative;
-        z-index: 2;
-        background-color: #fff;
-        opacity: 1;
+    
+    .vehicle-card .card-img-top,
+    .vehicle-card .vehicle-image {
+        height: 140px;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        border-radius: 12px 12px 0 0;
     }
-
+    
     .specs-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
         justify-content: space-between;
-        flex-wrap: nowrap;
-        width: 100%;
     }
     
     .spec-item {
-        font-size: 0.9rem;
-        white-space: nowrap;
+        font-size: 0.8rem;
+        flex-basis: calc(50% - 3px);
+        margin-bottom: 4px;
     }
-    .booking-form p{
-      color: #000;
+    
+    .vehicle-card .card-body {
+        padding: 10px 12px;
+    }
+    
+    .vehicle-card .card-title {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+    
+    .vehicle-price {
+        font-size: 0.95rem;
     }
 }
-/*@media (max-width: 414px) {*/
-/*    .vehicle-card {*/
-/*        padding: 15px 10px;*/
-/*    }*/
+
+@media (max-width: 576px) {
+    .vehicle-card {
+        min-height: 260px;
+        margin-bottom: 15px;
+        padding: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
     
-/*    .specs-row {*/
-/*        display: flex;*/
-/*        justify-content: space-between;*/
-/*        gap: 1px;*/
-/*        padding: 0;*/
-/*        width: 100%;*/
-/*        flex-wrap: nowrap !important;*/
-/*        min-width: 0;*/
-/*    }*/
-        
-/*    .spec-item {*/
-/*        font-size: 0.6rem;*/
-/*        gap: 1px;*/
-/*        flex-shrink: 1;*/
-/*        flex-basis: 0;*/
-/*        min-width: 0;*/
-/*        display: flex;*/
-/*        align-items: center;*/
-/*        white-space: nowrap !important;*/
-/*        overflow: hidden;*/
-/*        text-overflow: ellipsis;*/
-/*    }*/
+    .vehicle-card .card-img-top,
+    .vehicle-card .vehicle-image {
+        height: 120px;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        border-radius: 12px 12px 0 0;
+    }
     
-/*    .spec-item i {*/
-/*        font-size: 0.7rem;*/
-/*        min-width: auto;*/
-/*        margin-right: 1px;*/
-/*    }*/
+    .vehicle-card .card-body {
+        padding: 8px 10px;
+    }
     
-/*    .vehicle-details {*/
-/*        width: 100%;*/
-/*        padding: 0 5px;*/
-/*    }*/
-/*}*/
+    .specs-row {
+        margin: 8px 0;
+        gap: 4px;
+    }
+    
+    .spec-item {
+        font-size: 0.75rem;
+        gap: 3px;
+    }
+    
+    .spec-item i {
+        font-size: 0.7rem;
+    }
+    
+    .view-details-btn {
+        padding: 6px 0;
+        font-size: 0.85rem;
+    }
+    
+    .vehicle-card .card-title {
+        font-size: 0.95rem;
+    }
+    
+    .vehicle-price {
+        font-size: 0.9rem;
+    }
+    
+    .vehicle-price span {
+        font-size: 0.8rem;
+    }
+}
 

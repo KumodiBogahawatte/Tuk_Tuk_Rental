@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include '../includes/navbar.php'; ?>
     <section class="container my-5">
       <div class="card shadow">
-        <div class="card-header text-white" style="background-color:#5937E0;">
+        <div class="card-header text-white" style="background-color:#375FE0;">
           <h4 class="mb-0">Your Reservation Details</h4>
         </div>
         <div class="card-body">

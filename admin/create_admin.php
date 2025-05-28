@@ -20,5 +20,5 @@ $stmt->execute([$username, $password, $email]);
 echo "Admin user created successfully!<br>";
 echo "Username: admin<br>";
 echo "Password: admin123<br>";
-echo "<a href='login.php'>Go to login page</a>";
+echo "<a href='index.php'>Go to login page</a>";
 ?> 

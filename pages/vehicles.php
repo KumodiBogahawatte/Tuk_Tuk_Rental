@@ -64,10 +64,10 @@ $vehicles = $stmt->fetchAll();
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" data-aos="fade-down" data-aos-delay="100">
             <?php foreach ($vehicles as $vehicle): ?>
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="vehicle-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="vehicle-card">
                     <img src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>" class="vehicle-image">
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">

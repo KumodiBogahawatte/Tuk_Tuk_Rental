@@ -55,20 +55,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
   <body>
     <?php include '../includes/navbar.php'; ?>
     <!--Hero Section-->
+    <div class="text-center">
+        <h1 class="fw-bold" style="color: black;">Contact Us</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none" style="color:gray;">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page" style="color:#375FE0;font-weight: 500;">Contact Us</li>
+            </ol>
+        </nav>
+    </div>
+    <br>
     <section class="container-fluid py-5 hero-section">
         <div class="container">
-            <div class="text-center">
-                <h1 class="fw-bold">Contact Us</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none" style="color: gray;">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" style="color: #5937E0;font-weight: 500;">Contact Us</li>
-                    </ol>
-                </nav>
-            </div>
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="booking-form" data-aos="fade-right">
+                <div class="col-lg-5">
+                    <div class="contact-form" data-aos="fade-right">
                         <h4 class="mb-4">Drop a message</h4>
                         <?php if (isset($success_message)): ?>
                             <div class="alert alert-success"><?php echo $success_message; ?></div>
@@ -93,9 +94,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </form>
                     </div>
                 </div>
-                <div class="contact-image col-lg-6 mb-4 mb-lg-0" data-aos="fade-left">
+                <!-- <div class="contact-image col-lg-6 mb-4 mb-lg-0" data-aos="fade-left">
                     <img src="../assets/images/details/tuktuk.png" alt="tuktuk" class="mb-3" width="100%">
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -134,7 +135,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     </section>
     
     <section class="blog-section">
-        <h2>Latest blog posts & news</h2>
+        <h2>LATEST BLOG POSTS AND NEWS</h2>
         <div class="blog-row">
             <div class="blog-card" style="width: 18rem;">
                 <img src="../assets/images/contact/blogImg-1.png" class="card-img-top" alt="blogImg-1">
@@ -156,6 +157,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <img src="../assets/images/contact/blogImg-3.png" class="card-img-top" alt="blogImg-3">
                 <div class="card-body">
                     <h6>Enjoy Speed, Choice & Total Control</h6>
+                    <p class="card-text">News / 12April 2024</p>
+                </div>
+            </div>
+
+            <div class="blog-card" style="width: 18rem;">
+                <img src="../assets/images/contact/blogImg-4.png" class="card-img-top" alt="blogImg-3">
+                <div class="card-body">
+                    <h6>Explore More with the Right Plan</h6>
                     <p class="card-text">News / 12April 2024</p>
                 </div>
             </div>
