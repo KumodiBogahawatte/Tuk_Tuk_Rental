@@ -1,50 +1,179 @@
-/* Initial navbar style */
 .navbar {
-    height: 80px;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-    background-color: transparent;
-    background: linear-gradient(
-        to bottom,
-        rgba(166, 205, 236, 0.95),
-        #faf8f8f1
-    );
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1030 !important;
+    width: 100% !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.08),
+        0 2px 4px rgba(0, 0, 0, 0.03),
+        0 8px 20px rgba(89, 55, 224, 0.04);
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
 }
-/* Shrink effect when scrolled */
+
+/* Even more compact when scrolled */
 .navbar.scrolled {
-    height: 60px;
-    /* display: flex;
-    align-items: center; */
-    background: linear-gradient(
-        to bottom,
-        rgba(166, 205, 236, 0.95),
-        #faf8f8f1
-    );
-    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
-    padding-top: 0.4rem !important;
-    padding-bottom: 0.4rem !important;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.05),
+        0 12px 32px rgba(89, 55, 224, 0.08);
+    padding-top: 0.125rem !important;
+    padding-bottom: 0.125rem !important;
 }
 
+/* Smaller logo for reduced height */
+.navbar-brand img {
+    height: 70px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
 
-/* Adjust logo height on scroll */
 .navbar.scrolled .navbar-brand img {
-    height: 75px !important;
-    transition: height 0.3s ease;
+    height: 50px !important;
+    transform: scale(0.9);
 }
 
+/* Compact navigation links */
+.navbar .nav-link {
+    color: #2c3e50 !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    text-shadow: none;
+    font-size: 1rem;
+}
+
+/* Hover effects remain the same */
+.navbar .nav-link:hover {
+    color: #375FE0 !important;
+    background: rgba(55, 95, 224, 0.08);
+    transform: translateY(-1px);
+}
+
+/* Active state */
 .navbar .nav-link.active {
-    color: #375FE0 !important;  /* Use your brand color */
-    border-bottom: 2px solid #375FE0; /* Optional underline effect */
-    font-weight: bold;
+    color: #375FE0 !important;
+    background: rgba(55, 95, 224, 0.1);
+    border-bottom: 2px solid #375FE0;
+    font-weight: 700;
 }
 
-.nav-link:hover{
-    color: #375FE0;
+/* Compact phone info section */
+.navbar .text-muted {
+    color: #6c757d !important;
+    font-size: 0.75rem;
 }
 
+.navbar .text-dark {
+    color: #2c3e50 !important;
+    font-size: 0.85rem;
+}
+
+/* Smaller phone icon container */
+.navbar .bg-opacity-10 {
+    background: rgba(55, 95, 224, 0.08) !important;
+    border: 1px solid rgba(55, 95, 224, 0.1);
+    transition: all 0.3s ease;
+    width: 55px !important;
+    height: 55px !important;
+}
+
+.navbar .bg-opacity-10 img {
+    height: 35px !important;
+}
+
+.navbar.scrolled .bg-opacity-10 {
+    background: rgba(55, 95, 224, 0.12) !important;
+    /* Even smaller when scrolled */
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.navbar.scrolled .bg-opacity-10 img {
+    height: 25px !important;
+}
+
+/* Compact mobile menu */
+.navbar-toggler {
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 6px;
+    padding: 0.375rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(55, 95, 224, 0.25);
+}
+
+/* Mobile menu adjustments */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(15px);
+        border-radius: 10px;
+        margin-top: 0.75rem;
+        padding: 0.75rem;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    }
+    
+    .navbar .nav-link {
+        color: #2c3e50 !important;
+        padding: 0.4rem 0.6rem !important;
+    }
+}
+
+/* Additional utility class for extra compact navbar */
+.navbar.ultra-compact {
+    padding-top: 0.125rem !important;
+    padding-bottom: 0.125rem !important;
+}
+
+.navbar.ultra-compact .navbar-brand img {
+    height: 40px !important;
+}
+
+.navbar.ultra-compact.scrolled .navbar-brand img {
+    height: 30px !important;
+}
+
+.navbar.ultra-compact .nav-link {
+    padding: 0.375rem 0.6rem !important;
+    font-size: 0.85rem;
+}
+
+/* Smooth entrance animation */
+.navbar {
+    animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Optional: Subtle shadow for better definition */
+.navbar.add-shadow {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}

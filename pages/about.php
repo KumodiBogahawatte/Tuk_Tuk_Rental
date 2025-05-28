@@ -130,7 +130,7 @@ $reviews = [
             <!-- Stats -->
             <div class="row text-center mb-5">
                 <?php foreach($stats as $key => $value): ?>
-                <div class="col-md-4 mb-4 mb-md-0" data-aos="zoom-in" data-aos-delay="100">
+                <div class="col-md-4 mb-4 mb-md-0" data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                     <div class="stats-number"><?php echo $value; ?></div>
                     <div class="stats-text">
                         <?php 
@@ -162,42 +162,42 @@ $reviews = [
                     <p class="text-muted mb-4">Lorem, ipsum dolor sit amet consectetur. Sed suscipit sit velit amet faucibus a porttitor semper hendrerit. Proin dui elit vehicula a.</p>
                     
                     <div class="d-flex mb-3">
-                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                             <i class="fas fa-check"></i>
                         </div>
                         <div>
-                            <h5 data-aos="fade-up" data-aos-delay="100">24/7 customer support</h5>
-                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Our team is available for immediate assistance at any time.</p>
+                            <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">24/7 customer support</h5>
+                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Our team is available for immediate assistance at any time.</p>
                         </div>
                     </div>
                     
                     <div class="d-flex mb-3">
-                        <div class="feature-icon me-3"data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon me-3"data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                             <i class="fas fa-car"></i>
                         </div>
                         <div>
-                            <h5 data-aos="fade-up" data-aos-delay="100">Multiple tuk booking possible</h5>
-                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Need more than one tuk? No problem, book as many as you need.</p>
+                            <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Multiple tuk booking possible</h5>
+                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Need more than one tuk? No problem, book as many as you need.</p>
                         </div>
                     </div>
                     
                     <div class="d-flex mb-3">
-                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div>
-                            <h5 data-aos="fade-up" data-aos-delay="100">Delivery, return and pickup</h5>
-                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">We offer convenient delivery and pickup services for your rental.</p>
+                            <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Delivery, return and pickup</h5>
+                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">We offer convenient delivery and pickup services for your rental.</p>
                         </div>
                     </div>
                     
                     <div class="d-flex">
-                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                             <i class="fas fa-shield-alt"></i>
                         </div>
                         <div>
-                            <h5 data-aos="fade-up" data-aos-delay="100">Security deposit guides</h5>
-                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Clear information about security deposits and how they work.</p>
+                            <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Security deposit guides</h5>
+                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Clear information about security deposits and how they work.</p>
                         </div>
                     </div>
                 </div>
@@ -290,7 +290,7 @@ $reviews = [
     <section class="py-5" style="background-color:rgba(215, 228, 238, 0.95);">
         <div class="container">
             <div class="p-5">
-                <div class="row align-items-center"  data-aos="zoom-in" data-aos-delay="100">
+                <div class="row align-items-center"  data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                     <div class="col-lg-8 mb-4 mb-lg-0">
                         <h2 class="mb-3" style="font-size: 60px;font-weight:bold;margin-left:20px;">Looking for a tuk?</h2>
                         <div class="d-flex align-items-center mb-3">
@@ -299,7 +299,7 @@ $reviews = [
                         <p class="mb-4" style="margin-left:20px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dignissimos.Expedita, libero dignissimos.</p>
                         <a href="../pages/index.php" class="btn btn-warning rounded-pill px-4 book-now-btn" style="background-color: #FF9E0C;margin-left:20px;">Book Now</a>
                     </div>
-                    <div class="col-lg-4"  data-aos="zoom-in" data-aos-delay="100">
+                    <div class="col-lg-4"  data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                         <img src="../assets/images/about/tuk.png" alt="Colorful Tuk Tuk Vehicle" class="img-fluid rounded">
                     </div>
                 </div>

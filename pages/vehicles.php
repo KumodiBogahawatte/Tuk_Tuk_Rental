@@ -64,7 +64,7 @@ $vehicles = $stmt->fetchAll();
             </div>
         </div>
 
-        <div class="row" data-aos="fade-down" data-aos-delay="100">
+        <div class="row" data-aos="fade-down" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
             <?php foreach ($vehicles as $vehicle): ?>
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="vehicle-card">

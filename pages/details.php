@@ -53,7 +53,7 @@ $other_vehicles = $stmt->fetchAll();
                 <p class="vehicle-price">LKR <?php echo number_format($vehicle['price_per_day'], 2); ?> <span>/day</span></p>
                 <div class="col-md-6 mb-4">
                     <!-- Main Image -->
-                    <img id="mainImage" src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>" class="mb-3" data-aos="zoom-in" data-aos-delay="100">
+                    <img id="mainImage" src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>" class="mb-3" data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
 
                     <!-- Thumbnail Images -->
                     <div class="row g-2">

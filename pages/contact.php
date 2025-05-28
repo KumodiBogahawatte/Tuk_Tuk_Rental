@@ -51,6 +51,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="../assets/js/index.js">
   </head>
   <body>
     <?php include '../includes/navbar.php'; ?>
@@ -64,12 +65,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             </ol>
         </nav>
     </div>
-    <br>
     <section class="container-fluid py-5 hero-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5">
-                    <div class="contact-form" data-aos="fade-right">
+                    <div class="contact-form" data-aos="fade-right" data-aos-mirror="true" data-aos-once="false">
                         <h4 class="mb-4">Drop a message</h4>
                         <?php if (isset($success_message)): ?>
                             <div class="alert alert-success"><?php echo $success_message; ?></div>
@@ -128,7 +128,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <i class="fas fa-clock"></i>
             <div class="contact-info-text">
                 <h6>Opening Hours</h6>
-                <p>Mon - Sun: 8am - 8pm</p>
+                <p>Monday - Sunday</p>
+                <p>8.00am - 8.00pm</p>
             </div>
             </div>
         </div>

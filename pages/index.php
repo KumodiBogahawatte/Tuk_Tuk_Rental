@@ -25,7 +25,6 @@ $vehicles = $stmt->fetchAll();
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
-    <link rel="stylesheet" href="../assets/css/index-fix.css">
   </head>
   <body>
     <?php include '../includes/navbar.php'; ?>
@@ -33,7 +32,8 @@ $vehicles = $stmt->fetchAll();
     <section class="container-fluid py-5 hero-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-mirror="true"
+     data-aos-once="false">
                     <h1 class="hero-title" style="font-size: 55px;">Experience the road like never before</h1>
                     <p class="hero-text">Discover exhilarating ride without hassle. <br>
                         Enjoy the city's greatest attractions at any time, quick and comfortable.</p>
@@ -105,7 +105,8 @@ $vehicles = $stmt->fetchAll();
     <section class="container py-5 features-section">
         <div class="row">
             <div class="col-md-4 mb-4">
-                <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="feature-card" data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                     <div class="feature-icon">
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
@@ -114,7 +115,8 @@ $vehicles = $stmt->fetchAll();
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="feature-card" data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                     <div class="feature-icon">
                         <i class="fas fa-couch"></i>
                     </div>
@@ -123,7 +125,8 @@ $vehicles = $stmt->fetchAll();
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="feature-card" data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                     <div class="feature-icon">
                         <i class="fas fa-piggy-bank"></i>
                     </div>
@@ -145,7 +148,8 @@ $vehicles = $stmt->fetchAll();
                     <img src="../assets/images/home/tuk-tuk-night.jpg" alt="Tuk Tuk at night" class="img-fluid rounded shadow">
                 </div>
                 <div class="col-lg-7">
-                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                         <div class="testimonial-image">
                             <i class="fas fa-star"></i>
                         </div>
@@ -154,7 +158,8 @@ $vehicles = $stmt->fetchAll();
                             <p>Mauris vitae dapibus ligula. Praesent aliquam et elit adipiscing. Mi elementum dictum felis.</p>
                         </div>
                     </div>
-                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                         <div class="testimonial-image">
                             <i class="fas fa-map"></i>
                         </div>
@@ -163,7 +168,8 @@ $vehicles = $stmt->fetchAll();
                             <p>Nullam at tincidunt enim. Duis viverra metus at dictum porttitor. Proin auctor dolor sodales.</p>
                         </div>
                     </div>
-                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                         <div class="testimonial-image">
                             <i class="fas fa-heart"></i>
                         </div>
@@ -172,7 +178,8 @@ $vehicles = $stmt->fetchAll();
                             <p>Vivamus sollicitudin mauris et dignissim malesuada et. Augue adipiscing nibh. Sed scelerisque orci.</p>
                         </div>
                     </div>
-                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                         <div class="testimonial-image">
                             <i class="fas fa-clock"></i>
                         </div>
@@ -195,7 +202,8 @@ $vehicles = $stmt->fetchAll();
         <div class="row">
             <?php foreach ($vehicles as $vehicle): ?>
             <div class="col-md-5 col-lg-4 mb-4">
-                <div class="card vehicle-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="card vehicle-card" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                     <img src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" 
                         class="card-img-top vehicle-image" 
                         alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>">
@@ -241,7 +249,8 @@ $vehicles = $stmt->fetchAll();
             
             <div class="stats-container">
                     <!-- Stat Item 1 -->
-                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true"
+     data-aos-once="false">
                         <div class="stat-icon">
                             <i class="fas fa-taxi"></i>
                         </div>
@@ -252,7 +261,8 @@ $vehicles = $stmt->fetchAll();
                     </div>
 
                     <!-- Stat Item 2 -->
-                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="200" data-aos-mirror="true"
+     data-aos-once="false">
                         <div class="stat-icon">
                             <i class="fas fa-users"></i>
                         </div>
@@ -263,7 +273,8 @@ $vehicles = $stmt->fetchAll();
                     </div>
 
                     <!-- Stat Item 3 -->
-                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="300" data-aos-mirror="true"
+     data-aos-once="false">
                         <div class="stat-icon">
                             <i class="fas fa-clock"></i>
                         </div>
@@ -274,7 +285,8 @@ $vehicles = $stmt->fetchAll();
                     </div>
 
                     <!-- Stat Item 4 -->
-                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="400" data-aos-mirror="true"
+     data-aos-once="false">
                         <div class="stat-icon">
                             <i class="fas fa-route"></i>
                         </div>
@@ -310,7 +322,8 @@ $vehicles = $stmt->fetchAll();
                 </div>
 
                 <!-- Phone Stack -->
-                <div class="col-lg-6 text-center device-showcase" data-aos="zoom-in" data-aos-duration="1200">
+                <div class="col-lg-6 text-center device-showcase" data-aos="zoom-in" data-aos-duration="1200" data-aos-mirror="true"
+     data-aos-once="false">
                     <div class="phone-stack position-relative">
                         <img src="../assets/images/home/mobileApp.png" 
                             class="phone back-phone position-absolute img-fluid" 
@@ -330,7 +343,8 @@ $vehicles = $stmt->fetchAll();
     <section class="container-fluid py-5 cta-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 cta-content" data-aos="fade-right">
+                <div class="col-lg-6 cta-content" data-aos="fade-right" data-aos-mirror="true"
+     data-aos-once="false">
                     <h2>Enjoy every mile with adorable companionship.</h2>
                     <p>Nullam augue felis erat dolor facilisis. Pretium tellus interdum amet eu consectetur imperdiet adipiscing in. Tempus consequat hendrerit amet.</p>
                     <div class="cta-buttons">

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light py-2 sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light py-2 sticky-top add-shadow">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="index.php">
