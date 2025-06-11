@@ -1,5 +1,6 @@
 <?php
 require_once '../config/db_connect.php';
+include_once '../includes/social_icons.php';
 
 // Fetch 6 vehicles for display
 $stmt = $pdo->query("SELECT * FROM vehicles ORDER BY id DESC LIMIT 6");
@@ -19,12 +20,16 @@ $vehicles = $stmt->fetchAll();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- AOS Library CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- Add Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="stylesheet" href="../assets/css/index.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
+    
+    <?php getSocialIconsStyles(); ?>
   </head>
   <body>
     <?php include '../includes/navbar.php'; ?>
@@ -145,7 +150,7 @@ $vehicles = $stmt->fetchAll();
             </div> -->
             <div class="row">
                 <div class="col-lg-5 mb-1 mb-lg-0">
-                    <img src="../assets/images/home/tuk-tuk-night.jpg" alt="Tuk Tuk at night" class="img-fluid rounded shadow">
+                    <!-- <img src="../assets/images/home/tuk-tuk-night.jpg" alt="Tuk Tuk at night" class="img-fluid rounded shadow"> -->
                 </div>
                 <div class="col-lg-7">
                     <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
@@ -178,7 +183,7 @@ $vehicles = $stmt->fetchAll();
                             <p>Vivamus sollicitudin mauris et dignissim malesuada et. Augue adipiscing nibh. Sed scelerisque orci.</p>
                         </div>
                     </div>
-                    <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
+                    <!-- <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
      data-aos-once="false">
                         <div class="testimonial-image">
                             <i class="fas fa-clock"></i>
@@ -187,7 +192,7 @@ $vehicles = $stmt->fetchAll();
                             <h4>Cras nulla aliquet non eleifend amet et</h4>
                             <p>Praesent adipiscing elit dictum dolore. Fusce nisi diam justo pulvinar dui neque. Euismod mollestia blandit imperdit volutpat nibero.</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -242,8 +247,7 @@ $vehicles = $stmt->fetchAll();
             <div class="text-center mb-5">
                 <h2 class="stats-title">Facts in Numbers</h2>
                 <p class="stats-text">
-                    Amet esse felis erat lorem. Praesent ipsum arcu tellus integer dignissim adipiscing consectetur 
-                    volutpat orci et dictum hendrerit amet et aliquet hendrerit.
+                    Amet esse felis erat lorem.
                 </p>
             </div>
             
@@ -305,22 +309,6 @@ $vehicles = $stmt->fetchAll();
     <section class="container-fluid py-5 app-section">
         <div class="container">
             <div class="row align-items-center">
-                <!-- Text Content -->
-                <div class="col-lg-6 app-content mb-4 mb-lg-0">
-                    <h2 class="mb-3">Download Our Mobile App</h2>
-                    <p class="mb-4">Experience seamless ordering and tracking. Get exclusive deals right at your fingertips with our mobile app.</p>
-                    <div class="store-buttons d-flex gap-3">
-                        <a href="#" class="store-btn app-store d-flex align-items-center gap-2">
-                            <i class="fa-brands fa-apple fa-2x store-icon"></i>
-                            <span>App Store</span>
-                        </a>
-                        <a href="#" class="store-btn play-store d-flex align-items-center gap-2">
-                            <i class="fab fa-google-play fa-2x store-icon"></i>
-                            <span>Google Play</span>
-                        </a>
-                    </div>
-                </div>
-
                 <!-- Phone Stack -->
                 <div class="col-lg-6 text-center device-showcase" data-aos="zoom-in" data-aos-duration="1200" data-aos-mirror="true"
      data-aos-once="false">
@@ -335,6 +323,23 @@ $vehicles = $stmt->fetchAll();
                             alt="Front phone">
                     </div>
                 </div>
+
+                <!-- Text Content -->
+                <div class="col-lg-6 app-content mb-4 mb-lg-0" data-aos="fade-right" data-aos-mirror="true"
+     data-aos-once="false">
+                    <h2 class="mb-3">Download Our Mobile App</h2>
+                    <p class="mb-4">Experience seamless ordering and tracking. Get exclusive deals right at your fingertips with our mobile app.</p>
+                    <div class="store-buttons d-flex gap-3">
+                        <a href="#" class="store-btn app-store d-flex align-items-center gap-2">
+                            <i class="fa-brands fa-apple fa-2x store-icon"></i>
+                            <span>App Store</span>
+                        </a>
+                        <a href="#" class="store-btn play-store d-flex align-items-center gap-2">
+                            <i class="fab fa-google-play fa-2x store-icon"></i>
+                            <span>Google Play</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -345,19 +350,89 @@ $vehicles = $stmt->fetchAll();
             <div class="row align-items-center">
                 <div class="col-lg-6 cta-content" data-aos="fade-right" data-aos-mirror="true"
      data-aos-once="false">
-                    <h2>Enjoy every mile with adorable companionship.</h2>
-                    <p>Nullam augue felis erat dolor facilisis. Pretium tellus interdum amet eu consectetur imperdiet adipiscing in. Tempus consequat hendrerit amet.</p>
+                    <h2>Enjoy every mile <br> with adorable companionship.</h2>
+                    <p>Nullam augue felis erat dolor facilisis. <br>  Pretium tellus interdum amet eu consectetur imperdiet adipiscing in. Tempus consequat hendrerit amet.</p>
                     <div class="cta-buttons">
                         <a href="../pages/index.php" class="cta-btn cta-primary">Book Now</a>
                         <a href="../pages/contact.php" class="cta-btn cta-secondary">Contact Us</a>
                     </div>
                 </div>
-                <div class="col-lg-6 cta-image" data-aos="fade-left">
+                <!-- <div class="col-lg-6 cta-image" data-aos="fade-left">
                     <img src="../assets/images/home/transport.png" alt="Colorful Tuk Tuk" class="img-fluid">
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section py-4">
+        <div class="container">
+            <h2 class="text-center mb-5">REVIEWS FROM OUR CUSTOMER</h2>
+            
+            <!-- Swiper -->
+            <div class="swiper reviewsSwiper">
+                <div class="swiper-wrapper">
+                    <?php 
+                    // Add more reviews here
+                    $reviews = [
+                        [
+                            'text' => 'Et eleifend velut at sapien pulvermusce mollis non dignissim Donec tincidunt dui at dui vulputate, feugis ac semper ante porttitor sit.',
+                            'name' => 'Emanuel Ratie',
+                            'image' => '../assets/images/about/dp1.png'
+                        ],
+                        [
+                            'text' => 'Fusce consectetur varius quis orns effendus arnut hendre, bank montes iaculis nulla vivamus gott finces vulputate ligula.',
+                            'name' => 'Rose Greene',
+                            'image' => '../assets/images/about/dp2.png'
+                        ],
+                        [
+                            'text' => 'Creen risque nibh ante euismond nibh, sit dignisse nullgrit sit judicabit semper duin et mattis wulp qui git performance.',
+                            'name' => 'Taylor Kinsoe',
+                            'image' => '../assets/images/about/dp3.png'
+                        ],
+                        [
+                            'text' => 'Et eleifend velut at sapien pulvermusce mollis non dignissim Donec tincidunt dui at dui vulputate, feugis ac semper ante porttitor sit.',
+                            'name' => 'Emanuel Ratie',
+                            'image' => '../assets/images/about/dp1.png'
+                        ],
+                        [
+                            'text' => 'Fusce consectetur varius quis orns effendus arnut hendre, bank montes iaculis nulla vivamus gott finces vulputate ligula.',
+                            'name' => 'Rose Greene',
+                            'image' => '../assets/images/about/dp2.png'
+                        ],
+                        [
+                            'text' => 'Creen risque nibh ante euismond nibh, sit dignisse nullgrit sit judicabit semper duin et mattis wulp qui git performance.',
+                            'name' => 'Taylor Kinsoe',
+                            'image' => '../assets/images/about/dp3.png'
+                        ],
+                        // Add more reviews as needed
+                    ];
+
+                    foreach($reviews as $review): ?>
+                        <div class="swiper-slide">
+                            <div class="card p-4">
+                                <div class="quote mb-3">
+                                    <i class="fas fa-quote-left"></i>
+                                </div>
+                                <p class="text-muted mb-4"><?php echo $review['text']; ?></p>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3" style="width: 30px; height: 30px;">
+                                        <img src="<?php echo $review['image']; ?>" alt="<?php echo $review['name']; ?>" class="rounded-circle w-100 h-10 object-fit-cover">
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0"><?php echo $review['name']; ?></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
     <?php include '../includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <!-- GSAP (CDN) -->
@@ -367,5 +442,40 @@ $vehicles = $stmt->fetchAll();
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- Custom JS -->
     <script src="../assets/js/index.js"></script>
+    <?php 
+    // Display the social media icons
+    displaySocialIcons($social_config); 
+    ?>
+
+    <!-- Add Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        var swiper = new Swiper(".reviewsSwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                },
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+        });
+    </script>
   </body>
 </html>

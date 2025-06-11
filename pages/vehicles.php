@@ -19,7 +19,8 @@ if ($filter !== 'All') {
 }
 $vehicles = $stmt->fetchAll();
 ?>
-
+<?php include '../includes/navbar.php'; ?>
+<?php include '../includes/social_icons.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -35,9 +36,9 @@ $vehicles = $stmt->fetchAll();
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
+    <?php getSocialIconsStyles(); ?>
   </head>
   <body>
-    <?php include '../includes/navbar.php'; ?>
 
     <!-- Vehicle Selection Section -->
     <section class="container py-5 vehicles-section vehicles-page">
@@ -101,6 +102,10 @@ $vehicles = $stmt->fetchAll();
     <script>
     AOS.init();
     </script>
+
+    <?php 
+    // Display the social media icons
+    displaySocialIcons($social_config); 
+    ?>
   </body>
-</html>
-</html>
+</html></html>

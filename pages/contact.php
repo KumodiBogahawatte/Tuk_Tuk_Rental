@@ -32,7 +32,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
+<?php include '../includes/navbar.php'; ?>
+<?php include '../includes/social_icons.php'; ?>
 <!-- Main landing page -->
 <!doctype html>
 <html lang="en">
@@ -52,9 +53,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
     <link rel="stylesheet" href="../assets/js/index.js">
+    <?php getSocialIconsStyles(); ?>
   </head>
   <body>
-    <?php include '../includes/navbar.php'; ?>
     <!--Hero Section-->
     <div class="text-center">
         <h1 class="fw-bold" style="color: black;">Contact Us</h1>
@@ -210,5 +211,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
     </script>
 
+    <?php 
+    // Display the social media icons
+    displaySocialIcons($social_config); 
+    ?>
   </body>
 </html>

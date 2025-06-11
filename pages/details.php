@@ -20,7 +20,8 @@ $stmt = $pdo->prepare("SELECT * FROM vehicles WHERE id != ? ORDER BY RAND() LIMI
 $stmt->execute([$id]);
 $other_vehicles = $stmt->fetchAll();
 ?>
-
+<?php include '../includes/navbar.php'; ?>
+<?php include '../includes/social_icons.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -40,9 +41,9 @@ $other_vehicles = $stmt->fetchAll();
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
     <link rel="stylesheet" href="../assets/css/details.css">
+    <?php getSocialIconsStyles(); ?>
   </head>
   <body>
-    <?php include '../includes/navbar.php'; ?>
 
     <!-- Vehicle details Section -->
     <section class="vehicle-details-section py-5">
@@ -280,5 +281,10 @@ $other_vehicles = $stmt->fetchAll();
     <script>
         AOS.init();
     </script>
+
+    <?php 
+    // Display the social media icons
+    displaySocialIcons($social_config); 
+    ?>
   </body>
 </html>

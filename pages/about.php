@@ -29,24 +29,27 @@ $faqs = [
     ]
 ];
 
-$reviews = [
-    [
-        'text' => 'Et eleifend velut at sapien pulvermusce mollis non dignissim Donec tincidunt dui at dui vulputate, feugis ac semper ante porttitor sit.',
-        'name' => 'Emanuel Ratie',
-        'image' => '../assets/images/about/dp1.png'
-    ],
-    [
-        'text' => 'Fusce consectetur varius quis orns effendus arnut hendre, bank montes iaculis nulla vivamus gott finces vulputate ligula.',
-        'name' => 'Rose Greene',
-        'image' => '../assets/images/about/dp2.png'
-    ],
-    [
-        'text' => 'Creen risque nibh ante euismond nibh, sit dignisse nullgrit sit judicabit semper duin et mattis wulp qui git performance.',
-        'name' => 'Taylor Kinsoe',
-        'image' => '../assets/images/about/dp3.png'
-    ]
-];
-?>
+// $reviews = [
+//     [
+//         'text' => 'Et eleifend velut at sapien pulvermusce mollis non dignissim Donec tincidunt dui at dui vulputate, feugis ac semper ante porttitor sit.',
+//         'name' => 'Emanuel Ratie',
+//         'image' => '../assets/images/about/dp1.png'
+//     ],
+//     [
+//         'text' => 'Fusce consectetur varius quis orns effendus arnut hendre, bank montes iaculis nulla vivamus gott finces vulputate ligula.',
+//         'name' => 'Rose Greene',
+//         'image' => '../assets/images/about/dp2.png'
+//     ],
+//     [
+//         'text' => 'Creen risque nibh ante euismond nibh, sit dignisse nullgrit sit judicabit semper duin et mattis wulp qui git performance.',
+//         'name' => 'Taylor Kinsoe',
+//         'image' => '../assets/images/about/dp3.png'
+//     ]
+// ];
+// ?>
+
+<?php include '../includes/navbar.php'; ?>
+<?php include '../includes/social_icons.php'; ?>
 
 <!-- Main landing page -->
 <!doctype html>
@@ -61,15 +64,17 @@ $reviews = [
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- AOS Library CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- Add Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="stylesheet" href="../assets/css/about.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
+    <?php getSocialIconsStyles(); ?>
   </head>
   <body>
-    <?php include '../includes/navbar.php'; ?>
     <!-- Breadcrumb -->
     <div class="breadcrumb-section py-3">
             <div class="container">
@@ -123,9 +128,9 @@ $reviews = [
                 </div>
             </div>
             
-            <div class="header-image mb-5">
+            <!-- <div class="header-image mb-5">
                 <img src="../assets/images/about/ColorfulTuk.png" alt="Electric Vehicle" class="img-fluid">
-            </div>
+            </div> -->
             
             <!-- Stats -->
             <div class="row text-center mb-5">
@@ -201,9 +206,9 @@ $reviews = [
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <!-- <div class="col-lg-6">
                     <img src="../assets/images/about/happy.png" alt="Happy Customer" class="img-fluid rounded" style="width: 1250px;">
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -236,32 +241,73 @@ $reviews = [
 </section>
     
     <!-- Reviews Section -->
-    <section class="py-5">
+    <section class="reviews-section py-4">
         <div class="container">
-            <h2 class="text-center mb-5">Reviews from our customers</h2>
-            <div class="row">
-            <?php foreach($reviews as $review): 
-                ?>
-                <div class="col-lg-4 mb-4">
-                    <div class="card p-4 h-100">
-                        <div class="quote mb-3">
-                            <i class="fas fa-quote-left"></i>
-                        </div>
-                        <p class="text-muted mb-4"><?php echo $review['text']; ?></p>
-                        <div class="d-flex align-items-center">
-                            <div class="me-3" style="width: 50px; height: 50px;">
-                                <img src="<?php echo $review['image']; ?>" alt="<?php echo $review['name']; ?>" class="rounded-circle w-100 h-100 object-fit-cover">
+            <h2 class="text-center mb-5">REVIEWS FROM OUR CUSTOMER</h2>
+            
+            <!-- Swiper -->
+            <div class="swiper reviewsSwiper">
+                <div class="swiper-wrapper">
+                    <?php 
+                    // Add more reviews here
+                    $reviews = [
+                        [
+                            'text' => 'Et eleifend velut at sapien pulvermusce mollis non dignissim Donec tincidunt dui at dui vulputate, feugis ac semper ante porttitor sit.',
+                            'name' => 'Emanuel Ratie',
+                            'image' => '../assets/images/about/dp1.png'
+                        ],
+                        [
+                            'text' => 'Fusce consectetur varius quis orns effendus arnut hendre, bank montes iaculis nulla vivamus gott finces vulputate ligula.',
+                            'name' => 'Rose Greene',
+                            'image' => '../assets/images/about/dp2.png'
+                        ],
+                        [
+                            'text' => 'Creen risque nibh ante euismond nibh, sit dignisse nullgrit sit judicabit semper duin et mattis wulp qui git performance.',
+                            'name' => 'Taylor Kinsoe',
+                            'image' => '../assets/images/about/dp3.png'
+                        ],
+                        [
+                            'text' => 'Et eleifend velut at sapien pulvermusce mollis non dignissim Donec tincidunt dui at dui vulputate, feugis ac semper ante porttitor sit.',
+                            'name' => 'Emanuel Ratie',
+                            'image' => '../assets/images/about/dp1.png'
+                        ],
+                        [
+                            'text' => 'Fusce consectetur varius quis orns effendus arnut hendre, bank montes iaculis nulla vivamus gott finces vulputate ligula.',
+                            'name' => 'Rose Greene',
+                            'image' => '../assets/images/about/dp2.png'
+                        ],
+                        [
+                            'text' => 'Creen risque nibh ante euismond nibh, sit dignisse nullgrit sit judicabit semper duin et mattis wulp qui git performance.',
+                            'name' => 'Taylor Kinsoe',
+                            'image' => '../assets/images/about/dp3.png'
+                        ],
+                        // Add more reviews as needed
+                    ];
+
+                    foreach($reviews as $review): ?>
+                        <div class="swiper-slide">
+                            <div class="card p-4">
+                                <div class="quote mb-3">
+                                    <i class="fas fa-quote-left"></i>
+                                </div>
+                                <p class="text-muted mb-4"><?php echo $review['text']; ?></p>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3" style="width: 30px; height: 30px;">
+                                        <img src="<?php echo $review['image']; ?>" alt="<?php echo $review['name']; ?>" class="rounded-circle w-100 h-10 object-fit-cover">
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0"><?php echo $review['name']; ?></h5>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <h5 class="mb-0"><?php echo $review['name']; ?></h5>
-                            </div>
                         </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
-                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
-        </section>
+        </div>
+    </section>
     
     <!-- FAQ Section -->
     <section class="py-5 bg-light">
@@ -269,7 +315,7 @@ $reviews = [
             <h2 class="mb-5">Top Tuk Rental Questions</h2>
             <div class="accordion" id="rentalFAQ">
                 <?php foreach($faqs as $index => $faq): ?>
-                <div class="accordion-item mb-3 border">
+                <div class="accordion-item mb-3 border" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                     <h2 class="accordion-header" id="heading<?php echo $index; ?>">
                         <button class="accordion-button <?php echo $index !== 0 ? 'collapsed' : ''; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $index; ?>" aria-expanded="<?php echo $index === 0 ? 'true' : 'false'; ?>" aria-controls="collapse<?php echo $index; ?>">
                             <?php echo $faq['question']; ?>
@@ -326,5 +372,39 @@ $reviews = [
     });
     </script>
 
+    <?php 
+    // Display the social media icons
+    displaySocialIcons($social_config); 
+    ?>
+<!-- Add Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    var swiper = new Swiper(".reviewsSwiper", {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: true,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            768: {
+                slidesPerView: 2,
+            },
+            1024: {
+                slidesPerView: 3,
+            },
+        },
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+    });
+</script>
   </body>
 </html>
