@@ -381,18 +381,157 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Show or hide the button
-window.addEventListener("scroll", function () {
-    const topButton = document.querySelector(".back-to-top");
-    if (window.scrollY > 300) {
-    topButton.style.display = "block";
+// Back to Top Button
+document.addEventListener('DOMContentLoaded', function() {
+  const backToTopButton = document.querySelector('.back-to-top');
+  
+  window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.add('visible');
     } else {
-    topButton.style.display = "none";
+      backToTopButton.classList.remove('visible');
     }
+  });
+  
+  backToTopButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
 });
 
-// Smooth scroll to top
-document.querySelector(".back-to-top").addEventListener("click", function (e) {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+//Show Price in the Input
+document.addEventListener('DOMContentLoaded', function() {
+    function setupLocationInputWithPrice(inputId, datalistId) {
+        const input = document.getElementById(inputId);
+        const datalist = document.getElementById(datalistId);
+
+        input.addEventListener('change', function() {
+            const val = input.value.trim();
+            let found = false;
+            datalist.querySelectorAll('option').forEach(option => {
+                if (option.value === val) {
+                    // Extract price and currency from option text
+                    const priceText = option.textContent.match(/\((.*?)\)$/);
+                    if (priceText) {
+                        input.value = `${val} ${priceText[0]}`;
+                    }
+                    found = true;
+                }
+            });
+            if (!found) {
+                // If not found, keep only the typed value
+                input.value = val;
+            }
+        });
+
+        // Optional: Remove price when editing
+        input.addEventListener('input', function() {
+            // Remove price part if user starts editing
+            const val = input.value;
+            input.value = val.replace(/\s+\(.*?\)$/, '');
+        });
+    }
+
+    setupLocationInputWithPrice('pickup_location', 'pickup_locations');
+    setupLocationInputWithPrice('return_location', 'return_locations');
+});
+
+// Enhanced counter animation with controlled speed
+document.addEventListener('DOMContentLoaded', function() {
+    const startCountingWhenVisible = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const target = +counter.getAttribute('data-target');
+                const speed = +counter.getAttribute('data-speed') || 200; // Default speed if not specified
+                const duration = target / speed * 1000; // Calculate duration in ms
+                
+                animateCounter(counter, target, duration);
+                observer.unobserve(counter);
+            }
+        });
+    };
+
+    const animateCounter = (element, target, duration) => {
+        const start = 0;
+        const startTime = performance.now();
+        
+        const updateCounter = (currentTime) => {
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+            const currentValue = Math.floor(progress * target);
+            
+            element.textContent = currentValue.toLocaleString();
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target.toLocaleString();
+            }
+        };
+        
+        requestAnimationFrame(updateCounter);
+    };
+
+    const observer = new IntersectionObserver(startCountingWhenVisible, {
+        threshold: 0.5 // Start when 50% of the element is visible
+    });
+
+    document.querySelectorAll('.counter').forEach(counter => {
+        observer.observe(counter);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('booking-form');
+    if (!form) return;
+
+    // Helper to get allowed locations from a datalist
+    function getAllowedLocations(listId) {
+        return Array.from(document.querySelectorAll(`#${listId} option`)).map(opt => opt.value.trim().toLowerCase());
+    }
+
+    // Helper to extract only the location name (before any price or parentheses)
+    function extractLocationName(val) {
+        return val.split(' (')[0].trim().toLowerCase();
+    }
+
+    const allowedPickupLocations = getAllowedLocations('pickup_locations');
+    const allowedReturnLocations = getAllowedLocations('return_locations');
+
+    form.addEventListener('submit', function(e) {
+        const pickupLocation = form.querySelector('[name="pickup_location"]');
+        const returnLocation = form.querySelector('[name="return_location"]');
+        const pickupDate = form.querySelector('[name="pickup_date"]');
+        const pickupTime = form.querySelector('[name="pickup_time"]');
+        const returnDate = form.querySelector('[name="return_date"]');
+        const returnTime = form.querySelector('[name="return_time"]');
+
+        let message = '';
+        if (!pickupLocation.value.trim()) {
+            message = 'Please select a pick-up location.';
+        } else if (!allowedPickupLocations.includes(extractLocationName(pickupLocation.value))) {
+            message = 'Please select a valid pick-up location from the list.';
+        } else if (!pickupDate.value.trim()) {
+            message = 'Please select a pick-up date.';
+        } else if (!pickupTime.value.trim()) {
+            message = 'Please select a pick-up time.';
+        } else if (!returnLocation.value.trim()) {
+            message = 'Please select a return location.';
+        } else if (!allowedReturnLocations.includes(extractLocationName(returnLocation.value))) {
+            message = 'Please select a valid return location from the list.';
+        } else if (!returnDate.value.trim()) {
+            message = 'Please select a return date.';
+        } else if (!returnTime.value.trim()) {
+            message = 'Please select a return time.';
+        }
+
+        if (message) {
+            e.preventDefault();
+            alert(message);
+        }
+    });
 });

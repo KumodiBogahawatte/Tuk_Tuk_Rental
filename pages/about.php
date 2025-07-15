@@ -8,26 +8,81 @@ $stats = [
 
 $faqs = [
     [
-        'question' => 'How does it work?',
-        'answer' => 'Important: at Tuk Tuk vehicle rents, vehicles will not accept excess funds with payment freeze. Premium rents of at all in buckle amount also hardware profiles opportunities or confirmation. transport check Distributive only digital allowed vehicle accessories made for hire.'
+        'question' => 'What areas are covered by your insurance?',
+        'answer' => 'Our tuk-tuks come with comprehensive insurance that covers:
+            •	The vehicle itself
+            •	The driver and passengers
+            •	Third-party damages
+            We also recommend that you get your own travel insurance for added personal coverage.'
     ],
     [
-        'question' => 'Can I rent a tuk without a credit card?',
-        'answer' => 'Yes, we offer alternative payment methods. Please contact our customer service for more details.'
+        'question' => 'What’s included in the tuk-tuk rental package?',
+        'answer' => '•	Well-maintained tuk-tuk
+        •	Local Sri Lankan driving permit
+        •	Comprehensive third-party insurance
+        •	Full driving lesson upon arrival
+        •	Unlimited kilometers
+        •	Flexible pick-up and drop-off locations
+        •	24/7 customer support
+        •	Digital navigation tools (Google Maps compatible)'
     ],
     [
         'question' => 'What are the requirements for renting a tuk?',
-        'answer' => 'You must be at least 21 years old, have a valid driver\'s license, and provide a security deposit.'
+        'answer' => 'Absolutely! Just inform us at least 48 hours in advance and we’ll make arrangements. A small relocation fee may apply depending on the distance.'
     ],
     [
-        'question' => 'Does tuk Rental allow me to tow with or attach a hitch to the rental tuk?',
-        'answer' => 'This depends on the tuk type. Please contact us for specific information regarding the tuk you wish to rent.'
+        'question' => 'What happens if the tuk-tuk is stolen or hijacked?',
+        'answer' => 'Although rare in Sri Lanka, if this happens:
+        •	Insurance covers theft under most scenarios
+        •	If the keys were left inside the tuk-tuk, coverage may be limited
+        •	Always park safely and take basic precautions'
     ],
     [
-        'question' => 'Does tuk Rental offer coverage products for purchase with my rental?',
-        'answer' => 'Yes, we offer various insurance options to ensure your peace of mind during the rental period.'
+        'question' => 'What if my personal items are stolen during the trip?',
+        'answer' => 'Please notify us immediately — we’ll assist you in reporting the issue to local police. For lost travel documents, insurance usually offers coverage. Note: replacing the tuk-tuk’s license and documents may cost around $90.'
+    ],
+    [
+        'question' => 'Can I pay with a credit card?',
+        'answer' => 'Yes! We accept credit and debit card payments via secure gateways like Stripe and PayPal.'
+    ],
+    [
+        'question' => 'Do I need to make an advance payment to book?',
+        'answer' => 'Yes, a small deposit is required to secure your tuk-tuk and allow us to begin the licensing process and trip arrangements.'
+    ],
+    [
+        'question' => 'Will I get a refund if I cancel my booking?',
+        'answer' => 'Please refer to our Rental Terms Summary for full cancellation and refund policy details.'
     ]
 ];
+function renderFaqAnswer($answer) {
+    // Split answer into lines
+    $lines = preg_split('/\r\n|\r|\n/', $answer);
+    $inList = false;
+    foreach ($lines as $line) {
+        $trimmed = trim($line);
+        // Check if line starts with a bullet
+        if (preg_match('/^(•|-)/u', $trimmed)) {
+            if (!$inList) {
+                echo '<ul>';
+                $inList = true;
+            }
+            // Remove bullet and whitespace
+            $text = trim(mb_substr($trimmed, 1));
+            echo '<li>' . htmlspecialchars($text) . '</li>';
+        } else {
+            if ($inList) {
+                echo '</ul>';
+                $inList = false;
+            }
+            if ($trimmed !== '') {
+                echo '<p>' . htmlspecialchars($trimmed) . '</p>';
+            }
+        }
+    }
+    if ($inList) {
+        echo '</ul>';
+    }
+}
 
 // $reviews = [
 //     [
@@ -75,20 +130,44 @@ $faqs = [
     <?php getSocialIconsStyles(); ?>
   </head>
   <body>
-    <!-- Breadcrumb -->
-    <div class="breadcrumb-section py-3">
+
+    <!-- Header Section -->
+    <header class="about-header">
+        <div class="about-header-content">
             <div class="container">
-            <div class="text-center">
-                <h1 class="fw-bold">About Us</h1>
+                <h1 class="display-5 fw-bold">About Us</h1>
+                <p>We’re passionate about making your travel experience safe, affordable, and memorable with every tuk tuk ride.</p>
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none" style="color: gray;">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" style="color: #375FE0;font-weight: 500;">About Us</li>
+                    <ol class="breadcrumb justify-content-center custom-breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">About Us</li>
                     </ol>
                 </nav>
             </div>
         </div>
+    </header>
+
+    <!-- About Experience Section -->
+    <section class="about-experience-section py-5">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-15">
+                <div class="about-experience-box p-3 p-md-4">
+                <h2 class="mb-3 fw-bold" style="font-size:2.5rem; font-size:clamp(1.5rem, 6vw, 2.5rem);">Discover Sri Lanka from behind the wheel of the country’s most iconic vehicle — the tuk-tuk!
+                </h2>
+                <p>We are a small business in Sri Lanka. To be more precise, this is our family business. We started this business because we believed that in addition to the income that tourism brings to Sri Lanka, we can make an impactful difference in Sri Lanka. Our business has also been able to provide additional income sources to many small entrepreneurs.
+                            All the entrepreneurs who have gathered around our business are small-scale entrepreneurs. 
+                            We are sincerely happy about the economic strength this gives them.</p>
+        
+                        <P>There are currently at least 1.5 million tuk-tuks plying on the roads of Sri Lanka. Most of these tuk-tuks have been purchased on credit. They have to pay a large monthly fee for them. But it is quite difficult to pay such a large monthly fee based on their income. 
+                        They also have to maintain their daily lives with the money they earn from driving tuk-tuks. This is a big economic struggle.</P>
+                        
+                        <p>We believe that all of this can have a small impact or help. If so, join us in this effort.</p>     
+                </div>
+            </div>
+        </div>
     </div>
+    </section>
 
     <!-- Main Content -->
     <section class="main_content py-5">
@@ -157,88 +236,116 @@ $faqs = [
             </div>
         </div>
     </section>
-    
-    <!-- Memories Section -->
-    <section class="Memories py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h2 class="headline mb-4">Unlock unforgettable memories on the road</h2>
-                    <p class="text-muted mb-4">Lorem, ipsum dolor sit amet consectetur. Sed suscipit sit velit amet faucibus a porttitor semper hendrerit. Proin dui elit vehicula a.</p>
-                    
-                    <div class="d-flex mb-3">
-                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div>
-                            <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">24/7 customer support</h5>
-                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Our team is available for immediate assistance at any time.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex mb-3">
-                        <div class="feature-icon me-3"data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
-                            <i class="fas fa-car"></i>
-                        </div>
-                        <div>
-                            <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Multiple tuk booking possible</h5>
-                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Need more than one tuk? No problem, book as many as you need.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex mb-3">
-                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Delivery, return and pickup</h5>
-                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">We offer convenient delivery and pickup services for your rental.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex">
-                        <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div>
-                            <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Security deposit guides</h5>
-                            <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Clear information about security deposits and how they work.</p>
-                        </div>
-                    </div>
+
+
+    <!-- Gallery Section -->
+    <section class="section gallery-about">
+        <div class="gallery-flickity" id="gallery-scroll">
+            <?php
+            $gallery_images = array(
+                "../assets/images/about/gallery/gallery-1.jpg",
+                "../assets/images/about/gallery/gallery-2.jpg",
+                "../assets/images/about/gallery/gallery-3.jpg",
+                "../assets/images/about/gallery/gallery-4.jpg",
+                "../assets/images/about/gallery/gallery-5.jpg",
+                "../assets/images/about/gallery/gallery-6.jpg",
+                "../assets/images/about/gallery/gallery-7.jpg",
+                "../assets/images/about/gallery/gallery-8.jpg",
+                "../assets/images/about/gallery/gallery-9.jpg",
+                "../assets/images/about/gallery/gallery-10.jpg",
+                "../assets/images/about/gallery/gallery-11.jpg",
+                "../assets/images/about/gallery/gallery-12.jpg"
+            );
+            foreach ($gallery_images as $image): ?>
+                <div class="gallery-cell">
+                    <img alt="" src="<?php echo $image; ?>">
                 </div>
-                <!-- <div class="col-lg-6">
-                    <img src="../assets/images/about/happy.png" alt="Happy Customer" class="img-fluid rounded" style="width: 1250px;">
-                </div> -->
-            </div>
+            <?php endforeach; ?>
         </div>
+        <div class="text-center mt-3">
+        <a href="gallery.php" class="btn btn-primary mb-4 rounded-pill px-4">See More Photos <i class="fas fa-arrow-right"></i></a>
+    </div>
     </section>
     
-    <!-- App Download Section -->
-    <section class="py-4">
-    <div class="container">
-        <div class="purple-bg">
-            <div class="row align-items-center">
-                <div class="col-lg-4 col-md-5 mb-4 mb-md-0">
-                    <img src="../assets/images/home/mobileApp.png" alt="Mobile App" class="img-fluid">
-                </div>
-                <div class="col-lg-8 col-md-7">
-                    <h2>Download our app</h2>
-                    <p>Fusce minim ipsum nibh previous dos tan duris. Transform digitalize remover dolores meti sauis inem duos cultivate malesuada vehicula vis veneris ad finibus augue.</p>
-                    <div class="store-buttons">
-                        <a href="#" class="store-btn app-store">
-                            <i class="fa-brands fa-apple store-icon me-2"></i>
-                            <span>App Store</span>
-                        </a>
-                        <a href="#" class="store-btn play-store">
-                            <i class="fab fa-google-play store-icon me-2"></i>
-                            <span>Google Play</span>
-                        </a>
+    <!-- Memories Section -->
+        <section class="Memories py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h2 class="headline mb-4">UNLOCK UNFORGETTABLE MEMORIES ON THE ROAD</h2>
+                        <p class="text-muted mb-4">When you book with TukTukSLRental.net, you're choosing a service that puts your safety, comfort, and community impact first. Here’s why hundreds of travelers choose us every year:</p>
+                        
+                        <div class="d-flex mb-3">
+                            <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div>
+                                <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Safety First</h5>
+                                <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">All our tuk-tuks are road-tested, regularly maintained, and come with comprehensive insurance. Plus, you’ll receive a personal driving lesson before hitting the road.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-3">
+                            <div class="feature-icon me-3"data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">24/7 Emergency Support</h5>
+                                <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Need more than one tuk? No problem, book as many as you need.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-3">
+                            <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Free Attractions Map & Local Tips</h5>
+                                <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Get insider access to hidden gems, scenic routes, and local dining spots. We don’t just give you a vehicle; we help you explore smarter.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex">
+                            <div class="feature-icon me-3" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div>
+                                <h5 data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">Driving Lessons & Luggage Advice</h5>
+                                <p class="text-muted" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">We’ll teach you how to handle a tuk-tuk like a local — including tips on navigating traffic, carrying your gear, and staying safe on the road.</p>
+                            </div>
+                        </div>
                     </div>
+                    <!--<div class="col-lg-6">-->
+                    <!--    <img src="./assets/images/about/happy.png" alt="Happy Customer" class="img-fluid rounded" style="width: 1250px;">-->
+                    <!--</div>-->
                 </div>
             </div>
+        </section>
+    
+    <!-- App Download Section -->
+    <section class="download-section py-4">
+        <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+                        <img src="../assets/images/home/mobileApp.png" alt="Mobile App" class="img-fluid">
+                    </div>
+                    <div class="col-lg-8 col-md-7">
+                        <h2>Download our app</h2>
+                        <p>Fusce minim ipsum nibh previous dos tan duris. Transform digitalize remover dolores meti sauis inem duos cultivate malesuada vehicula vis veneris ad finibus augue.</p>
+                        <div class="store-buttons">
+                            <a href="#" class="store-btn app-store">
+                                <i class="fa-brands fa-apple store-icon me-2"></i>
+                                <span>App Store</span>
+                            </a>
+                            <a href="#" class="store-btn play-store">
+                                <i class="fab fa-google-play store-icon me-2"></i>
+                                <span>Google Play</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
         </div>
-    </div>
-</section>
+    </section>
     
     <!-- Reviews Section -->
     <section class="reviews-section py-4">
@@ -312,7 +419,7 @@ $faqs = [
     <!-- FAQ Section -->
     <section class="py-5 bg-light">
         <div class="container">
-            <h2 class="mb-5">Top Tuk Rental Questions</h2>
+            <h2 class="mb-5">Frequently Asked Questions (FAQ)</h2>
             <div class="accordion" id="rentalFAQ">
                 <?php foreach($faqs as $index => $faq): ?>
                 <div class="accordion-item mb-3 border" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
@@ -323,7 +430,7 @@ $faqs = [
                     </h2>
                     <div id="collapse<?php echo $index; ?>" class="accordion-collapse collapse <?php echo $index === 0 ? 'show' : ''; ?>" aria-labelledby="heading<?php echo $index; ?>" data-bs-parent="#rentalFAQ">
                         <div class="accordion-body">
-                            <?php echo $faq['answer']; ?>
+                            <?php renderFaqAnswer($faq['answer']); ?>
                         </div>
                     </div>
                 </div>
@@ -332,26 +439,29 @@ $faqs = [
         </div>
     </section>
     
-    <!-- Looking for a car Section -->
-    <section class="py-5" style="background-color:rgba(215, 228, 238, 0.95);">
+    <!-- Looking for a tuk Section -->
+    <section class="looking-section py-5">
         <div class="container">
-            <div class="p-5">
-                <div class="row align-items-center"  data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
+            <div class="p-4">
+                <div class="row align-items-center text-center text-lg-start"
+                    data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
                     <div class="col-lg-8 mb-4 mb-lg-0">
-                        <h2 class="mb-3" style="font-size: 60px;font-weight:bold;margin-left:20px;">Looking for a tuk?</h2>
-                        <div class="d-flex align-items-center mb-3">
-                            <span class="me-2" style="font-size: 30px;font-weight:bold;margin-left:20px;">+94 755 555 555</span>
+                        <h2 class="mb-3">Looking for a tuk?</h2>
+                        <div class="d-flex justify-content-center justify-content-lg-start align-items-center mb-3">
+                            <span class="me-2">+94 755 555 555</span>
                         </div>
-                        <p class="mb-4" style="margin-left:20px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dignissimos.Expedita, libero dignissimos.</p>
-                        <a href="../pages/index.php" class="btn btn-warning rounded-pill px-4 book-now-btn" style="background-color: #FF9E0C;margin-left:20px;">Book Now</a>
+                        <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dignissimos. Expedita, libero dignissimos.</p>
+                        <a href="../pages/index.php" class="btn btn-warning rounded-pill px-4 book-now-btn">Book Now <i class="fa fa-arrow-right"></i></a>
                     </div>
-                    <div class="col-lg-4"  data-aos="zoom-in" data-aos-delay="100" data-aos-mirror="true" data-aos-once="false">
-                        <img src="../assets/images/about/tuk.png" alt="Colorful Tuk Tuk Vehicle" class="img-fluid rounded">
+                    <div class="col-lg-4">
+                        <img src="../assets/images/about/tuk.png" alt="Colorful Tuk Tuk Vehicle"
+                            class="img-fluid rounded mx-auto d-block">
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <?php include '../includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <!-- GSAP (CDN) -->
@@ -376,7 +486,7 @@ $faqs = [
     // Display the social media icons
     displaySocialIcons($social_config); 
     ?>
-<!-- Add Swiper JS -->
+    <!-- Add Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
@@ -406,5 +516,6 @@ $faqs = [
         },
     });
 </script>
+<script src="../assets/js/about.js"></script>
   </body>
 </html>

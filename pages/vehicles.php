@@ -1,6 +1,8 @@
 <?php
 require_once '../config/db_connect.php';
-
+require_once('../service/currencyService.php');
+$currencyService = new CurrencyService($pdo);
+$usdRate = $currencyService->getExchangeRate('LKR', 'USD');
 // Get filter from URL
 $filter = $_GET['type'] ?? 'All';
 
@@ -39,6 +41,21 @@ $vehicles = $stmt->fetchAll();
     <?php getSocialIconsStyles(); ?>
   </head>
   <body>
+    <!-- Header Section -->
+    <header class="vehicles-header">
+        <div class="vehicles-header-content">
+            <div class="container">
+                <h1 class="display-5 fw-bold">Vehicles</h1>
+                <p>Choose your perfect ride from our wide selection of reliable tuktuks</p>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center custom-breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">vehicles</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </header>
 
     <!-- Vehicle Selection Section -->
     <section class="container py-5 vehicles-section vehicles-page">
@@ -73,7 +90,13 @@ $vehicles = $stmt->fetchAll();
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand']); ?></h5>
-                            <div class="vehicle-price">LKR <?php echo number_format($vehicle['price_per_day'], 2); ?> <span>/day</span></div>
+                            <div class="vehicle-price" 
+                                data-price="<?php echo $vehicle['price_per_day']; ?>" 
+                                data-rate="<?php echo $usdRate; ?>">
+                                <span class="currency">LKR</span>
+                                <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                                <span class="per-day">/day</span>
+                            </div>
                         </div>
                         <div class="specs-row">
                             <div class="spec-item">
@@ -86,7 +109,12 @@ $vehicles = $stmt->fetchAll();
                                 <i class="fas fa-users"></i> <?php echo htmlspecialchars($vehicle['capacity']); ?> seats
                             </div>
                         </div>
-                        <button class="view-details-btn" onclick="location.href='details.php?id=<?php echo $vehicle['id']; ?>'">View Details</button>
+                        <a href="details.php?id=<?php echo $vehicle['id']; ?>" class="btn view-details-btn mx-auto d-flex align-items-center justify-content-center">
+                            View Details
+                            <span class="arrow-circle ms-2">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -102,10 +130,10 @@ $vehicles = $stmt->fetchAll();
     <script>
     AOS.init();
     </script>
-
+    <script src="../assets/js/currencyHandler.js"></script>
     <?php 
     // Display the social media icons
     displaySocialIcons($social_config); 
     ?>
   </body>
-</html></html>
+</html>

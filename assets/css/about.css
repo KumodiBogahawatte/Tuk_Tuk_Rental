@@ -3,11 +3,12 @@
     --secondary-color: #375FE0;
     --light-purple: rgba(215, 228, 238, 0.95);
     --dark-text: #222222;
+    --transition: all 0.3s ease;
 }
 
 /* Add or modify these styles at the top of your about.css */
 html, body {
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     width: 100%;
     position: relative;
     margin: 0;
@@ -29,6 +30,154 @@ body {
     background-position: center;    
 }
 
+/* Header Section */
+.about-header {
+    position: relative;
+    min-height: 400px;
+    width: 100%;
+    background-image: url('../images/about/about_background.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1rem;
+}
+
+.about-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    rgba(38, 40, 44, 0.8),
+    rgba(25, 22, 37, 0.8)
+  );
+  z-index: 1;
+}
+
+.about-header-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 1200px;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+.about-header-content h1 {
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: -0.02em;
+}
+
+.about-header-content p {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  margin-top: 1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Breadcrumb */
+.about-header .custom-breadcrumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 1.5rem auto;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    max-width: 90%;
+    list-style: none;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.about-header .breadcrumb-item {
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+    font-weight: 500;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.about-header .breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0.5rem;
+    float: none;
+}
+
+.about-header .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.about-header .breadcrumb-item a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.about-header .breadcrumb-item.active {
+    color: white;
+}
+
+/* Media Queries */
+@media (min-width: 992px) {
+    .about-header {
+        background-attachment: fixed;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-header {
+        min-height: 300px;
+        padding: 3rem 1rem;
+    }
+
+    .about-header-content {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-header {
+        min-height: 250px;
+        padding: 2rem 1rem;
+    }
+
+    .about-header-content h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Fix for iOS devices */
+@supports (-webkit-touch-callout: none) {
+    .about-header {
+        background-attachment: scroll;
+    }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .about-header {
+        background-image: url('../images/about/about_background.jpeg');
+    }
+}
+
 .main_content {
     position: relative;
     z-index: 0;
@@ -38,11 +187,11 @@ body {
 .main_content::after {
     content: '';
     position: absolute;
-    bottom: -20%;
+    bottom: -10%;
     left: -55px;
-    width: 1000px;
-    height: 1000px;
-    background-image: url('../images/about/peacock_illustration.png');
+    width: 800px;
+    height: 800px;
+    /* background-image: url('../images/about/peacock_illustration.png'); */
     background-repeat: no-repeat;
     background-size: contain;
     transform: rotate(15deg);
@@ -159,14 +308,30 @@ body {
 }
 
 .feature-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    background: #375FE0;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    background-color: var(--primary-color);
+    border-radius: 50%;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(55,95,224,0.08);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.Memories h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 0.3rem;
+}
+.Memories p.text-muted {
+    font-size: 1rem;
+    color: #383737c5 !important;
+    margin-bottom: 0.5rem;
 }
 
 .quote {
@@ -269,8 +434,8 @@ body {
 
 
 .accordion-button:not(.collapsed) {
-    background-color: var(--light-purple);
-    color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: white;
     box-shadow: none;
 }
 
@@ -315,7 +480,7 @@ body {
 }
 
 .book-now-btn:hover {
-    background-color: #706657;
+    background-color: #000000;
     color: white;
     transform: translateY(-1px);
 }
@@ -330,6 +495,263 @@ body {
 .section {
     padding: 3rem 0;
 }
+
+.download-section {
+    position: relative;
+    background-color: #375FE0;
+    background-image: url('../images/about/round-lines.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 25px;
+    padding: 40px 20px;
+    margin: 40px auto;
+    max-width: 80%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.download-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(16, 59, 201, 0.7);
+    z-index: 2;
+}
+
+.download-section > .container {
+    position: relative;
+    z-index: 3;
+}
+
+.download-section img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin-top: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.download-section h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.download-section p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.store-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.store-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+    color: #375FE0;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.store-btn:hover {
+    background-color: #FF9E0C;
+    color: white;
+}
+
+.store-icon {
+    font-size: 1.5rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .download-section {
+        padding: 30px 15px;
+        max-width: 95%;
+    }
+
+    .download-section h2 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .download-section p {
+        font-size: 0.95rem;
+        text-align: center;
+    }
+
+    .store-buttons {
+        justify-content: center;
+    }
+
+    .store-btn {
+        font-size: 0.95rem;
+        padding: 10px 15px;
+    }
+
+    .download-section img {
+        max-width: 120px;
+        margin-bottom: 20px;
+    }
+}
+
+
+.looking-section {
+    position: relative;
+    background-color: #375FE0;
+    background-image: url('../images/about/round-lines.jpg'); /* Your overlay image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 25px;
+    padding: 40px 20px;
+    margin: 40px auto;
+    max-width: 80%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Optional: Add a semi-transparent layer for darkening or styling effect */
+.looking-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(16, 59, 201, 0.7); /* Maintain blue tone with opacity */
+    z-index: 2;
+}
+
+/* Ensure content stays above overlay */
+.looking-section > .container {
+    position: relative;
+    z-index: 3;
+}
+
+.looking-section h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+}
+
+.looking-section p {
+    font-size: 1rem;
+    color: white;
+    margin: 0 auto;
+}
+
+.looking-section span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.looking-section img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    margin-top: 15px;
+}
+
+.about-experience-box {
+    padding: 0.2rem !important;
+    justify-content: center;
+}
+
+.about-experience-box h2, p{
+    text-align: justify;
+}
+
+/* Gallery Section Styles */
+.gallery-about {
+  margin-top:10px ;
+  background: #f8fafc;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.gallery-flickity {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.gallery-flickity::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-cell {
+  flex: 0 0 auto;
+  width: 500px;
+  height: 500px;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  
+}
+
+.gallery-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transform: scale(0.95) translateY(30px);
+  transition: transform 0.8s cubic-bezier(.4,2,.3,1), box-shadow 0.3s, opacity 0.5s;
+}
+
+.gallery-cell.visible img {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  box-shadow: 0 4px 16px rgba(55,95,224,0.12);
+}
+
+@media (max-width: 600px) {
+  .gallery-cell {
+    width: 70vw;
+    height: 100px;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .looking-section h2 {
+        font-size: 2rem;
+    }
+    .looking-section span {
+        font-size: 1.25rem;
+    }
+    .looking-section p {
+        font-size: 0.95rem;
+    }
+    .book-now-btn {
+        width: 100%;
+        padding: 12px 0;
+    }
+}
+
+
 
 /* Extra Small devices (phones, less than 576px) */
 @media (max-width: 575.98px) {

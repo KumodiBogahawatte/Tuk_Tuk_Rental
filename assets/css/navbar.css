@@ -5,7 +5,7 @@
     z-index: 1030 !important;
     width: 100% !important;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background: transparent !important;
+    background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-bottom: 2px solid rgba(0, 0, 0, 0.08);
@@ -20,8 +20,6 @@
 /* Even more compact when scrolled */
 .navbar.scrolled {
     background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(15px) saturate(150%);
-    -webkit-backdrop-filter: blur(15px) saturate(150%);
     border-bottom: 2px solid rgba(0, 0, 0, 0.08);
     box-shadow: 
         0 8px 24px rgba(0, 0, 0, 0.1),
@@ -65,8 +63,8 @@
 
 /* Active state */
 .navbar .nav-link.active {
-    color: #375FE0 !important;
-    background: rgba(55, 95, 224, 0.1);
+    color: #2d58e7 !important;
+    /* background: rgba(55, 95, 224, 0.1); */
     border-bottom: 2px solid #375FE0;
     font-weight: 700;
 }
@@ -118,6 +116,26 @@
 
 .navbar-toggler:focus {
     box-shadow: 0 0 0 0.2rem rgba(55, 95, 224, 0.25);
+}
+
+.navbar .form-select {
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: #000000;
+    width: 80px;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+    margin-left: 40px;
+}
+
+.navbar-scrolled .form-select {
+    color: #333;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar .form-select option {
+    background-color: #fff;
+    color: #333;
 }
 
 /* Mobile menu adjustments */
@@ -177,3 +195,40 @@
 .navbar.add-shadow {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
+
+/* Ring Loader */
+.ring-loader {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #e0e0e0;
+  border-top: 6px solid #1976d2;
+  border-radius: 50%;
+  animation: ring-spin 1s linear infinite;
+  box-shadow: 0 2px 12px rgba(25,118,210,0.08);
+}
+@keyframes ring-spin {
+  100% { transform: rotate(360deg); }
+}
+
+.navbar .currency-select {
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 0;
+    z-index: 1;
+    height: 100%;
+}
+.navbar .currency-selector .form-select {
+    background-color: transparent;
+    border: 2px solid rgb(209, 108, 41);
+    color: #000000;
+    width: 80px;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    margin: 0;
+    height: 38px;
+    line-height: 1.5;
+    box-shadow: none;
+}
+

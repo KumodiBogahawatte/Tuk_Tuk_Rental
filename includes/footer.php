@@ -1,76 +1,94 @@
-<!-- Footer -->
-<footer class="text-center text-lg-start text-black">
-  <div class="container p-3">
-    <div class="row">
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-row">
       <!-- Company Info -->
-      <div class="col-md-3 col-lg-3 col-xl-3 mb-4">
-        <img src="../assets/images/TUK TUK LOGO 1.png" alt="Tuk Tuk Rental logo" loading="lazy" height="90px;">
-        <p>
+      <div class="footer-col company-info">
+        <img src="../assets/images/TUK TUK LOGO 3.png" alt="Tuk Tuk Rental" loading="lazy">
+        <p class="company-description">
           Discover affordable and flexible tuk tuk rentals for your Sri Lankan adventures.
-          Reliable service, easy booking, and great support.
         </p>
-        <div class="mb-2">
-          <a href="#" class="text-black me-4" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-black me-4" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="text-black me-4" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-black me-4" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
-        </div>  
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
       </div>
 
-      <!-- Useful links -->
-      <div class="col-md-2 col-lg-2 col-xl-2">
-        <h6 class="text-uppercase fw-bold">Useful links</h6>
-        <hr class="mb-4 mt-0 d-inline-block mx-auto">
-        <p><a href="../pages/about.php" class="text-black text-decoration-none">About Us</a></p>
-        <p><a href="../pages/contact.php" class="text-black text-decoration-none">Contact Us</a></p>
-        <p><a href="#" class="text-black text-decoration-none">Insurance</a></p>
-        <p><a href="../pages/contact.php" class="text-black text-decoration-none">Support</a></p>
+      <!-- Quick Links -->
+      <div class="footer-col">
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="../pages/about.php">About Us</a></li>
+          <li><a href="../pages/contact.php">Contact Us</a></li>
+          <li><a href="#">Insurance</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
       </div>
 
-      <!-- Vehicles -->
-      <div class="col-md-2 col-lg-2 col-xl-2">
-        <h6 class="text-uppercase fw-bold">Vehicles</h6>
-        <hr class="mb-4 mt-0 d-inline-block mx-auto">
-        <p><a href="#" class="text-black text-decoration-none">Your Account</a></p>
-        <p><a href="#" class="text-black text-decoration-none">FAQ</a></p>
-        <p><a href="#" class="text-black text-decoration-none">Privacy Policy</a></p>
-        <p><a href="#" class="text-black text-decoration-none">Terms of Service</a></p>
+      <!-- Resources -->
+      <div class="footer-col">
+        <h3 class="footer-heading">Resources</h3>
+        <ul class="footer-links">
+          <li><a href="#">Your Account</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
       </div>
 
       <!-- Download App -->
-      <div class="col-md-2 col-lg-2 col-xl-2">
-        <h6 class="text-uppercase fw-bold">Download App</h6>
-        <hr class="mb-4 mt-0 d-inline-block mx-auto">
-        <div class="footer-buttons">
-          <a href="#" class="store-btn app-store" target="_blank" rel="noopener noreferrer">
-              <i class="fa-brands fa-apple store-icon"></i>
-              <span>App Store</span>
+      <div class="footer-col">
+        <h3 class="footer-heading">Get Our App</h3>
+        <div class="app-download">
+          <a href="#" class="app-btn">
+            <i class="fab fa-apple"></i>
+            <span>App Store</span>
           </a>
-          <a href="#" class="store-btn play-store" target="_blank" rel="noopener noreferrer">
-              <i class="fa-brands fa-google-play store-icon"></i>
-              <span>Google Play</span>
+          <a href="#" class="app-btn">
+            <i class="fab fa-google-play"></i>
+            <span>Google Play</span>
           </a>
         </div>
       </div>
 
-      <!-- Contact Us -->
-      <div class="col-md-2 col-lg-2 col-xl-2">
-        <h6 class="text-uppercase fw-bold">Contact us</h6>
-        <hr class="mb-4 mt-0 d-inline-block mx-auto">
-        <p><i class="fas fa-home me-3"></i> Colombo, Sri Lanka</p>
-        <p><i class="fas fa-envelope me-3"></i><a href="mailto:support@tuktukrental.lk" class="text-black text-decoration-none">support@tuktukrental.lk</a></p>
-        <p><i class="fas fa-phone me-3"></i><a href="tel:+94123456789" class="text-black text-decoration-none">+94 755 555 555</a></p>
+      <!-- Contact Info -->
+      <div class="footer-col contact-info">
+        <h3 class="footer-heading">Contact Us</h3>
+        <ul class="contact-details">
+          <li><i class="fas fa-map-marker-alt"></i> Colombo, Sri Lanka</li>
+          <li><i class="fas fa-envelope"></i> support@tuktukrental.lk</li>
+          <li><i class="fas fa-phone-alt"></i> +94 755 555 555</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <div class="copyright">© 2025 Tuk Tuk Rental. All rights reserved.</div>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
       </div>
     </div>
   </div>
 
-    <!-- Back to Top Button -->
-  <a href="#" class="back-to-top" aria-label="Back to top">
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
-  </a>
-
-  <!-- Social + Copyright -->
-  <div class="text-center p-2 border-top">
-    © 2025 Tuk Tuk Rental. All rights reserved.
-  </div>
+  </button>
 </footer>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/685e79672d3be4190e5cb51a/1iuogkf93';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+</script>
+<!--End of Tawk.to Script-->

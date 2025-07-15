@@ -1,5 +1,9 @@
 <?php
 require_once '../config/db_connect.php';
+include_once '../includes/social_icons.php';
+require_once('../service/currencyService.php');
+$currencyService = new CurrencyService($pdo);
+$usdRate = $currencyService->getExchangeRate('LKR', 'USD');
 
 // Get form data
 $pickup_location = $_GET['pickup_location'] ?? '';
@@ -40,16 +44,19 @@ $available_vehicles = $stmt->fetchAll();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Available Three Wheels</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/availability.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
-    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <?php getSocialIconsStyles(); ?>
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
 </head>
 <body>
 <?php include '../includes/navbar.php'; ?>
-<section class="container py-5 vehicles-section">
+<section class="container py-5 vehicles-section vehicles-page">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="section-title">Available Three Wheels</h2>
         <a href="vehicles.php" class="text-decoration-none">View All <i class="fas fa-arrow-right ms-2"></i></a>
@@ -63,7 +70,13 @@ $available_vehicles = $stmt->fetchAll();
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand']); ?></h5>
-                            <div class="vehicle-price">LKR <?php echo number_format($vehicle['price_per_day'], 2); ?> <span>/day</span></div>
+                            <div class="vehicle-price" 
+                                data-price="<?php echo $vehicle['price_per_day']; ?>" 
+                                data-rate="<?php echo $usdRate; ?>">
+                                <span class="currency">LKR</span>
+                                <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                                <span class="per-day">/day</span>
+                            </div>
                         </div>
                         <div class="specs-row">
                             <div class="spec-item">
@@ -76,7 +89,7 @@ $available_vehicles = $stmt->fetchAll();
                                 <i class="fas fa-users"></i> <?php echo htmlspecialchars($vehicle['capacity']); ?> seats
                             </div>
                         </div>
-                        <a href="reservationDetails.php?id=<?php echo $vehicle['id']; ?>&pickup_location=<?php echo urlencode($pickup_location); ?>&pickup_date=<?php echo urlencode($pickup_date); ?>&pickup_time=<?php echo urlencode($pickup_time); ?>&return_location=<?php echo urlencode($return_location); ?>&return_date=<?php echo urlencode($return_date); ?>&return_time=<?php echo urlencode($return_time); ?>" class="btn view-details-btn">Book Now</a>
+                        <a href="reservationDetails.php?id=<?php echo $vehicle['id']; ?>&pickup_location=<?php echo urlencode($pickup_location); ?>&pickup_date=<?php echo urlencode($pickup_date); ?>&pickup_time=<?php echo urlencode($pickup_time); ?>&return_location=<?php echo urlencode($return_location); ?>&return_date=<?php echo urlencode($return_date); ?>&return_time=<?php echo urlencode($return_time); ?>&image_url=<?php echo urlencode($vehicle['main_image']); ?>" class="btn view-details-btn">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -90,6 +103,12 @@ $available_vehicles = $stmt->fetchAll();
         <?php endif; ?>
     </div>
 </section>
+    <?php 
+    // Display the social media icons
+    displaySocialIcons($social_config); 
+    ?>
+
 <?php include '../includes/footer.php'; ?>
+<script src="../assets/js/currencyHandler.js"></script>
 </body>
 </html> 

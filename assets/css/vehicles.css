@@ -1,14 +1,122 @@
 /* vehicles.css */
 body{
   background-color: #faf8f8f1;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* Header Section */
+.vehicles-header {
+    position: relative;
+    padding: 4rem 1rem;
+    min-height: 400px;
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    background-image: url('../images/vehicles/vehicles_background.jpeg');
+    justify-content: center;
+}
+
+.vehicles-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    rgba(38, 40, 44, 0.8),
+    rgba(25, 22, 37, 0.8)
+  );
+  z-index: 1;
+}
+
+.vehicles-header-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 1200px;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+.vehicles-header-content h1 {
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: -0.02em;
+}
+
+.vehicles-header-content p {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  margin-top: 1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Breadcrumb */
+.vehicles-header .custom-breadcrumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 1.5rem auto;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    max-width: 90%;
+    list-style: none;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.vehicles-header .breadcrumb-item {
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+    font-weight: 500;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.vehicles-header .breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0.5rem;
+    float: none;
+}
+
+.vehicles-header .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.vehicles-header .breadcrumb-item a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.vehicles-header .breadcrumb-item.active {
+    color: white;
+}
+
+
 /* Scoped styles to the vehicles-page section */
 .vehicles-page .vehicle-card {
-    background-color: #faf8f8f1;
+    background-color: #f3f0f0;
     border-radius: 12px;
     border: 1px solid #e0e0e0f3;
     margin-bottom: 25px;
-    height: 330px; /* Reduced from 400px */
+    /*height: 330px; */
+    height:auto;
     flex: 0 0 calc(25% - 15px);
     min-width: 250px;
     display: flex;
@@ -34,8 +142,8 @@ body{
 .vehicles-page .vehicle-image {
     width: 100% !important;
     max-width: none !important;
-    height: 180px;
-    object-fit: cover;
+    height: 200px;
+    object-fit: contain;
     object-position: center;
     border-radius: 12px 12px 0 0;
     margin: 0 !important;
@@ -63,14 +171,29 @@ body{
 }
 
 .vehicles-page .vehicle-price {
-    font-size: 1.1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
     font-weight: 600;
-    color: #375FE0;
+}
+
+.vehicles-page .vehicle-price .currency {
+    color: #ff7d00;
+}
+
+.vehicles-page .vehicle-price .amount {
+    font-size: 1.25rem;
+}
+
+.vehicles-page .vehicle-price .per-day {
+    color: #6c757d;
+    font-size: 0.875rem;
+    font-weight: normal;
 }
 
 .vehicles-page .vehicle-price span {
     font-size: 0.9rem;
-    color: #666;
+    color: #000000d8;
 }
 
 .vehicles-page .specs-row {
@@ -90,23 +213,55 @@ body{
 }
 
 .vehicles-page .spec-item i {
-    color: #375FE0;
+    color: #000000;
 }
 
 .vehicles-page .view-details-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    background-color: #375FE0;
-    color: #fff;
-    border: none;
+    margin: 0 auto;
+    color: #312e2e;
+    border: 1px solid #928f8f93;
     border-radius: 5px;
     padding: 10px 0;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: auto;
+    font-size: 1rem;
+    font-weight: 500;
+    background: #ffffff2c;
+    transition: all 0.3s cubic-bezier(.4,2,.6,1);
+    position: relative;
+    gap: 0.5rem;
+}
+
+.arrow-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #000000d5;
+    color: #eceaea;
+    font-size: 1.1rem;
+    transition: background 0.3s, color 0.3s, transform 0.3s;
 }
 
 .vehicles-page .view-details-btn:hover {
-    background-color: #375ee088;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+.vehicles-page .view-details-btn:hover .arrow-circle {
+    background: #fff;
+    color: #000000;
+    
+}
+
+.vehicles-page .view-details-btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(55, 95, 224, 0.25);
 }
 
 /* Brand List Section */
@@ -168,6 +323,13 @@ body{
 }
 
 /* Responsive styling */
+@media (min-width: 992px) {
+    .vehicles-header {
+        background-attachment: fixed;
+        background-position: 75% center;
+    }
+}
+
 @media (max-width: 991px) {
     .vehicles-page .vehicle-card {
         max-width: 100%;
@@ -189,6 +351,10 @@ body{
     .vehicles-page .vehicle-image {
         max-width: 150px;
         height: 90px;
+    }
+    .vehicles-header {
+        background-attachment: fixed;
+        background-position: 70% center;
     }
 }
 
@@ -212,6 +378,10 @@ body{
 
     .vehicles-page .brand-list-section ul li img {
         max-width: 200px;
+    }
+    .vehicles-header {
+        background-attachment: fixed;
+        background-position: 70% center;
     }
 }
 
@@ -245,6 +415,10 @@ body{
     .vehicles-page .section-title {
         font-size: 20px;
         text-align: center;
+    }
+    .vehicles-header {
+        background-attachment: fixed;
+        background-position: 70% center;
     }
 }
 

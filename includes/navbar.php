@@ -27,7 +27,18 @@
                     <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'active' : ''; ?>" href="about.php">ABOUT US</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'howWorks.php') ? 'active' : ''; ?>" href="howWorks.php">HOW IT WORKS</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link fw-semibold <?php echo (basename($_SERVER['PHP_SELF']) == 'contact.php') ? 'active' : ''; ?>" href="contact.php">CONTACT US</a>
+                </li>
+                <li class="nav-item">
+                    <div class="currency-selector">
+                        <select class="form-select" id="currency-select">
+                            <option>LKR</option>
+                            <option>USD</option>
+                        </select>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -42,5 +53,18 @@
                 <span class="fw-semibold text-dark">+94 755 555 555</span>
             </div>
         </div>
+
+        
     </div>
 </nav>
+
+<!-- Ring Loader -->
+<div id="site-loader" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.97);">
+  <div class="ring-loader"></div>
+</div>
+
+<script>
+window.addEventListener('load', function() {
+  document.getElementById('site-loader').style.display = 'none';
+});
+</script>

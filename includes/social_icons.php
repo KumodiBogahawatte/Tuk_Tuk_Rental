@@ -11,6 +11,7 @@ $social_config = [
     'email' => '#'
 ];
 
+
 // Function to render social media icons
 function displaySocialIcons($config) {
     $icons_svg = [
