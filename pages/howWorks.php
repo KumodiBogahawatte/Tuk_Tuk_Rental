@@ -38,8 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tuk Tuk Rental - How It Works</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -63,18 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
     
     <div class="main-content">
         <!-- Header Section -->
-        <header class="how-it-works-header text-center">
-            <div class="how-it-works-header-content">
-                <div class="container">
-                    <h1 class="display-5 fw-bold">How It Works</h1>
-                    <p>The latest way to travel around Sri Lanka in style. Hire a tuk-tuk and drive it yourself as an expert</p>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center custom-breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">How It Works</li>
-                        </ol>
-                    </nav>
-                </div>
+        <header class="how-it-works-header">
+            <div class="container">
+                <h1 class="display-4 fw-bold">How It Works</h1>
+                <p class="lead">The latest way to travel around Sri Lanka in style. Hire a tuk-tuk and drive it yourself as an expert</p>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb custom-breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">How It Works</li>
+                    </ol>
+                </nav>
             </div>
         </header>
         
@@ -147,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                                     <i class="fas fa-bluetooth-b"></i>
                                 </div>
                                 <h5>Tech Accessories</h5>
-                                <p>Do you need Bluetooth speakers / phone charging facilities / coolers, sure … we are here to provide all your needs?</p>
+                                <p>Do you need Bluetooth speakers / phone charging facilities / coolers? We provide all your needs.</p>
                             </div>
                         </div>
                     </div>
@@ -155,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                     <!-- Additional Facilities Details -->
                     <div class="row mt-5">
                         <div class="col-lg-12">
-                            <h3 class="mb-4">Additional facilities</h3>
+                            <h3 class="section-subtitle">Additional facilities</h3>
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <div class="facility-detail-card">
@@ -208,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                                         </div>
                                         <div class="facility-detail-content">
                                             <h4>Cooler/ Esky</h4>
-                                            <p>The easiest way to keep your chilled.</p>
+                                            <p>The easiest way to keep your drinks chilled.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -242,9 +241,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                                 <p>Sri Lanka is a beautiful country. If you are planning to visit Sri Lanka for a few weeks or a month, make sure to make the most of your time. Decide in advance on the places you want to visit and make a list of them. If you need help with this, talk to our team. We are ready to arrange a free tour session for you. Tell us what you need. tuktukslrental.net service is open 24 hours a day for you.</p>
                                 
                                 <!-- Guidebook Button -->
-                                <button type="button" class="guidebook-trigger btn btn-primary" id="open-guidebook">
-                                    <i class="fas fa-book"></i> View Tuk Tuk Guidebook
-                                </button>
+                                <div class="text-center mt-4">
+                                    <button type="button" class="btn btn-primary guidebook-trigger">
+                                        <i class="fas fa-book"></i> View Tuk Tuk Guidebook
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         
@@ -272,17 +273,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                                     
                                     <form method="POST" action="">
                                         <input type="hidden" name="book_meeting" value="1">
-                                        <div class="form-group mb-3">
+                                        <div class="form-group">
                                             <input type="text" class="form-control" name="customer_name" placeholder="Your Name" required>
                                         </div>
-                                        <div class="form-group mb-3">
+                                        <div class="form-group">
                                             <input type="email" class="form-control" name="customer_email" placeholder="Your Email" required>
                                         </div>
-                                        <div class="form-group mb-3">
+                                        <div class="form-group">
                                             <input type="tel" class="form-control" name="customer_phone" placeholder="Your Phone" required>
                                         </div>
-                                        <div class="form-group mb-3">
-                                            <input type="datetime-local" class="form-control" name="meeting_time"  placeholder="Meeting Date & Time" required>
+                                        <div class="form-group">
+                                            <input type="datetime-local" class="form-control" name="meeting_time" placeholder="Meeting Date & Time" required>
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">Book Meeting</button>
                                     </form>
@@ -300,72 +301,86 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="license-info">
-                                <p style="text-align: center;">You are few steps behind to collect your local license. A foreigner needs a local license to drive a vehicle in Sri Lanka. Don't worry we're here. As soon as you book your tuk tuk trip, send us a clear photo of your driver's license and passport. We'll take care of the rest.</p>
+                                <div class="text-center mb-4">
+                                    <p class="lead">You are few steps behind to collect your local license. A foreigner needs a local license to drive a vehicle in Sri Lanka. Don't worry we're here. As soon as you book your tuk tuk trip, send us a clear photo of your driver's license and passport. We'll take care of the rest.</p>
+                                </div>
                                 
-                                <div class="info-box">
-                                    <h4>More details</h4>
+                                <div class="legal-requirements">
+                                    <h4>License Requirements</h4>
                                     <p>To get an International Driving Permit (IDP) in Sri Lanka, you need to visit the Automobile Association of Ceylon (AAC). You have to bring your national driving license and two passport-size photos, then complete the application form and pay the applicable fee.</p>
                                     
-                                    <div class="legal-requirements">
-                                        <h5>*Conversion of Foreign Driving License into Sri Lankan Driving License</h5>
-                                        <p>Procedure for issuing a Sri Lankan driving license to a holder of driving license issued outside of Sri Lanka, under the provisions of section 131 of Motor Traffic Act.</p>
+                                    <div class="requirements-grid">
+                                        <div class="requirement-item">
+                                            <h5>*Conversion of Foreign Driving License into Sri Lankan Driving License</h5>
+                                            <p>Procedure for issuing a Sri Lankan driving license to a holder of driving license issued outside of Sri Lanka, under the provisions of section 131 of Motor Traffic Act.</p>
+                                        </div>
                                         
-                                        <h6>01. Common Considerations</h6>
-                                        <ul>
-                                            <li>a. The driving license produced for the conversion must be issued by one of the countries signatories to the Vienna convention of 1968 or Geneva convention of 1949 listed in schedule 1, or a SAARC country listed in schedule 2</li>
-                                            <li>b. The driving license produced for the conversion (foreign license) must be valid for at least one year from the date of conversion.</li>
-                                            <li>c. Only full driving license are considered for conversion. Training/learner's license/permit, novice license, temporary license, probationary license or other similar types of licenses are not considered for conversion.</li>
-                                            <li>d. Conversion is applied for motorcycles vehicle class (denoted by A in Sri Lankan license) and light vehicles class (denoted by B in Sri Lankan license) only.</li>
-                                            <li>e. All restrictions and conditions applied in the foreign license (e.g. corrective lens user, automatic transmission only, hearing aid user, etc.) will be applied in the converted Sri Lankan license.</li>
-                                        </ul>
+                                        <div class="requirement-item">
+                                            <h6>01. Common Considerations</h6>
+                                            <ul>
+                                                <li>The driving license produced for the conversion must be issued by one of the countries signatories to the Vienna convention of 1968 or Geneva convention of 1949 listed in schedule 1, or a SAARC country listed in schedule 2</li>
+                                                <li>The driving license produced for the conversion (foreign license) must be valid for at least one year from the date of conversion.</li>
+                                                <li>Only full driving license are considered for conversion. Training/learner's license/permit, novice license, temporary license, probationary license or other similar types of licenses are not considered for conversion.</li>
+                                                <li>Conversion is applied for motorcycles vehicle class (denoted by A in Sri Lankan license) and light vehicles class (denoted by B in Sri Lankan license) only.</li>
+                                                <li>All restrictions and conditions applied in the foreign license (e.g. corrective lens user, automatic transmission only, hearing aid user, etc.) will be applied in the converted Sri Lankan license.</li>
+                                            </ul>
+                                        </div>
                                         
-                                        <h6>02. Conversion of Foreign Driving License for Foreigners</h6>
-                                        <p>All conditions mentioned in "01. Common Considerations" and following conditions are applicable.</p>
-                                        <ul>
-                                            <li>i. Sri Lankan visa for at least one-year duration.</li>
-                                            <li>ii. Certificate to confirm mental and physical fitness, issued by the National Transport Medical Institute.</li>
-                                            <li>iii. Passing the practical examination conducted by an Examiner of Motor Vehicles.</li>
-                                            <li>iv. If the driving license is not issued by the home country of the applicant, visa for the country which issued the license (validity of the visa must overlap the validity of the driving license).</li>
-                                            <li>v. Validity period of the Sri Lankan driving license must be decided based on the remaining Sri Lankan visa of the applicant.</li>
-                                        </ul>
-                                        
-                                        <h6>03. Conversion of Foreign Driving License for Sri Lankans/Sri Lankan Dual Citizens</h6>
-                                        <p>All conditions mentioned in "01. Common Considerations" and following conditions are applicable.</p>
-                                        <ul>
-                                            <li>i. Valid Sri Lankan passport and Sri Lankan national identity card (Sri Lankan citizenship).</li>
-                                            <li>ii. Certificate to confirm mental and physical fitness, issued by the National Transport Medical Institute.</li>
-                                            <li>iii. Passing the practical examination conducted by an Examiner of Motor Vehicles.</li>
-                                            <li>iv. Visa for the country which issued the driving license (validity of the visa must overlap the validity of the driving license).</li>
-                                        </ul>
-                                        
-                                        <h6>04. Issuing a temporary Sri Lankan driving license under the provisions of section 132 of Motor Traffic Act</h6>
-                                        <p>A temporary driving license shall be issued as per the section 132 of Motor Traffic Act, to foreign national applicants who does not meet the requirement in paragraph "02. i.". All conditions from "b." to "g." in "01. Common Considerations", as well as following conditions are applicable in issuing a temporary driving license to a foreign national visiting Sri Lanka.</p>
-                                        <ul>
-                                            <li>i. The maximum validity of the temporary driving license will the lesser period from 5-month validity or remaining Sri Lankan visa period of the applicant.</li>
-                                            <li>ii. Fee is applied based on the number of months of validity of the temporary license.</li>
-                                        </ul>
-                                        
-                                        <h6>05. Exceptions</h6>
-                                        <ul>
-                                            <li>a. Sri Lankan driving license will be issued to foreign diplomats and staff members of foreign missions in Sri Lanka and without considering aforementioned conditions, according to the written requests from the Ministry of Foreign Affairs, Sri Lanka.</li>
-                                            <li>b. For citizens of countries which has signed reciprocal driving license exchange agreements, Sri Lankan driving licenses will be issued according to the provisions of relevant agreements.</li>
-                                            <li>c. In occasions where significant justifications are produced for converting the heavy vehicle classes of foreign driving licenses, consideration is given to such conversions with the special approval from the Commissioner General of Motor Traffic and subject to passing a practical test.</li>
-                                        </ul>
-                                        
-                                        <h6>06. Procedures</h6>
-                                        <p>Procedures mentioned in this circular shall not obstruct Sri Lankan and foreign national applicants from obtaining a Sri Lankan driving license through the normal procedure.</p>
-                                        
-                                        <div class="authority-signature">
-                                            <p><strong>Nishantha Anurudhdha Weerasinghe</strong><br>
-                                            Commissioner General Department of Motor Traffic</p>
-                                            <p style="font-size: 0.9rem; font-style: italic; color: #666; margin-top: 1rem;">
-                                                * If an inconsistency occurs between the original circular issued in Sinhala language and this translation, the original circular issued in Sinhala must be deemed accurate and legally valid.
+                                        <div class="requirement-item">
+                                            <h6>02. Conversion of Foreign Driving License for Foreigners</h6>
+                                            <p>All conditions mentioned in "01. Common Considerations" and following conditions are applicable.</p>
+                                            <ul>
+                                                <li>Sri Lankan visa for at least one-year duration.</li>
+                                                <li>Certificate to confirm mental and physical fitness, issued by the National Transport Medical Institute.</li>
+                                                <li>Passing the practical examination conducted by an Examiner of Motor Vehicles.</li>
+                                                <li>If the driving license is not issued by the home country of the applicant, visa for the country which issued the license (validity of the visa must overlap the validity of the driving license).</li>
+                                                <li>Validity period of the Sri Lankan driving license must be decided based on the remaining Sri Lankan visa of the applicant.</li>
+                                            </ul>
+                                        </div>
+                                        <div class="requirement-item">
+                                            <h6>03.Conversion of Foreign Driving License for Sri Lankans/Sri Lankan Dual Citizens</h6>
+                                            <p>All conditions mentioned in “01. Common Considerations” and following conditions are applicable.
+                                                Document verifications must be produced where applicable.
                                             </p>
+                                            <ul>
+                                                <li>i. Valid Sri Lankan passport and Sri Lankan national identity card (Sri Lankan citizenship)</li>
+                                                <li>ii. Certificate to confirm mental and physical fitness, issued by the National Transport Medical Institute.</li>
+                                                <li>iii. Passing the practical examination conducted by an Examiner of Motor Vehicles.</li>
+                                                <li>iv. Visa for the country which issued the driving license (validity of the visa must overlap the validity of the driving license).</li>
+                                            </ul>
                                         </div>
-                                        
-                                        <div class="link-reference">
-                                            <p><strong>LINK:</strong> <a href="https://dmt.gov.lk/index.php?option=com_content&view=article&id=53&Itemid=169&lang=en" target="_blank">https://dmt.gov.lk/index.php?option=com_content&view=article&id=53&Itemid=169&lang=en</a></p>
+                                        <div class="requirement-item">
+                                            <h6>04. Issuing a temporary Sri Lankan driving license under the provisions of section 132 of Motor Traffic Act</h6>
+                                            <p>A temporary driving license shall be issued as per the section 132 of Motor Traffic Act, to foreign national applicants who does not meet the requirement in paragraph “02. i.”. All conditions from “b.” to “g.” in “01.
+                                                Common Considerations”, as well as following conditions are applicable in issuing a temporary driving license to a foreign national visiting Sri Lanka.
+                                            </p>
+                                            <ul>
+                                                <li>i. The maximum validity of the temporary driving license will the lesser period from 5-month validity or remaining Sri Lankan visa period of the applicant.</li>
+                                                <li>ii. Fee is applied based on the number of months of validity of the temporary license</li>
+                                            </ul>
                                         </div>
+                                        <div class="requirement-item">
+                                            <h6>05. Exceptions</h6>
+                                            <p>All conditions mentioned in "01. Common Considerations" and following conditions are applicable.</p>
+                                            <ul>
+                                                <li>a. Sri Lankan driving license will be issued to foreign diplomats and staff members of foreign missions in Sri Lanka and without considering aforementioned conditions, according to the written requests from the Ministry of Foreign Affairs, Sri Lanka.</li>
+                                                <li>b. For citizens of countries which has signed reciprocal driving license exchange agreements, Sri Lankan driving licenses will be issued according to the provisions of relevant agreements.</li>
+                                                <li>c. In occasions where significant justifications are produced for converting the heavy vehicle classes of foreign driving licenses, consideration is given to such conversions with the special approval from the Commissioner General of Motor Traffic and subject to passing a practical test.</li>
+                                            </ul>
+                                        </div>
+                                        <div class="requirement-item">
+                                            <h6>06. Procedures mentioned in this circular shall not obstruct Sri Lankan and foreign national applicants from obtaining a Sri Lankan driving license through the normal procedure.</h6>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="authority-signature">
+                                        <p><strong>Nishantha Anurudhdha Weerasinghe</strong><br>
+                                        Commissioner General Department of Motor Traffic</p>
+                                        <p class="disclaimer">* If an inconsistency occurs between the original circular issued in Sinhala language and this translation, the original circular issued in Sinhala must be deemed accurate and legally valid.</p>
+                                    </div>
+                                    
+                                    <div class="link-reference">
+                                        <p><strong>Reference:</strong> <a href="https://dmt.gov.lk/index.php?option=com_content&view=article&id=53&Itemid=169&lang=en" target="_blank">Department of Motor Traffic - Sri Lanka</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -381,7 +396,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="lessons-content">
-                                <p style="text-align: center;">Once you arrive in Sri Lanka, you will be given a private driving lesson by one of our affiliated tuk tuk instructors. This will teach you in simple terms how to safely ride a tuk tuk on Sri Lankan roads.</p>
+                                <div class="text-center mb-4">
+                                    <p class="lead">Once you arrive in Sri Lanka, you will be given a private driving lesson by one of our affiliated tuk tuk instructors. This will teach you in simple terms how to safely ride a tuk tuk on Sri Lankan roads.</p>
+                                </div>
                                 
                                 <div class="lesson-steps">
                                     <div class="step-item">
@@ -393,7 +410,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                                     </div>
                                 </div>
                                 
-                                <div class="driving-lesson-details mt-4" style="text-align: center;">
+                                <div class="driving-lesson-details">
                                     <h4>Driving Lesson Details</h4>
                                     <p>Before you drive a tuk tuk on the roads of Sri Lanka, you will be given proper instructions and training by a qualified tuk tuk driver. You will also be given prior training on how to fix the tuk tuk yourself if something goes wrong. This will take a very short time, and we kindly request that you take your time for it. If you are a slow learner, we are willing to spend more time than planned.</p>
                                 </div>
@@ -410,16 +427,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="legal-content">
-                                <p style="text-align: center;">If you have a valid driving license from your home country, you can drive a vehicle in Sri Lanka. You will also need to meet two other qualifications:</p>
-                                <p style="text-align: center;">1. Sri Lankan Driving Permit </p>
-                                <p style="text-align: center;">2. Valid Vehicle Insurance</p>
-                                <p style="text-align: center;">Meanwhile, choosing a safe tuk-tuk for your trip, taking private driving lessons, 24-hour roadside vehicle repair facilities, and obtaining a repair kit will make your tuk-tuk trip even easier.</p>
-                                <div class="row mt-4">
-                                    <div class="col-lg-6">
+                                <div class="text-center mb-4">
+                                    <p class="lead">If you have a valid driving license from your home country, you can drive a vehicle in Sri Lanka. You will also need to meet two other qualifications:</p>
+                                    <div class="requirements-list">
+                                        <p><strong>1. Sri Lankan Driving Permit</strong></p>
+                                        <p><strong>2. Valid Vehicle Insurance</strong></p>
+                                    </div>
+                                    <p>Meanwhile, choosing a safe tuk-tuk for your trip, taking private driving lessons, 24-hour roadside vehicle repair facilities, and obtaining a repair kit will make your tuk-tuk trip even easier.</p>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-12">
                                         <div class="requirement-card">
-                                            <h4>1. Sri Lankan Driving Permit</h4>
+                                            <h4>Sri Lankan Driving Permit</h4>
                                             <p>To drive any vehicle within Sri Lanka, you must have a special local license. This is because several countries, including Sri Lanka, do not accept international driving licenses. Due to this legal issue, even if you have a valid license from another country, you must obtain a special driving license approved by the Sri Lankan government. Driving a vehicle in Sri Lanka without such a special license is a serious offense that can be punished.</p>
-                                            <p>If you book a tuk tuk ride through our agency, we will arrange for the relevant special vehicle license to be obtained for you.</p>
+                                            <p class="highlight-text">If you book a tuk tuk ride through our agency, we will arrange for the relevant special vehicle license to be obtained for you.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -437,18 +459,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                         <div class="col-lg-6">
                             <div class="insurance-card">
                                 <h4>Vehicle Insurance</h4>
-                                <p>Your safety is ensured by having appropriate vehicle insurance for all vehicles driven within Sri Lanka. 
-                                    Our company obtains special insurance coverage for all foreigners who rent tuk-tuks. 
-                                    This further ensures your safety. The insurance we have obtained covers you, the driver of the vehicle, the passengers, and the third party.</p>
+                                <p>Your safety is ensured by having appropriate vehicle insurance for all vehicles driven within Sri Lanka. Our company obtains special insurance coverage for all foreigners who rent tuk-tuks. This further ensures your safety. The insurance we have obtained covers you, the driver of the vehicle, the passengers, and the third party.</p>
                             </div>
                         </div>
                         
                         <div class="col-lg-6">
                             <div class="insurance-card">
                                 <h4>Personal Travel Insurance</h4>
-                                <p>In addition to the insurance coverage we provide, if you also take out individual insurance coverage, 
-                                    it will double your protection. Even if no one who has hired a tuk tuk has ever had to face a serious accident, 
-                                    it is extremely important for you to have personal insurance coverage in your country in case you suddenly have to face such an accident.</p>
+                                <p>In addition to the insurance coverage we provide, if you also take out individual insurance coverage, it will double your protection. Even if no one who has hired a tuk tuk has ever had to face a serious accident, it is extremely important for you to have personal insurance coverage in your country in case you suddenly have to face such an accident.</p>
                             </div>
                         </div>
                     </div>
@@ -483,8 +501,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                     <h2 class="section-title">Secure Online Payment</h2>
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="payment-card text-center">
+                            <div class="payment-card">
                                 <i class="fas fa-credit-card payment-icon"></i>
+                                <h4>Safe & Secure Payments</h4>
                                 <p>All your payments can be made via credit or debit card. We also remind you that a deposit of $150 is required for this. This deposit will be given to a designated account or in cash at the end of your trip.</p>
                             </div>
                         </div>
@@ -527,8 +546,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
                                 <div class="cover-image">
                                     <i class="fas fa-taxi"></i>
                                 </div>
-                                <p class="subtitle">Let's see Sri Lanka while driving a tuk-tuk</p>
-                                <div class="cover-footer">
+                                <p class="subtitle" style="color: #fff;">Let's see Sri Lanka while driving a tuk-tuk</p>
+                                <div class="cover-footer" style="color: #d88912;">
                                     <p>TukTuksLRental.com</p>
                                 </div>
                             </div>
@@ -782,7 +801,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_meeting'])) {
     ?>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
     <script src="../assets/js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
