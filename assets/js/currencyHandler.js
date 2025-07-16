@@ -1,18 +1,27 @@
-// Global object to store pricing data and exchange rate
-window.tuktukPricing = {
-    exchangeRate: 1, // Default LKR to USD rate (will be fetched)
-    currencySymbol: 'LKR',
-    pickupCharges: {}, // Fetched from API
-    extras: {},       // Fetched from API
-    durationDiscounts: {}, // Fetched from API
-};
-
 document.addEventListener('DOMContentLoaded', function() {
     const currencySelect = document.getElementById('currency-select');
+    let currentExchangeRate = parseFloat(document.querySelector('.vehicle-price')?.getAttribute('data-rate')) || 323.50;
     
-    // Function to format prices
+    // Pickup charges data (from your document)
+    const pickupCharges = {
+        'Airport': 0, 'Colombo': 0, 'Negombo': 0, 'Wadduwa office': 0, 'Benthota': 0,
+        'Hikkaduwa': 40, 'Galle': 40, 'Unawatuna': 40, 'Weligama': 50, 'Mirissa': 50,
+        'Ahangama': 45, 'Matara': 50, 'Tangalle': 50, 'Hiriketiya/Dickwella': 50,
+        'Tissa': 60, 'Kataragama': 60, 'Kandy': 50, 'Nuwara-Eliya': 60, 'Ella': 40,
+        'Haputale': 50, 'Sigiriya': 60, 'Batticaloa': 60, 'Trincomalee/Nilaweli': 60,
+        'Arugam-bay': 60, 'Anuradhapura/Polonnaruwa': 50, 'Kalpitiya': 45, 'Jaffna': 100
+    };
+
+    // Duration-based discounts
+    const durationDiscounts = [
+        { min: 1, max: 4, discount: 30 },
+        { min: 5, max: 7, discount: 25 },
+        { min: 8, max: 30, discount: 20 },
+        { min: 31, max: 60, discount: 16 },
+        { min: 61, max: Infinity, discount: 12 }
+    ];
+
     function formatPrice(amount, currency) {
-        if (isNaN(amount) || amount === null) return '';
         const formatted = parseFloat(amount).toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
@@ -20,121 +29,159 @@ document.addEventListener('DOMContentLoaded', function() {
         return currency === 'USD' ? `$${formatted}` : `Rs. ${formatted}`;
     }
 
-    // Function to convert USD to current selected currency
-    function convertUsdToCurrent(usdAmount) {
-        if (window.tuktukPricing.currencySymbol === 'USD') {
+    function convertPrice(usdAmount, toCurrency) {
+        if (toCurrency === 'USD') {
             return usdAmount;
         }
-        return usdAmount * window.tuktukPricing.exchangeRate;
+        return usdAmount * currentExchangeRate;
     }
 
-    // Main function to update all prices on the page
-    function updateAllPricesOnPage() {
-        const currentCurrency = window.tuktukPricing.currencySymbol;
+    function updatePrices(currency) {
+        // Update vehicle prices
+        document.querySelectorAll('.vehicle-price').forEach(priceElement => {
+            const basePrice = parseFloat(priceElement.dataset.price);
+            const currencySpan = priceElement.querySelector('.currency');
+            const amountSpan = priceElement.querySelector('.amount');
+            
+            if (!isNaN(basePrice)) {
+                const convertedPrice = convertPrice(basePrice, currency);
+                currencySpan.textContent = currency;
+                amountSpan.textContent = parseFloat(convertedPrice).toLocaleString('en-US', {
+                    minimumFractionDigits: 2
+                });
+            }
+        });
 
-        // Update elements with data-price-usd attributes
-        document.querySelectorAll('[data-price-usd]').forEach(element => {
-            const usdPrice = parseFloat(element.dataset.priceUsd);
-            if (!isNaN(usdPrice)) {
-                const convertedPrice = convertUsdToCurrent(usdPrice);
-                // Check if the element contains a currency span and an amount span
-                const currencySpan = element.querySelector('.currency');
-                const amountSpan = element.querySelector('.amount');
+        // Update location datalist prices
+        updateDatalistPrices(currency);
+        
+        // Update any displayed pickup charges
+        updatePickupCharges(currency);
+    }
 
-                if (currencySpan && amountSpan) {
-                    currencySpan.textContent = currentCurrency;
-                    amountSpan.textContent = parseFloat(convertedPrice).toLocaleString('en-US', {
-                        minimumFractionDigits: 2
-                    });
-                } else {
-                    // For single span elements, just update text content directly
-                    element.textContent = formatPrice(convertedPrice, currentCurrency);
+    function updateDatalistPrices(currency) {
+        document.querySelectorAll('#pickup_locations option, #return_locations option').forEach(option => {
+            const basePrice = parseFloat(option.getAttribute('data-price')) || 0;
+            const locationName = option.value;
+            
+            // Add pickup charge if applicable
+            const pickupCharge = pickupCharges[locationName] || 0;
+            const totalPrice = basePrice + pickupCharge;
+            
+            const convertedPrice = convertPrice(totalPrice, currency);
+            const formattedPrice = formatPrice(convertedPrice, currency);
+            
+            option.textContent = `${locationName} (${formattedPrice})`;
+        });
+    }
+
+    function updatePickupCharges(currency) {
+        document.querySelectorAll('.pickup-charge').forEach(element => {
+            const usdCharge = parseFloat(element.dataset.charge);
+            const convertedCharge = convertPrice(usdCharge, currency);
+            element.textContent = formatPrice(convertedCharge, currency);
+        });
+    }
+
+    function calculateDurationDiscount(days) {
+        const discount = durationDiscounts.find(d => days >= d.min && days <= d.max);
+        return discount ? discount.discount : 0;
+    }
+
+    function calculateTotalPrice(vehiclePrice, pickupLocation, returnLocation, days, currency) {
+        const pickupCharge = pickupCharges[pickupLocation] || 0;
+        const returnCharge = pickupCharges[returnLocation] || 0;
+        const durationDiscount = calculateDurationDiscount(days);
+        
+        const baseTotal = (vehiclePrice * days) + pickupCharge + returnCharge - durationDiscount;
+        return convertPrice(baseTotal, currency);
+    }
+
+    // Enhanced booking form with price calculation
+    function setupBookingForm() {
+        const form = document.getElementById('booking-form');
+        const pickupLocationInput = document.getElementById('pickup_location');
+        const returnLocationInput = document.getElementById('return_location');
+        const pickupDateInput = document.querySelector('input[name="pickup_date"]');
+        const returnDateInput = document.querySelector('input[name="return_date"]');
+        
+        function updateBookingPrice() {
+            const pickupLocation = pickupLocationInput.value;
+            const returnLocation = returnLocationInput.value;
+            const pickupDate = new Date(pickupDateInput.value);
+            const returnDate = new Date(returnDateInput.value);
+            
+            if (pickupDate && returnDate && pickupDate < returnDate) {
+                const days = Math.ceil((returnDate - pickupDate) / (1000 * 60 * 60 * 24));
+                const currency = currencySelect ? currencySelect.value : 'LKR';
+                
+                // Show estimated price (you can add this element to your form)
+                const priceDisplay = document.getElementById('estimated-price');
+                if (priceDisplay) {
+                    const vehiclePrice = 50; // Default price or get from selected vehicle
+                    const total = calculateTotalPrice(vehiclePrice, pickupLocation, returnLocation, days, currency);
+                    priceDisplay.textContent = `Estimated Total: ${formatPrice(total, currency)}`;
                 }
             }
-        });
+        }
 
-        // Update location datalist options
-        document.querySelectorAll('#pickup_locations option, #return_locations option').forEach(option => {
-            const locationName = option.value;
-            const usdCharge = window.tuktukPricing.pickupCharges[locationName] || 0;
-            const convertedCharge = convertUsdToCurrent(usdCharge);
-            option.textContent = `${locationName} (${formatPrice(convertedCharge, currentCurrency)})`;
-        });
-    }
-
-    // Fetch initial exchange rate and pricing data
-    async function fetchPricingData() {
-        try {
-            // Fetch exchange rate
-            const rateResponse = await fetch('/api/exchange-rate.php');
-            const rateData = await rateResponse.json();
-            if (rateData.rate) {
-                window.tuktukPricing.exchangeRate = parseFloat(rateData.rate);
-            } else {
-                console.error("Failed to fetch exchange rate:", rateData.error);
-            }
-
-            // Fetch all pricing data from a new API endpoint (you'll need to create this)
-            const pricingResponse = await fetch('/api/pricing-data.php'); // <-- NEW API ENDPOINT
-            const pricingData = await pricingResponse.json();
-
-            if (pricingData.success) {
-                // Map array of objects to object for easier lookup
-                pricingData.pickupCharges.forEach(item => {
-                    window.tuktukPricing.pickupCharges[item.location_name] = parseFloat(item.charge_usd);
-                });
-                pricingData.extras.forEach(item => {
-                    window.tuktukPricing.extras[item.id] = { name: item.name, price_usd: parseFloat(item.price_usd) };
-                });
-                pricingData.durationDiscounts = pricingData.durationDiscounts.map(item => ({
-                    min_days: parseInt(item.min_days),
-                    max_days: item.max_days ? parseInt(item.max_days) : Infinity,
-                    discount_usd: parseFloat(item.discount_usd)
-                }));
-            } else {
-                console.error("Failed to fetch pricing data:", pricingData.error);
-            }
-
-            // After fetching all data, update prices on the page
-            updateAllPricesOnPage();
-
-        } catch (error) {
-            console.error("Error fetching pricing data:", error);
-            // Use fallback values if API fails
-            // (You might want to hardcode some fallback rates/charges if the API is critical)
+        if (form) {
+            [pickupLocationInput, returnLocationInput, pickupDateInput, returnDateInput].forEach(input => {
+                if (input) {
+                    input.addEventListener('change', updateBookingPrice);
+                }
+            });
         }
     }
 
-    // Initialize currency and fetch data
+    // Handle currency changes
     if (currencySelect) {
+        currencySelect.addEventListener('change', function() {
+            const currency = this.value;
+            updatePrices(currency);
+            updateLocationInputsWithPrice(currency);
+            localStorage.setItem('preferredCurrency', currency);
+        });
+
+        // Load saved preference
         const savedCurrency = localStorage.getItem('preferredCurrency');
         if (savedCurrency) {
             currencySelect.value = savedCurrency;
-            window.tuktukPricing.currencySymbol = savedCurrency;
-        } else {
-            window.tuktukPricing.currencySymbol = currencySelect.value;
+            updatePrices(savedCurrency);
         }
-
-        currencySelect.addEventListener('change', function() {
-            window.tuktukPricing.currencySymbol = this.value;
-            localStorage.setItem('preferredCurrency', this.value);
-            updateAllPricesOnPage();
-        });
-    } else {
-        // If no currency select, default to LKR
-        window.tuktukPricing.currencySymbol = 'LKR';
     }
 
-    // Call fetch data on page load
-    fetchPricingData();
+    // Update location inputs with price when changed
+    function updateLocationInputsWithPrice(currency) {
+        ['pickup_location', 'return_location'].forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                const locationName = input.value.replace(/\s+\(.*?\)$/, '').trim();
+                if (locationName && pickupCharges.hasOwnProperty(locationName)) {
+                    const pickupCharge = pickupCharges[locationName];
+                    const convertedCharge = convertPrice(pickupCharge, currency);
+                    const formattedPrice = formatPrice(convertedCharge, currency);
+                    input.value = `${locationName} (${formattedPrice})`;
+                }
+            }
+        });
+    }
 
-    // Auto-update exchange rates and pricing data every hour
-    setInterval(fetchPricingData, 3600000); // 1 hour
-
-    // Expose utility functions globally for other scripts (like details.js)
-    window.tuktukUtils = {
-        formatPrice: formatPrice,
-        convertUsdToCurrent: convertUsdToCurrent,
-        getPricingData: () => window.tuktukPricing // Allow other scripts to read pricing data
-    };
+    // Initialize
+    const initialCurrency = currencySelect ? currencySelect.value : 'LKR';
+    updatePrices(initialCurrency);
+    setupBookingForm();
+    
+    // Auto-update exchange rates every hour
+    setInterval(function() {
+        fetch('/api/exchange-rate.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.rate) {
+                    currentExchangeRate = data.rate;
+                    updatePrices(currencySelect ? currencySelect.value : 'LKR');
+                }
+            })
+            .catch(error => console.log('Exchange rate update failed:', error));
+    }, 3600000); // 1 hour
 });
