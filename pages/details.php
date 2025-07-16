@@ -1,5 +1,5 @@
 <?php
-require_once '../config/db_connect.php';
+require_once '../config/db_connect.php'; // Ensures $pdo and $company_phone are available
 require_once('../service/currencyService.php');
 $currencyService = new CurrencyService($pdo);
 $usdRate = $currencyService->getExchangeRate('USD', 'LKR');
@@ -8,13 +8,17 @@ $usdRate = $currencyService->getExchangeRate('USD', 'LKR');
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 // Fetch vehicle data
-$stmt = $pdo->prepare("SELECT * FROM vehicles WHERE id = ?");
+$stmt = $pdo->prepare('SELECT * FROM vehicles WHERE id = ?');
 $stmt->execute([$id]);
 $vehicle = $stmt->fetch();
 
-// Fetch locations for datalist
+// Fetch locations for datalist (for the modal)
 $stmt = $pdo->query("SELECT name, usd_price FROM locations ORDER BY name ASC");
 $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch extras for the modal
+$stmt_extras = $pdo->query("SELECT id, name, description, usd_price FROM extras WHERE is_active = 1");
+$extras = $stmt_extras->fetchAll(PDO::FETCH_ASSOC);
 
 // If vehicle not found, redirect to vehicles page
 if (!$vehicle) {
@@ -37,7 +41,6 @@ $other_vehicles = $stmt->fetchAll();
     <title><?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?> - TukTuk Rental</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <!-- Font Awesome CSS -->
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- AOS Library CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -58,8 +61,8 @@ $other_vehicles = $stmt->fetchAll();
             <div class="row">
                 <!-- Vehicle Image on Left -->
                 <h2 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?></h2>
-                <div class="vehicle-price" 
-                                data-price="<?php echo $vehicle['usd_price']; ?>" 
+                <div class="vehicle-price"
+                                data-price="<?php echo $vehicle['usd_price']; ?>"
                                 data-rate="<?php echo $usdRate; ?>">
                                 <span class="currency">USD</span>
                                 <span class="amount"><?php echo number_format($vehicle['usd_price'], 2); ?></span>
@@ -177,8 +180,9 @@ $other_vehicles = $stmt->fetchAll();
                 </div>
                 <div class="modal-body">
                     <form id="reservationForm" action="availability.php" method="GET">
-                        <input type="hidden" name="vehicle_id" value="<?php echo $vehicle['id']; ?>">
-                        
+                        <input type="hidden" name="id" value="<?php echo $vehicle['id']; ?>">
+                        <input type="hidden" name="image_url" value="<?php echo htmlspecialchars($vehicle['main_image']); ?>">
+
                         <div class="row mb-1">
                             <div class="col-md-6">
                                 <label class="form-label">Pick-Up Location</label>
@@ -248,9 +252,31 @@ $other_vehicles = $stmt->fetchAll();
                             </div>
                         </div>
 
+                        <!-- New: Extras Selection -->
+                        <?php if (!empty($extras)): ?>
+                        <div class="mb-4">
+                            <label class="form-label">Additional Extras</label>
+                            <div class="row">
+                                <?php foreach ($extras as $extra): ?>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input extra-checkbox" type="checkbox" name="extras[]" value="<?php echo $extra['id']; ?>" id="extra_<?php echo $extra['id']; ?>" data-price="<?php echo $extra['usd_price']; ?>">
+                                        <label class="form-check-label" for="extra_<?php echo $extra['id']; ?>">
+                                            <?php echo htmlspecialchars($extra['name']); ?> ($<?php echo number_format($extra['usd_price'], 2); ?>)
+                                            <?php if (!empty($extra['description'])): ?>
+                                                <small class="text-muted d-block"><?php echo htmlspecialchars($extra['description']); ?></small>
+                                            <?php endif; ?>
+                                        </label>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Check Availability</button>
+                            <button type="submit" class="btn btn-primary">Check availability</button>
                         </div>
                     </form>
                 </div>
@@ -272,8 +298,8 @@ $other_vehicles = $stmt->fetchAll();
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="vehicle-brand"><?php echo htmlspecialchars($other_vehicle['brand']); ?></h5>
-                            <div class="vehicle-price" 
-                                data-price="<?php echo $other_vehicle['usd_price']; ?>" 
+                            <div class="vehicle-price"
+                                data-price="<?php echo $other_vehicle['usd_price']; ?>"
                                 data-rate="<?php echo $usdRate; ?>">
                                 <span class="currency">USD</span>
                                 <span class="amount">
@@ -296,7 +322,7 @@ $other_vehicles = $stmt->fetchAll();
                                 <i class="fas fa-users"></i> <?php echo htmlspecialchars($other_vehicle['capacity']); ?> seats
                             </div>
                         </div>
-                        <a href="details.php?id=<?php echo $vehicle['id']; ?>" class="btn view-details-btn mx-auto d-flex align-items-center justify-content-center">
+                        <a href="details.php?id=<?php echo $other_vehicle['id']; ?>" class="btn view-details-btn mx-auto d-flex align-items-center justify-content-center">
                             View Details
                             <span class="arrow-circle ms-2">
                                 <i class="fas fa-arrow-right"></i>
@@ -323,10 +349,29 @@ $other_vehicles = $stmt->fetchAll();
     <script>
         AOS.init();
     </script>
+    <script>
+        // Initialize Flatpickr for date and time inputs in the modal
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr(".date-input", {
+                dateFormat: "d/m/Y",
+            });
+            flatpickr(".time-input", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true
+            });
+        });
+        // Function to open the reservation modal
+        function openReservationModal() {
+            var myModal = new bootstrap.Modal(document.getElementById('reservationModal'));
+            myModal.show();
+        }
+    </script>
 
-    <?php 
+    <?php
     // Display the social media icons
-    displaySocialIcons($social_config); 
+    displaySocialIcons($social_config);
     ?>
   </body>
 </html>

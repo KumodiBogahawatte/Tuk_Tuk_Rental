@@ -46,12 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Insert vehicle data
-    $stmt = $pdo->prepare("INSERT INTO vehicles (brand, model, price_per_day, gear_box, fuel_type, max_speed, capacity, fuel_tank, mileage, main_image, image1, image2, image3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO vehicles (brand, model, usd_price, gear_box, fuel_type, max_speed, capacity, fuel_tank, mileage, main_image, image1, image2, image3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     $stmt->execute([
         $_POST['brand'],
         $_POST['model'],
-        $_POST['price_per_day'],
+        $_POST['usd_price'],
         $_POST['gear_box'],
         $_POST['fuel_type'],
         $_POST['max_speed'],
@@ -94,8 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="text" class="form-control" id="model" name="model" required>
                     </div>
                     <div class="mb-3">
-                        <label for="price_per_day" class="form-label">Price per Day (LKR)</label>
-                        <input type="number" class="form-control" id="price_per_day" name="price_per_day" step="0.01" required>
+                        <label for="usd_price" class="form-label">Price per Day (USD)</label>
+                        <input type="number" class="form-control" id="usd_price" name="usd_price" step="0.01" required>
                     </div>
                     <div class="mb-3">
                         <label for="gear_box" class="form-label">Gear Box</label>

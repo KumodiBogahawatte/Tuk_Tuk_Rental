@@ -1,17 +1,19 @@
 <?php
-require_once '../config/db_connect.php';
+require_once '../config/db_connect.php'; // Ensures $pdo and $company_phone are available
 include_once '../includes/social_icons.php';
-require_once('../service/currencyService.php');
+require_once('../service/currencyService.php'); // Ensure this file exists and works
 $currencyService = new CurrencyService($pdo);
-$usdRate = $currencyService->getExchangeRate('USD', 'LKR');
+$usdRate = $currencyService->getExchangeRate('USD', 'LKR'); // Rate for display if LKR is used
 
-// Get form data
+// Get form data (these come from index.php booking form or details.php modal)
 $pickup_location = $_GET['pickup_location'] ?? '';
 $pickup_date = $_GET['pickup_date'] ?? '';
 $pickup_time = $_GET['pickup_time'] ?? '';
 $return_location = $_GET['return_location'] ?? '';
 $return_date = $_GET['return_date'] ?? '';
 $return_time = $_GET['return_time'] ?? '';
+// New: Capture extras selected from the details.php modal
+$selected_extra_ids = isset($_GET['extras']) && is_array($_GET['extras']) ? $_GET['extras'] : [];
 
 // Convert dates to Y-m-d for SQL
 function parseDate($date) {
@@ -26,7 +28,7 @@ $return_date_sql = parseDate($return_date);
 
 // Find vehicles NOT reserved for any part of the requested period
 $sql = "SELECT * FROM vehicles WHERE id NOT IN (
-    SELECT vehicle_id FROM reservations WHERE status IN ('pending','confirmed')
+    SELECT vehicle_id FROM reservations WHERE status IN ('pending','confirmed','pending_deposit','pending_pickup_payment')
     AND (
         (pickup_date <= :return_date AND return_date >= :pickup_date)
     )
@@ -46,7 +48,6 @@ $available_vehicles = $stmt->fetchAll();
     <title>Available Three Wheels</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <!-- Font Awesome CSS -->
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/availability.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
@@ -70,8 +71,8 @@ $available_vehicles = $stmt->fetchAll();
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand']); ?></h5>
-                            <div class="vehicle-price" 
-                                data-price="<?php echo $vehicle['usd_price']; ?>" 
+                            <div class="vehicle-price"
+                                data-price="<?php echo $vehicle['usd_price']; ?>"
                                 data-rate="<?php echo $usdRate; ?>">
                                 <span class="currency">USD</span>
                                 <span class="amount"><?php echo number_format($vehicle['usd_price'], 2); ?></span>
@@ -89,7 +90,25 @@ $available_vehicles = $stmt->fetchAll();
                                 <i class="fas fa-users"></i> <?php echo htmlspecialchars($vehicle['capacity']); ?> seats
                             </div>
                         </div>
-                        <a href="reservationDetails.php?id=<?php echo $vehicle['id']; ?>&pickup_location=<?php echo urlencode($pickup_location); ?>&pickup_date=<?php echo urlencode($pickup_date); ?>&pickup_time=<?php echo urlencode($pickup_time); ?>&return_location=<?php echo urlencode($return_location); ?>&return_date=<?php echo urlencode($return_date); ?>&return_time=<?php echo urlencode($return_time); ?>&image_url=<?php echo urlencode($vehicle['main_image']); ?>" class="btn view-details-btn">Book Now</a>
+                        <?php
+                            // Prepare base URL params
+                            $baseUrlParams = [
+                                'id' => $vehicle['id'],
+                                'pickup_location' => $pickup_location,
+                                'pickup_date' => $pickup_date,
+                                'pickup_time' => $pickup_time,
+                                'return_location' => $return_location,
+                                'return_date' => $return_date,
+                                'return_time' => $return_time,
+                                'image_url' => $vehicle['main_image']
+                            ];
+
+                            // Add extras to URL params if any were selected
+                            if (!empty($selected_extra_ids)) {
+                                $baseUrlParams['extras'] = $selected_extra_ids; // Add array directly, http_build_query handles it
+                            }
+                        ?>
+                        <a href="reservationDetails.php?<?php echo http_build_query($baseUrlParams); ?>" class="btn view-details-btn">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -103,12 +122,12 @@ $available_vehicles = $stmt->fetchAll();
         <?php endif; ?>
     </div>
 </section>
-    <?php 
+    <?php
     // Display the social media icons
-    displaySocialIcons($social_config); 
+    displaySocialIcons($social_config);
     ?>
 
 <?php include '../includes/footer.php'; ?>
 <script src="../assets/js/currencyHandler.js"></script>
 </body>
-</html> 
+</html>

@@ -92,7 +92,7 @@ try {
                         </td>
                         <td><?= htmlspecialchars($vehicle['brand']); ?></td>
                         <td><?= htmlspecialchars($vehicle['model']); ?></td>
-                        <td>LKR <?= number_format($vehicle['price_per_day'], 2); ?></td>
+                        <td>USD <?= number_format($vehicle['usd_price'], 2); ?></td>
                         <td><?= htmlspecialchars($vehicle['gear_box']); ?></td>
                         <td><?= htmlspecialchars($vehicle['fuel_type']); ?></td>
                         <td><?= htmlspecialchars($vehicle['capacity']); ?></td>
