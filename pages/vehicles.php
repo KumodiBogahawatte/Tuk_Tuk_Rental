@@ -1,18 +1,19 @@
 <?php
 require_once '../config/db_connect.php';
-require_once('../service/currencyService.php');
+require_once('../service/CurrencyService.php');
+require_once('../service/ReservationService.php'); // Add this
+
 $currencyService = new CurrencyService($pdo);
-$usdRate = $currencyService->getExchangeRate('LKR', 'USD');
+$reservationService = new ReservationService($pdo, $currencyService); // Instantiate
+
 // Get filter from URL
 $filter = $_GET['type'] ?? 'All';
 
-// Prepare the SQL query based on filter
 $sql = "SELECT * FROM vehicles";
 if ($filter !== 'All') {
     $sql .= " WHERE fuel_type = ?";
 }
 
-// Execute the query
 $stmt = $pdo->prepare($sql);
 if ($filter !== 'All') {
     $stmt->execute([$filter]);
@@ -57,7 +58,7 @@ $vehicles = $stmt->fetchAll();
         </div>
     </header>
 
-    <!-- Professional Tuk-Tuk Showcase -->
+    <!-- Professional Tuk-Tuk Showcase (no changes) -->
     <section class="tuktuk-showcase">
         <!-- Content will be dynamically generated -->
     </section>
@@ -95,11 +96,10 @@ $vehicles = $stmt->fetchAll();
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand']); ?></h5>
-                            <div class="vehicle-price" 
-                                data-price="<?php echo $vehicle['price_per_day']; ?>" 
-                                data-rate="<?php echo $usdRate; ?>">
+                            <div class="vehicle-price"
+                                data-price-usd="<?php echo $vehicle['price_per_day']; ?>">
                                 <span class="currency">LKR</span>
-                                <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                                <span class="amount"></span>
                                 <span class="per-day">/day</span>
                             </div>
                         </div>
@@ -137,9 +137,6 @@ $vehicles = $stmt->fetchAll();
     </script>
     <script src="../assets/js/currencyHandler.js"></script>
     <script src="../assets/js/tukTukShowcase.js"></script>
-    <?php 
-    // Display the social media icons
-    displaySocialIcons($social_config); 
-    ?>
+    <?php displaySocialIcons($social_config); ?>
   </body>
 </html>

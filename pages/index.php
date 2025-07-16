@@ -1,20 +1,20 @@
 <?php
 require_once '../config/db_connect.php';
 include_once '../includes/social_icons.php';
-require_once('../service/currencyService.php');
-$currencyService = new CurrencyService($pdo);
-$usdRate = $currencyService->getExchangeRate('USD', 'LKR');
+require_once '../service/CurrencyService.php';
+require_once '../service/ReservationService.php';
 
-// Fetch 6 vehicles for display
+$currencyService = new CurrencyService($pdo);
+$reservationService = new ReservationService($pdo, $currencyService);
+
 $stmt = $pdo->query("SELECT * FROM vehicles ORDER BY id DESC LIMIT 6");
 $vehicles = $stmt->fetchAll();
 
-// Fetch locations for datalist
-$stmt = $pdo->query("SELECT name, usd_price FROM locations ORDER BY name ASC");
+// Fetch locations for datalist (only name and base charge, JS will handle conversion)
+$stmt = $pdo->query("SELECT location_name AS name, charge_usd AS price FROM pickup_charges ORDER BY location_name ASC");
 $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!-- Main landing page -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -22,13 +22,9 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tuk Tuk Rental </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <!-- Font Awesome CSS -->
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- AOS Library CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <!-- Add Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="stylesheet" href="../assets/css/index.css">
@@ -51,27 +47,15 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <a href="vehicles.php" class="btn view-btn d-inline-block">View all Three Wheel</a>
                     </div>
                     <div class="col-lg-6" data-aos="fade-left">
-                        <!-- <div class="tire-background">
-                            <img src="../assets/images/home/tire.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="Decorative Tire">
-                        </div> -->
                         <div class="booking-form">
                             <h4 class="mb-4">Book your tuktuk</h4>
-                            <form action="availability.php" id="booking-form" method="GET">
+                            <form action="reservation.php" id="booking-form" method="GET">
                                 <p class="form-label-title" style="color: black !important;"><i class="fa-solid fa-location-dot me-2"></i>Pick-Up Information</p>
                                 <label for="pickup_location">Pick-Up Location</label>
                                 <input list="pickup_locations" name="pickup_location" id="pickup_location" class="form-control" required autocomplete="off">
                                 <datalist id="pickup_locations">
                                     <?php foreach ($locations as $loc): ?>
-                                        <option 
-                                            class="location-option"
-                                            data-price="<?php echo $loc['usd_price']; ?>"
-                                            value="<?php echo htmlspecialchars($loc['name']); ?>">
-                                            <?php
-                                                $usd_price = $loc['usd_price'];
-                                                $lkr_price = is_numeric($usd_price) ? number_format($usd_price * $usdRate, 2) : $usd_price;
-                                                echo htmlspecialchars($loc['name']) . " (LKR $lkr_price)";
-                                            ?>
-                                        </option>
+                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price-usd="<?php echo $loc['price']; ?>"></option>
                                     <?php endforeach; ?>
                                 </datalist><br>
                                 <div class="row">
@@ -97,16 +81,7 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <input list="return_locations" name="return_location" id="return_location" class="form-control" required autocomplete="off">
                                 <datalist id="return_locations">
                                     <?php foreach ($locations as $loc): ?>
-                                        <option 
-                                            class="location-option"
-                                            data-price="<?php echo $loc['usd_price']; ?>"
-                                            value="<?php echo htmlspecialchars($loc['name']); ?>">
-                                            <?php
-                                                $usd_price = $loc['usd_price'];
-                                                $lkr_price = is_numeric($usd_price) ? number_format($usd_price * $usdRate, 2) : $usd_price;
-                                                echo htmlspecialchars($loc['name']) . " (LKR $lkr_price)";
-                                            ?>
-                                        </option>
+                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price-usd="<?php echo $loc['price']; ?>"></option>
                                     <?php endforeach; ?>
                                 </datalist><br>
                                 <div class="row">
@@ -138,7 +113,7 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </section>
 
-        <!-- Features Section -->
+        <!-- Features Section (no changes here as they are static content) -->
         <section class="container py-5 features-section">
             <div class="row">
                 <div class="col-md-4 mb-4">
@@ -174,7 +149,7 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </section>
 
-        <!-- Why Choose Us Section -->
+        <!-- Why Choose Us Section (no changes here) -->
         <section class="container-fluid py-5 why-choose-section">
             <div class="container">
                 <div class="why-choose-container">
@@ -272,23 +247,17 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="col-md-5 col-lg-4 mb-4">
                     <div class="card vehicle-card" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true"
         data-aos-once="false">
-                        <img src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>" 
-                            class="card-img-top vehicle-image" 
+                        <img src="../<?php echo htmlspecialchars($vehicle['main_image']); ?>"
+                            class="card-img-top vehicle-image"
                             alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>">
                         
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="card-title vehicle-brand mb-0"><?php echo htmlspecialchars($vehicle['brand']); ?></h5>
-                                <div class="vehicle-price" 
-                                    data-price="<?php echo htmlspecialchars($vehicle['usd_price']); ?>" 
-                                    data-rate="<?php echo htmlspecialchars($usdRate); ?>">
+                                <div class="vehicle-price"
+                                    data-price-usd="<?php echo htmlspecialchars($vehicle['price_per_day']); ?>">
                                     <span class="currency">LKR</span>
-                                    <span class="amount">
-                                        <?php
-                                            $usd_price = $vehicle['usd_price'];
-                                            echo is_numeric($usd_price) ? number_format($usd_price * $usdRate, 2) : htmlspecialchars($usd_price);
-                                        ?>
-                                    </span>
+                                    <span class="amount"></span>
                                     <span class="per-day">/day</span>
                                 </div>
                             </div>
@@ -318,7 +287,7 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </section>
 
-        <!-- Statistics Section -->
+        <!-- Statistics Section (no changes here) -->
         <section class="container-fluid py-5 stats-section">
             <div class="container">
                 <div class="text-center mb-5">
@@ -391,26 +360,20 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
             </div>
-            
-            <!-- Floating decorative elements -->
-            <!-- <div class="stat-circle circle-1"></div>
-            <div class="stat-circle circle-2"></div>
-            <div class="stat-circle circle-3"></div> -->
         </section>
 
-
-        <!-- Mobile App Section - Left Devices / Right Content -->
+        <!-- Mobile App Section - Left Devices / Right Content (no changes here) -->
         <section class="container-fluid app-section">
             <div class="container">
                 <div class="row align-items-center">
                     <!-- Left Side - Device Showcase -->
                     <div class="col-lg-6 device-showcase" data-aos="fade-right">
                         <div class="phone-stack position-relative">
-                            <img src="../assets/images/home/mobileApp.png" 
-                                class="phone back-phone position-absolute img-fluid" 
+                            <img src="../assets/images/home/mobileApp.png"
+                                class="phone back-phone position-absolute img-fluid"
                                 alt="Back phone">
-                            <img src="../assets/images/home/mobileApp.png" 
-                                class="phone front-phone position-absolute img-fluid" 
+                            <img src="../assets/images/home/mobileApp.png"
+                                class="phone front-phone position-absolute img-fluid"
                                 alt="Front phone">
                         </div>
                     </div>
@@ -440,7 +403,7 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </section>
 
-        <!-- CTA Section -->
+        <!-- CTA Section (no changes here) -->
         <section class="container-fluid py-5 cta-section">
             <div class="container">
                 <div class="row align-items-center">
@@ -453,14 +416,11 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <a href="../pages/contact.php" class="cta-btn cta-secondary">Contact Us</a>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-6 cta-image" data-aos="fade-left">
-                        <img src="../assets/images/home/transport.png" alt="Colorful Tuk Tuk" class="img-fluid">
-                    </div> -->
                 </div>
             </div>
         </section>
 
-        <!-- Reviews Section -->
+        <!-- Reviews Section (no changes here) -->
         <section class="container-fluid reviews-section py-4">
             <div class="container">
                 <h2 class="text-center mb-5">Reviews from out customer</h2>
@@ -469,7 +429,6 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="swiper reviewsSwiper">
                     <div class="swiper-wrapper">
                         <?php 
-                        // Add more reviews here
                         $reviews = [
                             [
                                 'text' => 'Et eleifend velut at sapien pulvermusce mollis non dignissim Donec tincidunt dui at dui vulputate, feugis ac semper ante porttitor sit.',
@@ -501,7 +460,6 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 'name' => 'Taylor Kinsoe',
                                 'image' => '../assets/images/about/dp3.png'
                             ],
-                            // Add more reviews as needed
                         ];
 
                         foreach($reviews as $review): ?>
@@ -528,25 +486,24 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </section>
-    </div> <!-- End of main-content -->
+    </div>
 
     <?php include '../includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-    <!-- GSAP (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-    <!-- AOS Library JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <script src="../assets/js/index.js"></script>
     <script src="../assets/js/currencyHandler.js"></script>
-    <?php 
-    // Display the social media icons
-    displaySocialIcons($social_config); 
-    ?>
+    <script>
+        // Pass initial data to currencyHandler.js
+        const phpLocations = <?php echo json_encode($locations); ?>;
+        // The main currency handler will fetch actual rates
+    </script>
 
-    <!-- Add Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <?php displaySocialIcons($social_config); ?>
 
     <script>
         var swiper = new Swiper(".reviewsSwiper", {

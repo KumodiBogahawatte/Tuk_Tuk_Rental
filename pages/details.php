@@ -1,31 +1,31 @@
 <?php
 require_once '../config/db_connect.php';
-require_once('../service/currencyService.php');
+require_once '../includes/social_icons.php';
+require_once '../service/CurrencyService.php';
+require_once '../service/ReservationService.php';
+
 $currencyService = new CurrencyService($pdo);
-$usdRate = $currencyService->getExchangeRate('LKR', 'USD');
+$reservationService = new ReservationService($pdo, $currencyService);
 
-// Get vehicle ID from URL
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$vehicle = $reservationService->getVehicleById($id);
 
-// Fetch vehicle data
-$stmt = $pdo->prepare("SELECT * FROM vehicles WHERE id = ?");
-$stmt->execute([$id]);
-$vehicle = $stmt->fetch();
-
-// Fetch locations for datalist
-$stmt = $pdo->query("SELECT name, usd_price FROM locations ORDER BY name ASC");
-$locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// If vehicle not found, redirect to vehicles page
 if (!$vehicle) {
     header('Location: vehicles.php');
     exit();
 }
 
-// Fetch other vehicles for the "OTHER THREE WHEELS" section
-$stmt = $pdo->prepare("SELECT * FROM vehicles WHERE id != ? ORDER BY RAND() LIMIT 6");
-$stmt->execute([$id]);
-$other_vehicles = $stmt->fetchAll();
+$other_vehicles = $pdo->prepare("SELECT * FROM vehicles WHERE id != ? ORDER BY RAND() LIMIT 6");
+$other_vehicles->execute([$id]);
+$other_vehicles = $other_vehicles->fetchAll();
+
+// Fetch all available extras
+$allExtras = $reservationService->getAllExtras();
+
+// Fetch all locations with their base USD price
+// Note: Frontend JS will use the ReservationService to get dynamic charges
+$stmt = $pdo->query("SELECT location_name AS name, charge_usd AS price FROM pickup_charges ORDER BY location_name ASC");
+$locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <?php include '../includes/navbar.php'; ?>
 <?php include '../includes/social_icons.php'; ?>
@@ -36,10 +36,7 @@ $other_vehicles = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?> - TukTuk Rental</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <!-- Font Awesome CSS -->
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- AOS Library CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -58,11 +55,10 @@ $other_vehicles = $stmt->fetchAll();
             <div class="row">
                 <!-- Vehicle Image on Left -->
                 <h2 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?></h2>
-                <div class="vehicle-price" 
-                                data-price="<?php echo $vehicle['price_per_day']; ?>" 
-                                data-rate="<?php echo $usdRate; ?>">
+                <div class="vehicle-price"
+                                data-price-usd="<?php echo $vehicle['price_per_day']; ?>">
                                 <span class="currency">LKR</span>
-                                <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                                <span class="amount"></span>
                                 <span class="per-day">/day</span>
                             </div>
                 <div class="col-md-6 mb-4">
@@ -158,6 +154,27 @@ $other_vehicles = $stmt->fetchAll();
                             </div>
                         </div>
                     </div>
+
+                    <?php if ($vehicle['license_required']): ?>
+                    <div class="card mt-4">
+                        <div class="card-body text-center">
+                            <i class="fas fa-id-card fa-2x mb-2" style="color: #375FE0;"></i>
+                            <h5 class="card-title">License Required</h5>
+                            <p class="card-text">
+                                This vehicle requires a valid local or international three-wheeler license.
+                                <?php if ($vehicle['license_fee_usd'] > 0): ?>
+                                You will be charged an additional fee of
+                                <span class="license-fee-display" data-price-usd="<?php echo $vehicle['license_fee_usd']; ?>"></span>
+                                for license processing.
+                                <?php endif; ?>
+                                <?php if ($vehicle['license_details']): ?>
+                                <br><?php echo nl2br(htmlspecialchars($vehicle['license_details'])); ?>
+                                <?php endif; ?>
+                            </p>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
                     <!-- Book Now button below the grid -->
                     <div class="mt-4">
                         <button class="btn btn-sm btn-book" onclick="openReservationModal()">Book Now</button>
@@ -176,8 +193,9 @@ $other_vehicles = $stmt->fetchAll();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="reservationForm" action="availability.php" method="GET">
+                    <form id="reservationForm" action="reservation.php" method="GET">
                         <input type="hidden" name="vehicle_id" value="<?php echo $vehicle['id']; ?>">
+                        <input type="hidden" name="vehicle_image" value="<?php echo htmlspecialchars($vehicle['main_image']); ?>">
                         
                         <div class="row mb-1">
                             <div class="col-md-6">
@@ -185,24 +203,20 @@ $other_vehicles = $stmt->fetchAll();
                                 <input list="pickup_locations" name="pickup_location" id="pickup_location" class="form-control" required autocomplete="off">
                                 <datalist id="pickup_locations">
                                     <?php foreach ($locations as $loc): ?>
-                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price="<?php echo $loc['price']; ?>">
-                                            <?php echo htmlspecialchars($loc['name']); ?> (LKR <?php echo number_format($loc['price'], 2); ?>)
-                                        </option>
+                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price-usd="<?php echo $loc['price']; ?>"></option>
                                     <?php endforeach; ?>
                                 </datalist>
-                                <span id="pickup-location-price" class="text-muted"></span>
+                                <small id="pickup-location-info" class="text-muted"></small>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Return Location</label>
                                 <input list="return_locations" name="return_location" id="return_location" class="form-control" required autocomplete="off">
                                 <datalist id="return_locations">
                                     <?php foreach ($locations as $loc): ?>
-                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price="<?php echo $loc['price']; ?>">
-                                            <?php echo htmlspecialchars($loc['name']); ?> (LKR <?php echo number_format($loc['price'], 2); ?>)
-                                        </option>
+                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price-usd="<?php echo $loc['price']; ?>"></option>
                                     <?php endforeach; ?>
                                 </datalist>
-                                <span id="return-location-price" class="text-muted"></span>
+                                <small id="return-location-info" class="text-muted"></small>
                             </div>
                         </div>
 
@@ -248,9 +262,30 @@ $other_vehicles = $stmt->fetchAll();
                             </div>
                         </div>
 
+                        <h5 class="mt-4 mb-3">Additional/Extras</h5>
+                        <div class="row">
+                            <?php foreach ($allExtras as $extra): ?>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input extra-checkbox" type="checkbox"
+                                            name="extras[]" value="<?php echo $extra['id']; ?>"
+                                            id="extra_<?php echo $extra['id']; ?>"
+                                            data-price-usd="<?php echo $extra['price_usd']; ?>">
+                                        <label class="form-check-label" for="extra_<?php echo $extra['id']; ?>">
+                                            <?php echo htmlspecialchars($extra['name']); ?>
+                                            <span class="extra-price-display" data-price-usd="<?php echo $extra['price_usd']; ?>"></span>
+                                        </label>
+                                        <?php if ($extra['description']): ?>
+                                            <small class="text-muted d-block ms-4"><?php echo htmlspecialchars($extra['description']); ?></small>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Check Availability</button>
+                            <button type="submit" class="btn btn-primary">Proceed to Reservation</button>
                         </div>
                     </form>
                 </div>
@@ -272,11 +307,10 @@ $other_vehicles = $stmt->fetchAll();
                     <div class="vehicle-details">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="vehicle-brand"><?php echo htmlspecialchars($other_vehicle['brand']); ?></h5>
-                            <div class="vehicle-price" 
-                                data-price="<?php echo $vehicle['price_per_day']; ?>" 
-                                data-rate="<?php echo $usdRate; ?>">
+                            <div class="vehicle-price"
+                                data-price-usd="<?php echo $other_vehicle['price_per_day']; ?>">
                                 <span class="currency">LKR</span>
-                                <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                                <span class="amount"></span>
                                 <span class="per-day">/day</span>
                             </div>
                         </div>
@@ -291,7 +325,7 @@ $other_vehicles = $stmt->fetchAll();
                                 <i class="fas fa-users"></i> <?php echo htmlspecialchars($other_vehicle['capacity']); ?> seats
                             </div>
                         </div>
-                        <a href="details.php?id=<?php echo $vehicle['id']; ?>" class="btn view-details-btn mx-auto d-flex align-items-center justify-content-center">
+                        <a href="details.php?id=<?php echo $other_vehicle['id']; ?>" class="btn view-details-btn mx-auto d-flex align-items-center justify-content-center">
                             View Details
                             <span class="arrow-circle ms-2">
                                 <i class="fas fa-arrow-right"></i>
@@ -306,22 +340,21 @@ $other_vehicles = $stmt->fetchAll();
 
     <?php include '../includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-    <!-- GSAP (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-    <!-- AOS Library JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Custom JS -->
     <script src="../assets/js/index.js"></script>
     <script src="../assets/js/details.js"></script>
     <script src="../assets/js/currencyHandler.js"></script>
     <script>
         AOS.init();
+        // Pass PHP data to JavaScript
+        const phpLocations = <?php echo json_encode($locations); ?>;
+        const phpExtras = <?php echo json_encode($allExtras); ?>;
+        const phpVehicleDailyRate = <?php echo $vehicle['price_per_day']; ?>;
+        const phpLicenseFee = <?php echo $vehicle['license_fee_usd']; ?>;
+        const phpLicenseRequired = <?php echo json_encode($vehicle['license_required']); ?>;
     </script>
-
-    <?php 
-    // Display the social media icons
-    displaySocialIcons($social_config); 
-    ?>
+    <?php displaySocialIcons($social_config); ?>
   </body>
 </html>

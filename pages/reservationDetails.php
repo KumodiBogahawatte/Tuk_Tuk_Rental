@@ -2,168 +2,196 @@
 session_start();
 require_once '../config/db_connect.php';
 include_once '../includes/social_icons.php';
-require_once '../service/currencyService.php';
+require_once '../service/CurrencyService.php';
+require_once '../service/ReservationService.php';
+
 $currencyService = new CurrencyService($pdo);
-$usdRate = $currencyService->getExchangeRate('LKR', 'USD');
-$depositLKR = 5000; // Fixed deposit in LKR
+$reservationService = new ReservationService($pdo, $currencyService);
 
-// Get vehicle and booking info from query params
-$vehicle_id = $_GET['id'] ?? null;
-$pickup_location = $_GET['pickup_location'] ?? '';
-$pickup_date = $_GET['pickup_date'] ?? '';
-$pickup_time = $_GET['pickup_time'] ?? '';
-$return_location = $_GET['return_location'] ?? '';
-$return_date = $_GET['return_date'] ?? '';
-$return_time = $_GET['return_time'] ?? '';
-$image_url = $_GET['image_url'] ?? '';
+// --- Handle GET parameters from booking forms (index.php, details.php) ---
+// Initialize variables from GET or SESSION if navigating back/forth
+$vehicle_id = $_GET['vehicle_id'] ?? $_SESSION['reservation_data']['vehicle_id'] ?? null;
+$pickup_location = $_GET['pickup_location'] ?? $_SESSION['reservation_data']['pickup_location'] ?? '';
+$pickup_date = $_GET['pickup_date'] ?? $_SESSION['reservation_data']['pickup_date'] ?? '';
+$pickup_time = $_GET['pickup_time'] ?? $_SESSION['reservation_data']['pickup_time'] ?? '';
+$return_location = $_GET['return_location'] ?? $_SESSION['reservation_data']['return_location'] ?? '';
+$return_date = $_GET['return_date'] ?? $_SESSION['reservation_data']['return_date'] ?? '';
+$return_time = $_GET['return_time'] ?? $_SESSION['reservation_data']['return_time'] ?? '';
+$selected_extras = isset($_GET['extras']) ? (array)$_GET['extras'] : (isset($_SESSION['reservation_data']['selected_extras']) ? json_decode($_SESSION['reservation_data']['selected_extras'], true) : []);
+$vehicle_image = $_GET['vehicle_image'] ?? $_SESSION['reservation_data']['vehicle_image'] ?? '';
 
-// Convert dates to Y-m-d for SQL
-function parseDate($date) {
-    $parts = explode('/', $date);
-    if (count($parts) === 3) {
-        return $parts[2] . '-' . $parts[1] . '-' . $parts[0];
-    }
-    return $date;
-}
-$pickup_date_sql = parseDate($pickup_date);
-$return_date_sql = parseDate($return_date);
-
-// Fetch vehicle details
-$vehicle = null;
-if ($vehicle_id) {
-    $stmt = $pdo->prepare('SELECT * FROM vehicles WHERE id = ?');
-    $stmt->execute([$vehicle_id]);
-    $vehicle = $stmt->fetch();
-}
-
-// Fetch location prices
-$pickup_location_price = 0;
-$return_location_price = 0;
-
-function cleanLocation($location) {
-    // Remove anything after the first " ("
-    return preg_replace('/\s+\(.*$/', '', $location);
-}
-
-$pickup_location = cleanLocation($pickup_location);
-$return_location = cleanLocation($return_location);
-
-if ($pickup_location) {
-    $stmt = $pdo->prepare("SELECT price FROM locations WHERE name = ?");
-    $stmt->execute([$pickup_location]);
-    $row = $stmt->fetch();
-    if ($row) $pickup_location_price = $row['price'];
-}
-if ($return_location) {
-    $stmt = $pdo->prepare("SELECT price FROM locations WHERE name = ?");
-    $stmt->execute([$return_location]);
-    $row = $stmt->fetch();
-    if ($row) $return_location_price = $row['price'];
-}
-
-$location_fee = $pickup_location_price + $return_location_price;
-
-//calculate rental duration
-$rental_days = 0;
-$total_price = 0;
-if($vehicle && $pickup_date_sql && $return_date_sql) {
-    $pickup_date_obj = new DateTime($pickup_date_sql);
-    $return_date_obj = new DateTime($return_date_sql);
-    $interval = $pickup_date_obj->diff($return_date_obj);
-    $rental_days = $interval->days + 1; // +1 to include both start and end day
-    $total_price = $vehicle['price_per_day'] * $rental_days;
-}
-$subtotal = $total_price + $location_fee;
-// Calculate total price with deposit and location fees
-$total_with_fees = $subtotal + $depositLKR;
-
-//Process form submission
-$current_step = 1; //1=reservation, 2=payment, 3=confirmation
+// --- State Management ---
+$current_step = 1; // Default to step 1 (Reservation Details)
 $success = false;
 $error = '';
 $reservation_id = null;
+$calculated_costs = []; // Will store the output of calculatePricing
 
-//Step1: Reservation details submission
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['step'] == 1) {
-  $customer_name = $_POST['customer_name'] ?? '';
-  $customer_email = $_POST['customer_email'] ?? '';
-  $customer_phone = $_POST['customer_phone'] ?? '';
-
-  if($vehicle_id && $pickup_location &&$pickup_date_sql && $pickup_time && $return_location && $return_date_sql && $return_time && $customer_name && $customer_email && $customer_phone) {
-    // Check for overlapping reservation
-    $check = $pdo->prepare("SELECT COUNT(*) FROM reservations WHERE vehicle_id = ? AND status IN ('pending','confirmed') AND (pickup_date <= ? AND return_date >= ?)");
-    $check->execute([$vehicle_id, $return_date_sql, $pickup_date_sql]);
-    if($check->fetchColumn() == 0) {
-    // No overlapping reservation, move to payment step
-    $current_step = 2;
-    // Store all reservation details in session or hidden fields for Step 2
-    $_SESSION['reservation_data'] = [
-        'vehicle_id' => $vehicle_id,
-        'pickup_location' => $pickup_location,
-        'pickup_date_sql' => $pickup_date_sql,
-        'pickup_time' => $pickup_time,
-        'return_location' => $return_location,
-        'return_date_sql' => $return_date_sql,
-        'return_time' => $return_time,
-        'customer_name' => $customer_name,
-        'customer_email' => $customer_email,
-        'customer_phone' => $customer_phone,
-        'total_price' => $total_price
-    ];
-    } else {
-        // Overlapping reservation
-        $error = 'Sorry, this vehicle has just been booked for those dates.Please choose different dates.';
-    }
-  } else {
-    // Missing required fields
-    $error = 'Please fill in all required fields.';
-  }
+// --- Helper Functions ---
+function parseDateForDb($dateString) {
+    // Converts D/M/YYYY to YYYY-MM-DD
+    $d = DateTime::createFromFormat('d/m/Y', $dateString);
+    return $d ? $d->format('Y-m-d') : null;
 }
 
-// Step 2: Payment processing
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['step'] == 2) {
-    $card_name = $_POST['card_name'] ?? '';
-    $card_number = $_POST['card_number'] ?? '';
-    $card_expiry = $_POST['card_expiry'] ?? '';
-    $card_cvv = $_POST['card_cvv'] ?? '';
+function displayFormattedPrice($amountUSD, $currencyService) {
+    $currentCurrency = $_SESSION['preferred_currency'] ?? 'LKR'; // Assume session stores preferred currency
+    $priceData = $currencyService->formatPrice($amountUSD, $currentCurrency);
+    return "{$priceData['symbol']} {$priceData['amount']}";
+}
 
-    if ($card_name && $card_number && $card_expiry && $card_cvv && isset($_SESSION['reservation_data'])) {
-        $data = $_SESSION['reservation_data'];
-        // Double-check for overlap before inserting
-        $check = $pdo->prepare("SELECT COUNT(*) FROM reservations WHERE vehicle_id = ? AND status = 'confirmed' AND (pickup_date <= ? AND return_date >= ?)");
-        $check->execute([$data['vehicle_id'], $data['return_date_sql'], $data['pickup_date_sql']]);
-        if($check->fetchColumn() == 0) {
-            // Insert reservation now, with status 'confirmed'
-            $insert = $pdo->prepare("INSERT INTO reservations (vehicle_id, pickup_location, pickup_date, pickup_time, return_location, return_date, return_time, customer_name, customer_email, customer_phone, status, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', ?)");
-            $insert->execute([
-                $data['vehicle_id'],
-                $data['pickup_location'],
-                $data['pickup_date_sql'],
-                $data['pickup_time'],
-                $data['return_location'],
-                $data['return_date_sql'],
-                $data['return_time'],
-                $data['customer_name'],
-                $data['customer_email'],
-                $data['customer_phone'],
-                $data['total_price']
-            ]);
-            $reservation_id = $pdo->lastInsertId();
-            $current_step = 3;
-            $success = true;
-            unset($_SESSION['reservation_data']);
+// --- Fetch Vehicle and Calculate Costs (for display in step 1, or re-calculation if needed) ---
+$vehicle = null;
+$rental_days = 0;
+if ($vehicle_id) {
+    $vehicle = $reservationService->getVehicleById($vehicle_id);
+
+    // Calculate rental days
+    $pickup_date_obj = DateTime::createFromFormat('d/m/Y', $pickup_date);
+    $return_date_obj = DateTime::createFromFormat('d/m/Y', $return_date);
+
+    if ($pickup_date_obj && $return_date_obj && $pickup_date_obj <= $return_date_obj) {
+        $interval = $pickup_date_obj->diff($return_date_obj);
+        $rental_days = $interval->days + 1; // +1 to include both start and end day
+    } else {
+        $error = 'Invalid date range provided.';
+    }
+
+    if ($vehicle && !$error) {
+        $calculated_costs = $reservationService->calculatePricing(
+            $vehicle,
+            $pickup_location,
+            $return_location,
+            $rental_days,
+            $selected_extras,
+            $pickup_time,
+            $return_time
+        );
+    } else if (!$vehicle) {
+        $error = "Vehicle not found.";
+    }
+} else {
+    $error = "No vehicle selected.";
+}
+
+// --- Process Form Submission (POST requests) ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $posted_step = $_POST['step'] ?? 0;
+
+    if ($posted_step == 1) { // User submitted Reservation Details form
+        $customer_name = $_POST['customer_name'] ?? '';
+        $customer_email = $_POST['customer_email'] ?? '';
+        $customer_phone = $_POST['customer_phone'] ?? '';
+
+        if (!$customer_name || !$customer_email || !$customer_phone) {
+            $error = 'Please fill in all required customer details.';
+        } elseif (!$vehicle_id || !$pickup_location || !$pickup_date || !$pickup_time || !$return_location || !$return_date || !$return_time) {
+            $error = 'Missing booking details. Please go back and select them again.';
+        } elseif ($error) { // If there was a date error or vehicle error from GET params
+            // Error is already set, display it.
         } else {
-            $error = 'Sorry, this vehicle has just been booked for those dates. Please choose different dates.';
+            // Convert dates to DB format
+            $pickup_date_db = parseDateForDb($pickup_date);
+            $return_date_db = parseDateForDb($return_date);
+
+            // Check for overlapping reservation just before proceeding
+            $check_stmt = $pdo->prepare("SELECT COUNT(*) FROM reservations WHERE vehicle_id = ? AND status IN ('pending','confirmed') AND (pickup_date <= ? AND return_date >= ?)");
+            $check_stmt->execute([$vehicle_id, $return_date_db, $pickup_date_db]);
+
+            if ($check_stmt->fetchColumn() == 0) {
+                // Store all data in session for the next step
+                $_SESSION['reservation_data'] = [
+                    'vehicle_id' => $vehicle_id,
+                    'pickup_location' => $pickup_location,
+                    'pickup_date' => $pickup_date, // Keep original format for display
+                    'pickup_time' => $pickup_time,
+                    'return_location' => $return_location,
+                    'return_date' => $return_date, // Keep original format for display
+                    'return_time' => $return_time,
+                    'selected_extras' => json_encode($selected_extras),
+                    'customer_name' => $customer_name,
+                    'customer_email' => $customer_email,
+                    'customer_phone' => $customer_phone,
+                    'calculated_costs' => $calculated_costs, // Store the calculated costs in USD
+                    'vehicle_image' => $vehicle_image,
+                ];
+                $current_step = 2; // Move to payment step
+            } else {
+                $error = 'Sorry, this vehicle is unavailable for the selected dates. Please adjust your dates.';
+            }
         }
-    } else {
-        $error = 'Please fill in all payment details.';
+    } elseif ($posted_step == 2) { // User submitted Payment form
+        $card_name = $_POST['card_name'] ?? '';
+        $card_number = $_POST['card_number'] ?? '';
+        $card_expiry = $_POST['card_expiry'] ?? '';
+        $card_cvv = $_POST['card_cvv'] ?? '';
+        $payment_method_id = $_POST['payment_method'] ?? null; // Added payment method ID
+
+        if (!$card_name || !$card_number || !$card_expiry || !$card_cvv || !$payment_method_id) {
+            $error = 'Please fill in all payment details and select a method.';
+        } elseif (!isset($_SESSION['reservation_data'])) {
+            $error = 'Reservation data missing. Please start over.';
+        } else {
+            $data = $_SESSION['reservation_data'];
+            // Re-parse dates to DB format for insertion
+            $pickup_date_db = parseDateForDb($data['pickup_date']);
+            $return_date_db = parseDateForDb($data['return_date']);
+
+            // Double-check for overlap one last time before final insert
+            $check_stmt = $pdo->prepare("SELECT COUNT(*) FROM reservations WHERE vehicle_id = ? AND status IN ('pending', 'confirmed') AND (pickup_date <= ? AND return_date >= ?)");
+            $check_stmt->execute([$data['vehicle_id'], $return_date_db, $pickup_date_db]);
+
+            if ($check_stmt->fetchColumn() == 0) {
+                // Insert reservation
+                $stmt_insert = $pdo->prepare("
+                    INSERT INTO reservations (
+                        vehicle_id, pickup_location, pickup_date, pickup_time,
+                        return_location, return_date, return_time,
+                        customer_name, customer_email, customer_phone,
+                        status, final_total_usd, selected_extras
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', ?, ?)
+                ");
+                $stmt_insert->execute([
+                    $data['vehicle_id'],
+                    $data['pickup_location'],
+                    $pickup_date_db,
+                    $data['pickup_time'],
+                    $data['return_location'],
+                    $return_date_db,
+                    $data['return_time'],
+                    $data['customer_name'],
+                    $data['customer_email'],
+                    $data['customer_phone'],
+                    $data['calculated_costs']['total_amount_due_usd'],
+                    $data['selected_extras']
+                ]);
+                $reservation_id = $pdo->lastInsertId();
+                $current_step = 3; // Move to confirmation step
+                $success = true;
+                unset($_SESSION['reservation_data']); // Clear session data
+            } else {
+                $error = 'Sorry, this vehicle has just been booked for those dates. Please choose different dates.';
+                $current_step = 1; // Go back to step 1 to allow date changes
+            }
+        }
+    }
+} else {
+    // Initial GET request or fresh page load.
+    // Ensure all necessary data is available from GET parameters.
+    if (!$vehicle_id || !$pickup_location || !$pickup_date || !$pickup_time || !$return_location || !$return_date || !$return_time) {
+        $error = 'Please provide all rental details (vehicle, locations, dates, times).';
     }
 }
 
-// Only show error if this is a POST request and step 1 failed
-$showError = false;
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['step'] == 1 && $error) {
-    $showError = true;
+// If an error occurred during POST for step 1, ensure step remains 1 and error is visible
+$showError = ($error && $_SERVER['REQUEST_METHOD'] === 'POST');
+
+// Data for step 2 if coming from step 1 POST
+if ($current_step == 2 && isset($_SESSION['reservation_data'])) {
+    $data = $_SESSION['reservation_data'];
+    $vehicle_id = $data['vehicle_id']; // Re-fetch vehicle details if needed for display
+    $vehicle = $reservationService->getVehicleById($vehicle_id);
+    $calculated_costs = $data['calculated_costs'];
 }
 ?>
 <!doctype html>
@@ -173,10 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tuk Tuk Rental - Reservation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <!-- Font Awesome CSS -->
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- AOS Library CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -230,17 +255,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
         </div>
       <?php endif; ?>
       
-      <!-- Step 1: Reservation Details -->
-      <?php if ($current_step == 1 && $vehicle): ?>
+      <?php if ($current_step == 1 && $vehicle && !$error): // Only show if valid vehicle and no initial error ?>
       <div class="row">
         <div class="col-lg-8">
           <div class="reservation-card card">
             <div class="card-header">
-              <h4 class="mb-0"><i class="fas fa-calendar-check me-2"></i> Reservation Details</h4>
+              <h4 class="mb-0"><i class="fas fa-calendar-check me-2"></i> Your Reservation</h4>
             </div>
             <div class="card-body p-4">
               <div class="vehicle-image-container">
-                <img src="../<?php echo htmlspecialchars($vehicle['main_image'] ?? 'assets/images/default-vehicle.jpg'); ?>" alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>" class="vehicle-image">
+                <img src="../<?php echo htmlspecialchars($vehicle_image); ?>" alt="<?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?>" class="vehicle-image">
               </div>
               
               <h5><?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?></h5>
@@ -276,55 +300,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
             </div>
             <div class="card-body p-4">
               <div class="detail-row">
-                <div class="detail-label">Daily Rate</div>
-                <div class="detail-value vehicle-price"
-                    data-price="<?php echo $vehicle['price_per_day']; ?>"
-                    data-rate="<?php echo $usdRate; ?>">
-                    <span class="currency">LKR</span>
-                    <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
-                </div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Rental Days</div>
-                <div class="detail-value"><?php echo $rental_days; ?></div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Location Fee</div>
-              <div class="detail-value vehicle-price"
-                  data-price="<?php echo $location_fee; ?>"
-                  data-rate="<?php echo $usdRate; ?>">
-                  <span class="currency">LKR</span>
-                  <span class="amount"><?php echo number_format($location_fee, 2); ?></span>
+                <div class="detail-label">Daily Rate (USD)</div>
+                <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['daily_rate_usd'], $currencyService); ?></div>
               </div>
-            </div>
-            <div class="detail-row">
+              <div class="detail-row">
+                <div class="detail-label">Rental Days</div>
+                <div class="detail-value"><?php echo $calculated_costs['rental_days']; ?></div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Base Rental Cost</div>
+                <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['base_rental_cost_usd'], $currencyService); ?></div>
+              </div>
+              <?php if ($calculated_costs['duration_discount_usd'] > 0): ?>
+              <div class="detail-row text-success">
+                <div class="detail-label">Duration Discount</div>
+                <div class="detail-value">-<?php echo displayFormattedPrice($calculated_costs['duration_discount_usd'], $currencyService); ?></div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Rental After Discount</div>
+                <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['rental_after_discount_usd'], $currencyService); ?></div>
+              </div>
+              <?php endif; ?>
+              <div class="detail-row">
+                <div class="detail-label">Pickup Charge</div>
+                <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['pickup_charge_usd'], $currencyService); ?></div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Return Charge</div>
+                <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['return_charge_usd'], $currencyService); ?></div>
+              </div>
+              <?php if ($calculated_costs['license_fee_usd'] > 0): ?>
+              <div class="detail-row">
+                <div class="detail-label">License Fee</div>
+                <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['license_fee_usd'], $currencyService); ?></div>
+              </div>
+              <?php endif; ?>
+
+              <?php if (!empty($calculated_costs['extras_details'])): ?>
+              <hr>
+              <h6>Extras:</h6>
+              <?php foreach ($calculated_costs['extras_details'] as $extra): ?>
+                <div class="detail-row">
+                  <div class="detail-label ps-3"><?php echo htmlspecialchars($extra['name']); ?></div>
+                  <div class="detail-value"><?php echo displayFormattedPrice($extra['price_usd'], $currencyService); ?></div>
+                </div>
+              <?php endforeach; ?>
+              <?php endif; ?>
+
+              <?php if ($calculated_costs['night_charge_usd'] > 0): ?>
+              <div class="detail-row">
+                <div class="detail-label">Night Time Charge</div>
+                <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['night_charge_usd'], $currencyService); ?></div>
+              </div>
+              <?php endif; ?>
+
+              <hr>
+              <div class="detail-row">
                 <div class="detail-label fw-bold">Subtotal</div>
-                <div class="detail-value fw-bold vehicle-price"
-                    data-price="<?php echo $subtotal; ?>"
-                    data-rate="<?php echo $usdRate; ?>">
-                    <span class="currency">LKR</span>
-                    <span class="amount"><?php echo number_format($subtotal, 2); ?></span>
-                </div>
-            </div>
-            <div class="detail-row" style="border-bottom: none;">
-                <div class="detail-label">Deposit</div>
-                <div class="detail-value vehicle-price"
-                    data-price="<?php echo $depositLKR; ?>"
-                    data-rate="<?php echo $usdRate; ?>">
-                    <span class="currency">LKR</span>
-                    <span class="amount"><?php echo number_format($depositLKR, 2); ?></span>
-                </div>
-            </div>
-            <hr>
-            <div class="detail-row" style="border-bottom: none;">
-                <div class="detail-label fw-bold">Total Amount</div>
-                <div class="detail-value fw-bold vehicle-price" style="color:rgb(255, 0, 0);"
-                    data-price="<?php echo $total_with_fees; ?>"
-                    data-rate="<?php echo $usdRate; ?>">
-                    <span class="currency">LKR</span>
-                    <span class="amount"><?php echo number_format($total_with_fees, 2); ?></span>
-                </div>
-            </div>
+                <div class="detail-value fw-bold"><?php echo displayFormattedPrice($calculated_costs['subtotal_usd'], $currencyService); ?></div>
+              </div>
+              <div class="detail-row" style="border-bottom: none;">
+                <div class="detail-label">Refundable Deposit</div>
+                <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['deposit_usd'], $currencyService); ?></div>
+              </div>
+              <hr>
+              <div class="detail-row" style="border-bottom: none;">
+                <div class="detail-label fw-bold">Total Amount Due</div>
+                <div class="detail-value fw-bold text-danger"><?php echo displayFormattedPrice($calculated_costs['total_amount_due_usd'], $currencyService); ?></div>
+              </div>
             </div>
           </div>
           
@@ -337,15 +380,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
                 <input type="hidden" name="step" value="1">
                 <div class="mb-3">
                   <label for="customer_name" class="form-label">Full Name</label>
-                  <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                  <input type="text" class="form-control" id="customer_name" name="customer_name" value="<?php echo htmlspecialchars($_SESSION['reservation_data']['customer_name'] ?? ''); ?>" required>
                 </div>
                 <div class="mb-3">
                   <label for="customer_email" class="form-label">Email Address</label>
-                  <input type="email" class="form-control" id="customer_email" name="customer_email" required>
+                  <input type="email" class="form-control" id="customer_email" name="customer_email" value="<?php echo htmlspecialchars($_SESSION['reservation_data']['customer_email'] ?? ''); ?>" required>
                 </div>
                 <div class="mb-3">
                   <label for="customer_phone" class="form-label">Phone Number</label>
-                  <input type="tel" class="form-control" id="customer_phone" name="customer_phone" required>
+                  <input type="tel" class="form-control" id="customer_phone" name="customer_phone" value="<?php echo htmlspecialchars($_SESSION['reservation_data']['customer_phone'] ?? ''); ?>" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Continue to Payment</button>
               </form>
@@ -353,10 +396,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
           </div>
         </div>
       </div>
+      <?php elseif ($current_step == 1 && $error): // Display error if present on step 1 ?>
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i> <?php echo htmlspecialchars($error); ?>
+            </div>
+            <a href="index.php" class="btn btn-primary mt-3">Go to Home Page</a>
+        </div>
+      </div>
       <?php endif; ?>
       
       <!-- Step 2: Payment -->
-      <?php if ($current_step == 2): ?>
+      <?php if ($current_step == 2 && isset($_SESSION['reservation_data']) && $vehicle && $calculated_costs): ?>
       <div class="row justify-content-center">
         <div class="col-lg-8">
           <div class="reservation-card card">
@@ -364,41 +416,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
               <h4 class="mb-0"><i class="fas fa-credit-card me-2"></i> Payment Information</h4>
             </div>
             <div class="card-body p-4">
-              <h5 class="mb-4">Payment Method</h5>
-              <div class="payment-methods">
-                <div class="payment-method active">
-                  <i class="far fa-credit-card"></i>
-                  <div>Credit/Debit Card</div>
+              <h5 class="mb-4">Select Payment Method</h5>
+              <div class="payment-methods row mb-4">
+                <?php
+                    $paymentMethods = $reservationService->getPaymentMethods();
+                    foreach ($paymentMethods as $method):
+                ?>
+                <div class="col-md-4 mb-2">
+                    <div class="payment-method-option form-check card card-body text-center" style="cursor:pointer;">
+                        <input class="form-check-input d-none" type="radio" name="payment_method" id="method_<?php echo $method['id']; ?>" value="<?php echo $method['id']; ?>" required>
+                        <label class="form-check-label d-block py-2" for="method_<?php echo $method['id']; ?>">
+                            <?php if ($method['method_name'] === 'Online card payment'): ?>
+                                <i class="far fa-credit-card fa-2x mb-2"></i>
+                            <?php elseif ($method['method_name'] === 'Bank deposit'): ?>
+                                <i class="fas fa-university fa-2x mb-2"></i>
+                            <?php elseif ($method['method_name'] === 'Cash on pick-up'): ?>
+                                <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
+                            <?php endif; ?>
+                            <div class="fw-bold"><?php echo htmlspecialchars($method['method_name']); ?></div>
+                            <?php if ($method['processing_fee_percent'] > 0): ?>
+                                <small class="text-muted">(+<?php echo $method['processing_fee_percent']; ?>% fee)</small>
+                            <?php endif; ?>
+                        </label>
+                    </div>
                 </div>
-                <div class="payment-method">
-                  <i class="fab fa-paypal"></i>
-                  <div>PayPal</div>
-                </div>
+                <?php endforeach; ?>
               </div>
-              
+              <div class="alert alert-danger d-none" id="payment-method-error">Please select a payment method.</div>
+
               <form method="post" id="paymentForm" novalidate>
               <input type="hidden" name="step" value="2">
-              <div class="mb-3">
-                <label for="card_name" class="form-label">Name on Card</label>
-                <input type="text" class="form-control" id="card_name" name="card_name" required pattern="^[A-Za-z\s]{2,}$" maxlength="50">
-                <div class="invalid-feedback">Please enter the name on the card (letters and spaces only).</div>
-              </div>
-              <div class="mb-3">
-                <label for="card_number" class="form-label">Card Number</label>
-                <input type="text" class="form-control" id="card_number" name="card_number" required pattern="^(\d{4} ?){4}$" maxlength="19" inputmode="numeric" placeholder="1234 5678 9012 3456" autocomplete="cc-number">
-                <div class="invalid-feedback">Please enter a valid 16-digit card number.</div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="card_expiry" class="form-label">Expiration Date</label>
-                  <input type="text" class="form-control" id="card_expiry" name="card_expiry" required pattern="^(0[1-9]|1[0-2])\/([0-9]{2})$" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp">
-                  <div class="invalid-feedback">Please enter a valid expiration date (MM/YY).</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="card_cvv" class="form-label">CVV</label>
-                  <input type="text" class="form-control" id="card_cvv" name="card_cvv" required pattern="^\d{3,4}$" maxlength="4" inputmode="numeric" placeholder="123" autocomplete="cc-csc">
-                  <div class="invalid-feedback">Please enter a valid 3 or 4 digit CVV.</div>
-                </div>
+              <div id="card-details-section" class="mb-3">
+                  <h5 class="mb-3">Card Details</h5>
+                  <div class="mb-3">
+                    <label for="card_name" class="form-label">Name on Card</label>
+                    <input type="text" class="form-control" id="card_name" name="card_name" pattern="^[A-Za-z\s]{2,}$" maxlength="50">
+                    <div class="invalid-feedback">Please enter the name on the card (letters and spaces only).</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="card_number" class="form-label">Card Number</label>
+                    <input type="text" class="form-control" id="card_number" name="card_number" pattern="^(\d{4} ?){4}$" maxlength="19" inputmode="numeric" placeholder="1234 5678 9012 3456" autocomplete="cc-number">
+                    <div class="invalid-feedback">Please enter a valid 16-digit card number.</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="card_expiry" class="form-label">Expiration Date</label>
+                      <input type="text" class="form-control" id="card_expiry" name="card_expiry" pattern="^(0[1-9]|1[0-2])\/([0-9]{2})$" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp">
+                      <div class="invalid-feedback">Please enter a valid expiration date (MM/YY).</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="card_cvv" class="form-label">CVV</label>
+                      <input type="text" class="form-control" id="card_cvv" name="card_cvv" pattern="^\d{3,4}$" maxlength="4" inputmode="numeric" placeholder="123" autocomplete="cc-csc">
+                      <div class="invalid-feedback">Please enter a valid 3 or 4 digit CVV.</div>
+                    </div>
+                  </div>
               </div>
                 
                 <hr class="my-4">
@@ -413,13 +484,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
                   <div class="detail-value"><?php echo $rental_days; ?> day<?php echo $rental_days != 1 ? 's' : ''; ?></div>
                 </div>
                 <div class="detail-row">
-                  <div class="detail-label">Total Amount</div>
-                  <div class="detail-value fw-bold vehicle-price"
-                      data-price="<?php echo $total_with_fees; ?>"
-                      data-rate="<?php echo $usdRate; ?>">
-                      <span class="currency">LKR</span>
-                      <span class="amount"><?php echo number_format($total_with_fees, 2); ?></span>
-                  </div>
+                  <div class="detail-label">Base Rental Cost</div>
+                  <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['base_rental_cost_usd'], $currencyService); ?></div>
+                </div>
+                <?php if ($calculated_costs['duration_discount_usd'] > 0): ?>
+                <div class="detail-row text-success">
+                  <div class="detail-label">Duration Discount</div>
+                  <div class="detail-value">-<?php echo displayFormattedPrice($calculated_costs['duration_discount_usd'], $currencyService); ?></div>
+                </div>
+                <?php endif; ?>
+                <div class="detail-row">
+                  <div class="detail-label">Location Fees</div>
+                  <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['location_fees_usd'], $currencyService); ?></div>
+                </div>
+                <?php if ($calculated_costs['license_fee_usd'] > 0): ?>
+                <div class="detail-row">
+                  <div class="detail-label">License Fee</div>
+                  <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['license_fee_usd'], $currencyService); ?></div>
+                </div>
+                <?php endif; ?>
+                <?php if ($calculated_costs['extras_cost_usd'] > 0): ?>
+                <div class="detail-row">
+                  <div class="detail-label">Extras Cost</div>
+                  <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['extras_cost_usd'], $currencyService); ?></div>
+                </div>
+                <?php endif; ?>
+                <?php if ($calculated_costs['night_charge_usd'] > 0): ?>
+                <div class="detail-row">
+                  <div class="detail-label">Night Time Charge</div>
+                  <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['night_charge_usd'], $currencyService); ?></div>
+                </div>
+                <?php endif; ?>
+                <div class="detail-row">
+                    <div class="detail-label">Refundable Deposit</div>
+                    <div class="detail-value"><?php echo displayFormattedPrice($calculated_costs['deposit_usd'], $currencyService); ?></div>
+                </div>
+                <hr>
+                <div class="detail-row" style="border-bottom: none;">
+                  <div class="detail-label fw-bold">Total Amount Due</div>
+                  <div class="detail-value fw-bold text-danger"><?php echo displayFormattedPrice($calculated_costs['total_amount_due_usd'], $currencyService); ?></div>
                 </div>
                 
                 <div class="form-check mt-4 mb-3">
@@ -465,20 +568,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
                 </div>
                 <div class="detail-row">
                   <div class="detail-label">Total Paid</div>
-                  <div class="detail-value fw-bold vehicle-price"
-                      data-price="<?php echo $total_with_fees; ?>"
-                      data-rate="<?php echo $usdRate; ?>">
-                      <span class="currency">LKR</span>
-                      <span class="amount"><?php echo number_format($total_with_fees, 2); ?></span>
-                  </div>
+                  <div class="detail-value fw-bold text-danger"><?php echo displayFormattedPrice($calculated_costs['total_amount_due_usd'], $currencyService); ?></div>
                 </div>
               </div>
               
-              <p class="mb-4">We've sent all the details to <strong><?php echo htmlspecialchars($_POST['customer_email'] ?? ''); ?></strong>. Please check your inbox.</p>
+              <p class="mb-4">We've sent all the details to <strong><?php echo htmlspecialchars($_SESSION['reservation_data']['customer_email'] ?? $_POST['customer_email'] ?? ''); ?></strong>. Please check your inbox.</p>
               
               <div class="d-flex justify-content-center gap-3">
                 <a href="index.php" class="btn btn-outline-primary">Back to Home</a>
-                <!-- <a href="../vehicles/" class="btn btn-primary">View Your Reservations</a> -->
               </div>
             </div>
           </div>
@@ -489,13 +586,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
 
     <?php include '../includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-    <!-- GSAP (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-
-    <!-- Your JS File -->
     <script src="../assets/js/index.js"></script>
     <script src="../assets/js/currencyHandler.js"></script>
-    <!-- AOS Library JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>
     AOS.init();
@@ -504,75 +597,141 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
     flatpickr(".date-input", {
-        dateFormat: "d/m/Y", // or "Y-m-d" etc.
+        dateFormat: "d/m/Y", // Make sure this matches PHP's expected format
+        minDate: "today",
+        disableMobile: "true"
+    });
+    flatpickr(".time-input", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i", // 24-hour format for consistency
+        time_24hr: true,
+        disableMobile: "true"
     });
     </script>
 
     <script>
-    // Card number formatting: 1234 5678 9012 3456
-    document.getElementById('card_number').addEventListener('input', function (e) {
-      let value = e.target.value.replace(/\D/g, '').substring(0,16);
-      let formatted = value.replace(/(.{4})/g, '$1 ').trim();
-      e.target.value = formatted;
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethodOptions = document.querySelectorAll('.payment-method-option');
+        const cardDetailsSection = document.getElementById('card-details-section');
+        const paymentMethodError = document.getElementById('payment-method-error');
 
-    // Expiry formatting: MM/YY and validation for not in the past
-    document.getElementById('card_expiry').addEventListener('input', function (e) {
-      let value = e.target.value.replace(/\D/g, '').substring(0,4);
-      if (value.length > 2) {
-        value = value.substring(0,2) + '/' + value.substring(2,4);
-      }
-      e.target.value = value;
-    });
+        // Function to toggle card details visibility and validation based on selection
+        function toggleCardDetails(selectedMethodId) {
+            const onlineCardMethodId = '1'; // Assuming 'Online card payment' has ID 1 based on your inserts
 
-    document.getElementById('paymentForm').addEventListener('submit', function (e) {
-      // Validate expiry date is not in the past
-      var expiry = document.getElementById('card_expiry');
-      var expVal = expiry.value;
-      var valid = true;
-
-      if (/^(0[1-9]|1[0-2])\/\d{2}$/.test(expVal)) {
-        var parts = expVal.split('/');
-        var month = parseInt(parts[0], 10);
-        var year = parseInt(parts[1], 10) + 2000; // YY to YYYY
-        var now = new Date();
-        var thisMonth = now.getMonth() + 1;
-        var thisYear = now.getFullYear();
-        if (year < thisYear || (year === thisYear && month < thisMonth)) {
-          valid = false;
+            if (selectedMethodId === onlineCardMethodId) {
+                cardDetailsSection.style.display = 'block';
+                // Add 'required' to card inputs
+                cardDetailsSection.querySelectorAll('input').forEach(input => {
+                    input.setAttribute('required', 'required');
+                });
+            } else {
+                cardDetailsSection.style.display = 'none';
+                // Remove 'required' and clear validation state
+                cardDetailsSection.querySelectorAll('input').forEach(input => {
+                    input.removeAttribute('required');
+                    input.classList.remove('is-invalid', 'is-valid');
+                    input.value = ''; // Clear inputs when not required
+                });
+            }
         }
-      } else {
-        valid = false;
-      }
 
-      if (!valid) {
-        expiry.setCustomValidity('Invalid');
-        expiry.classList.add('is-invalid');
-        e.preventDefault();
-        e.stopPropagation();
-      } else {
-        expiry.setCustomValidity('');
-        expiry.classList.remove('is-invalid');
-      }
-    });
+        paymentMethodOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove active class from all and add to clicked
+                paymentMethodOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
 
-    // Bootstrap 5 validation
-    document.addEventListener('DOMContentLoaded', function () {
-      var form = document.getElementById('paymentForm');
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
+                // Check the hidden radio button inside this option
+                const radioButton = this.querySelector('input[type="radio"]');
+                if (radioButton) {
+                    radioButton.checked = true;
+                    paymentMethodError.classList.add('d-none'); // Hide error if a method is selected
+                    toggleCardDetails(radioButton.value); // Toggle card details based on selection
+                }
+            });
+        });
+
+        // Initialize state based on default selection or no selection
+        const initiallySelectedMethod = document.querySelector('input[name="payment_method"]:checked');
+        if (initiallySelectedMethod) {
+            document.querySelector(`.payment-method-option input[value="${initiallySelectedMethod.value}"]`).closest('.payment-method-option').classList.add('active');
+            toggleCardDetails(initiallySelectedMethod.value);
+        } else {
+            toggleCardDetails(null); // Hide card details if no method is pre-selected
         }
-        form.classList.add('was-validated');
-      }, false);
+
+        // Card number formatting: 1234 5678 9012 3456
+        document.getElementById('card_number').addEventListener('input', function (e) {
+          let value = e.target.value.replace(/\D/g, '').substring(0,16);
+          let formatted = value.replace(/(.{4})/g, '$1 ').trim();
+          e.target.value = formatted;
+        });
+
+        // Expiry formatting: MM/YY and validation for not in the past
+        document.getElementById('card_expiry').addEventListener('input', function (e) {
+          let value = e.target.value.replace(/\D/g, '').substring(0,4);
+          if (value.length > 2) {
+            value = value.substring(0,2) + '/' + value.substring(2,4);
+          }
+          e.target.value = value;
+        });
+
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+          // Check if a payment method is selected
+          const selectedMethod = document.querySelector('input[name="payment_method"]:checked');
+          if (!selectedMethod) {
+              paymentMethodError.classList.remove('d-none');
+              e.preventDefault();
+              e.stopPropagation();
+              return;
+          } else {
+              paymentMethodError.classList.add('d-none');
+          }
+
+          const onlineCardMethodId = '1';
+          if (selectedMethod.value === onlineCardMethodId) {
+                // Validate expiry date is not in the past, only if card payment is selected
+                var expiry = document.getElementById('card_expiry');
+                var expVal = expiry.value;
+                var valid = true;
+
+                if (/^(0[1-9]|1[0-2])\/\d{2}$/.test(expVal)) {
+                  var parts = expVal.split('/');
+                  var month = parseInt(parts[0], 10);
+                  var year = parseInt(parts[1], 10) + 2000; // YY to YYYY
+                  var now = new Date();
+                  var thisMonth = now.getMonth() + 1;
+                  var thisYear = now.getFullYear();
+                  if (year < thisYear || (year === thisYear && month < thisMonth)) {
+                    valid = false;
+                  }
+                } else {
+                  valid = false;
+                }
+
+                if (!valid) {
+                  expiry.setCustomValidity('Invalid expiration date');
+                  expiry.classList.add('is-invalid');
+                  e.preventDefault();
+                  e.stopPropagation();
+                } else {
+                  expiry.setCustomValidity('');
+                  expiry.classList.remove('is-invalid');
+                }
+          }
+
+          // Bootstrap 5 form validation
+          if (!this.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          this.classList.add('was-validated');
+        }, false);
     });
     </script>
 
-    <?php 
-    // Display the social media icons
-    displaySocialIcons($social_config); 
-    ?>
-
+    <?php displaySocialIcons($social_config); ?>
   </body>
 </html>
