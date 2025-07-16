@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const currencySelect = document.getElementById('currency-select');
-    
+    const vehiclePrices = document.querySelectorAll('.vehicle-price');
     function updatePrices(currency) {
         document.querySelectorAll('.vehicle-price').forEach(priceElement => {
             const basePrice = parseFloat(priceElement.dataset.price);

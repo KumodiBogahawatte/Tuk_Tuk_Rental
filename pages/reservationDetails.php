@@ -4,8 +4,8 @@ require_once '../config/db_connect.php';
 include_once '../includes/social_icons.php';
 require_once '../service/currencyService.php';
 $currencyService = new CurrencyService($pdo);
-$usdRate = $currencyService->getExchangeRate('LKR', 'USD');
-$depositLKR = 5000; // Fixed deposit in LKR
+$usdRate = $currencyService->getExchangeRate('USD', 'LKR');
+$depositLKR = 150; // Fixed deposit in LKR
 
 // Get vehicle and booking info from query params
 $vehicle_id = $_GET['id'] ?? null;
@@ -49,16 +49,16 @@ $pickup_location = cleanLocation($pickup_location);
 $return_location = cleanLocation($return_location);
 
 if ($pickup_location) {
-    $stmt = $pdo->prepare("SELECT price FROM locations WHERE name = ?");
+    $stmt = $pdo->prepare("SELECT usd_price FROM locations WHERE name = ?");
     $stmt->execute([$pickup_location]);
     $row = $stmt->fetch();
-    if ($row) $pickup_location_price = $row['price'];
+    if ($row) $pickup_location_price = $row['usd_price'];
 }
 if ($return_location) {
-    $stmt = $pdo->prepare("SELECT price FROM locations WHERE name = ?");
+    $stmt = $pdo->prepare("SELECT usd_price FROM locations WHERE name = ?");
     $stmt->execute([$return_location]);
     $row = $stmt->fetch();
-    if ($row) $return_location_price = $row['price'];
+    if ($row) $return_location_price = $row['usd_price'];
 }
 
 $location_fee = $pickup_location_price + $return_location_price;
@@ -71,7 +71,7 @@ if($vehicle && $pickup_date_sql && $return_date_sql) {
     $return_date_obj = new DateTime($return_date_sql);
     $interval = $pickup_date_obj->diff($return_date_obj);
     $rental_days = $interval->days + 1; // +1 to include both start and end day
-    $total_price = $vehicle['price_per_day'] * $rental_days;
+    $total_price = $vehicle['usd_price'] * $rental_days;
 }
 $subtotal = $total_price + $location_fee;
 // Calculate total price with deposit and location fees
@@ -278,10 +278,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
               <div class="detail-row">
                 <div class="detail-label">Daily Rate</div>
                 <div class="detail-value vehicle-price"
-                    data-price="<?php echo $vehicle['price_per_day']; ?>"
+                    data-price="<?php echo $vehicle['usd_price']; ?>"
                     data-rate="<?php echo $usdRate; ?>">
-                    <span class="currency">LKR</span>
-                    <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                    <span class="currency">USD</span>
+                    <span class="amount"><?php echo number_format($vehicle['usd_price'], 2); ?></span>
                 </div>
             </div>
             <div class="detail-row">
@@ -293,7 +293,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
               <div class="detail-value vehicle-price"
                   data-price="<?php echo $location_fee; ?>"
                   data-rate="<?php echo $usdRate; ?>">
-                  <span class="currency">LKR</span>
+                  <span class="currency">USD</span>
                   <span class="amount"><?php echo number_format($location_fee, 2); ?></span>
               </div>
             </div>
@@ -302,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
                 <div class="detail-value fw-bold vehicle-price"
                     data-price="<?php echo $subtotal; ?>"
                     data-rate="<?php echo $usdRate; ?>">
-                    <span class="currency">LKR</span>
+                    <span class="currency">USD</span>
                     <span class="amount"><?php echo number_format($subtotal, 2); ?></span>
                 </div>
             </div>
@@ -311,7 +311,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
                 <div class="detail-value vehicle-price"
                     data-price="<?php echo $depositLKR; ?>"
                     data-rate="<?php echo $usdRate; ?>">
-                    <span class="currency">LKR</span>
+                    <span class="currency">USD</span>
                     <span class="amount"><?php echo number_format($depositLKR, 2); ?></span>
                 </div>
             </div>
@@ -321,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
                 <div class="detail-value fw-bold vehicle-price" style="color:rgb(255, 0, 0);"
                     data-price="<?php echo $total_with_fees; ?>"
                     data-rate="<?php echo $usdRate; ?>">
-                    <span class="currency">LKR</span>
+                    <span class="currency">USD</span>
                     <span class="amount"><?php echo number_format($total_with_fees, 2); ?></span>
                 </div>
             </div>
@@ -417,7 +417,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
                   <div class="detail-value fw-bold vehicle-price"
                       data-price="<?php echo $total_with_fees; ?>"
                       data-rate="<?php echo $usdRate; ?>">
-                      <span class="currency">LKR</span>
+                      <span class="currency">USD</span>
                       <span class="amount"><?php echo number_format($total_with_fees, 2); ?></span>
                   </div>
                 </div>
@@ -468,7 +468,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step']) && $_POST['st
                   <div class="detail-value fw-bold vehicle-price"
                       data-price="<?php echo $total_with_fees; ?>"
                       data-rate="<?php echo $usdRate; ?>">
-                      <span class="currency">LKR</span>
+                      <span class="currency">USD</span>
                       <span class="amount"><?php echo number_format($total_with_fees, 2); ?></span>
                   </div>
                 </div>

@@ -282,11 +282,11 @@ $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="vehicle-price" 
                                     data-price="<?php echo htmlspecialchars($vehicle['usd_price']); ?>" 
                                     data-rate="<?php echo htmlspecialchars($usdRate); ?>">
-                                    <span class="currency">LKR</span>
+                                    <span class="currency">USD</span>
                                     <span class="amount">
                                         <?php
                                             $usd_price = $vehicle['usd_price'];
-                                            echo is_numeric($usd_price) ? number_format($usd_price * $usdRate, 2) : htmlspecialchars($usd_price);
+                                            echo is_numeric($usd_price) ? number_format($usd_price, 2) : htmlspecialchars($usd_price);
                                         ?>
                                     </span>
                                     <span class="per-day">/day</span>

@@ -3,7 +3,7 @@ require_once '../config/db_connect.php';
 include_once '../includes/social_icons.php';
 require_once('../service/currencyService.php');
 $currencyService = new CurrencyService($pdo);
-$usdRate = $currencyService->getExchangeRate('LKR', 'USD');
+$usdRate = $currencyService->getExchangeRate('USD', 'LKR');
 
 // Get form data
 $pickup_location = $_GET['pickup_location'] ?? '';
@@ -71,10 +71,10 @@ $available_vehicles = $stmt->fetchAll();
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand']); ?></h5>
                             <div class="vehicle-price" 
-                                data-price="<?php echo $vehicle['price_per_day']; ?>" 
+                                data-price="<?php echo $vehicle['usd_price']; ?>" 
                                 data-rate="<?php echo $usdRate; ?>">
-                                <span class="currency">LKR</span>
-                                <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                                <span class="currency">USD</span>
+                                <span class="amount"><?php echo number_format($vehicle['usd_price'], 2); ?></span>
                                 <span class="per-day">/day</span>
                             </div>
                         </div>

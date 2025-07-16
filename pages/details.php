@@ -2,7 +2,7 @@
 require_once '../config/db_connect.php';
 require_once('../service/currencyService.php');
 $currencyService = new CurrencyService($pdo);
-$usdRate = $currencyService->getExchangeRate('LKR', 'USD');
+$usdRate = $currencyService->getExchangeRate('USD', 'LKR');
 
 // Get vehicle ID from URL
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -59,10 +59,10 @@ $other_vehicles = $stmt->fetchAll();
                 <!-- Vehicle Image on Left -->
                 <h2 class="vehicle-brand"><?php echo htmlspecialchars($vehicle['brand'] . ' ' . $vehicle['model']); ?></h2>
                 <div class="vehicle-price" 
-                                data-price="<?php echo $vehicle['price_per_day']; ?>" 
+                                data-price="<?php echo $vehicle['usd_price']; ?>" 
                                 data-rate="<?php echo $usdRate; ?>">
-                                <span class="currency">LKR</span>
-                                <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                                <span class="currency">USD</span>
+                                <span class="amount"><?php echo number_format($vehicle['usd_price'], 2); ?></span>
                                 <span class="per-day">/day</span>
                             </div>
                 <div class="col-md-6 mb-4">
@@ -185,8 +185,8 @@ $other_vehicles = $stmt->fetchAll();
                                 <input list="pickup_locations" name="pickup_location" id="pickup_location" class="form-control" required autocomplete="off">
                                 <datalist id="pickup_locations">
                                     <?php foreach ($locations as $loc): ?>
-                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price="<?php echo $loc['price']; ?>">
-                                            <?php echo htmlspecialchars($loc['name']); ?> (LKR <?php echo number_format($loc['price'], 2); ?>)
+                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price="<?php echo $loc['usd_price']; ?>">
+                                            <?php echo htmlspecialchars($loc['name']); ?> ($ <?php echo number_format($loc['usd_price'], 2); ?>)
                                         </option>
                                     <?php endforeach; ?>
                                 </datalist>
@@ -197,8 +197,8 @@ $other_vehicles = $stmt->fetchAll();
                                 <input list="return_locations" name="return_location" id="return_location" class="form-control" required autocomplete="off">
                                 <datalist id="return_locations">
                                     <?php foreach ($locations as $loc): ?>
-                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price="<?php echo $loc['price']; ?>">
-                                            <?php echo htmlspecialchars($loc['name']); ?> (LKR <?php echo number_format($loc['price'], 2); ?>)
+                                        <option value="<?php echo htmlspecialchars($loc['name']); ?>" data-price="<?php echo $loc['usd_price']; ?>">
+                                            <?php echo htmlspecialchars($loc['name']); ?> ($ <?php echo number_format($loc['usd_price'], 2); ?>)
                                         </option>
                                     <?php endforeach; ?>
                                 </datalist>
@@ -273,10 +273,15 @@ $other_vehicles = $stmt->fetchAll();
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="vehicle-brand"><?php echo htmlspecialchars($other_vehicle['brand']); ?></h5>
                             <div class="vehicle-price" 
-                                data-price="<?php echo $vehicle['price_per_day']; ?>" 
+                                data-price="<?php echo $other_vehicle['usd_price']; ?>" 
                                 data-rate="<?php echo $usdRate; ?>">
-                                <span class="currency">LKR</span>
-                                <span class="amount"><?php echo number_format($vehicle['price_per_day'], 2); ?></span>
+                                <span class="currency">USD</span>
+                                <span class="amount">
+                                    <?php
+                                        $usd_price = $other_vehicle['usd_price'];
+                                        echo is_numeric($usd_price) ? number_format($usd_price, 2) : htmlspecialchars($usd_price);
+                                    ?>
+                                </span>
                                 <span class="per-day">/day</span>
                             </div>
                         </div>
