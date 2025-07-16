@@ -57,6 +57,11 @@ $vehicles = $stmt->fetchAll();
         </div>
     </header>
 
+    <!-- Professional Tuk-Tuk Showcase -->
+    <section class="tuktuk-showcase">
+        <!-- Content will be dynamically generated -->
+    </section>
+
     <!-- Vehicle Selection Section -->
     <section class="container py-5 vehicles-section vehicles-page">
         <div class="brand-list-section">
@@ -131,6 +136,7 @@ $vehicles = $stmt->fetchAll();
     AOS.init();
     </script>
     <script src="../assets/js/currencyHandler.js"></script>
+    <script src="../assets/js/tukTukShowcase.js"></script>
     <?php 
     // Display the social media icons
     displaySocialIcons($social_config); 
