@@ -269,49 +269,6 @@ window.addEventListener('load', function() {
     AOS.refresh();
 });
 
-// Function to fetch Sri Lanka cities
-async function fetchSriLankaCities() {
-    const pickupSelect = document.getElementById('pickup_location');
-    const returnSelect = document.getElementById('return_location');
-    
-    if (!pickupSelect || !returnSelect) {
-        console.log('Select elements not found');
-        return;
-    }
-    
-    try {
-        const response = await fetch('https://secure.geonames.org/searchJSON?country=LK&featureClass=P&maxRows=1000&username=tuktukrental');
-        const data = await response.json();
-        
-        if (data.geonames && data.geonames.length > 0) {
-            const cities = [...new Set(data.geonames.map(city => city.name))].sort();
-            cities.forEach(city => {
-                pickupSelect.add(new Option(city, city));
-                returnSelect.add(new Option(city, city));
-            });
-            console.log('Cities loaded from API:', cities.length);
-        } else {
-            throw new Error('No cities found in API response');
-        }
-    } catch (error) {
-        console.log('Error fetching cities, using fallback list:', error);
-        // Fallback cities if API fails
-        const fallbackCities = [
-            'Colombo', 'Kandy', 'Galle', 'Jaffna', 'Negombo', 
-            'Kurunegala', 'Anuradhapura', 'Matara', 'Ratnapura', 
-            'Badulla', 'Moratuwa', 'Kalutara', 'Batticaloa', 
-            'Trincomalee', 'Matale', 'Gampaha', 'Kegalle', 
-            'Polonnaruwa', 'Hambantota', 'Ampara'
-        ];
-        
-        fallbackCities.forEach(city => {
-            pickupSelect.add(new Option(city, city));
-            returnSelect.add(new Option(city, city));
-        });
-        console.log('Fallback cities loaded:', fallbackCities.length);
-    }
-}
-
 // Index page specific functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize booking form validation
@@ -327,9 +284,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Fetch and populate locations
-    fetchSriLankaCities();
     
     // Initialize phone stack animation
     const phoneStack = document.querySelector('.phone-stack');

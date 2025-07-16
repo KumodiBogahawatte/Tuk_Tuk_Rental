@@ -305,6 +305,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-// Test function to check if JS is loading
-console.log('How It Works JavaScript loaded successfully!');
