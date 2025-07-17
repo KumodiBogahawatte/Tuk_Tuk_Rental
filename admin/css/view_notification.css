@@ -1,11 +1,12 @@
-/*View Notification style*/
 .notification-card {
     border-left: 4px solid #0d6efd;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+    border-radius: 8px;
 }
 .notification-card:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 .notification-contact {
     border-left-color: #198754;
@@ -14,17 +15,17 @@
     border-left-color: #dc3545;
 }
 .message-content {
-  background-color: #f8f9fa;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  margin-top: 1rem;
-  border-left: 4px solid #6c757d;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 15px;
+    border-left: 4px solid #6c757d;
 }
 .detail-row {
-    margin-bottom: 0.5rem;
-padding-bottom: 0.5rem;
-border-bottom: 1px solid #e9ecef;
-}               
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
 .detail-row:last-child {
     border-bottom: none;
 }
@@ -34,11 +35,27 @@ border-bottom: 1px solid #e9ecef;
 }
 .btn-back {
     transition: all 0.2s ease-in-out;
+    border-radius: 8px;
+    font-weight: 500;
 }
 .btn-back:hover {
-   transform: translateX(-3px);
+    transform: translateX(-3px);
 }
 .badge-notification {
     font-size: 0.8rem;
     padding: 0.4rem 0.6rem;
+    border-radius: 50rem;
+}
+.card-header {
+    background: none;
+    border-bottom: 1px solid #dee2e6;
+}
+.card-body h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1f36;
+}
+.card-footer .btn {
+    border-radius: 8px;
+    font-weight: 500;
 }

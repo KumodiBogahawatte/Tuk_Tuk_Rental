@@ -1,6 +1,6 @@
 <?php
 require_once '../config/db_connect.php'; // Ensures $pdo and $company_phone are available
-require_once('../service/currencyService.php');
+require_once('../service/CurrencyService.php');
 $currencyService = new CurrencyService($pdo);
 $usdRate = $currencyService->getExchangeRate('USD', 'LKR');
 
@@ -15,10 +15,6 @@ $vehicle = $stmt->fetch();
 // Fetch locations for datalist (for the modal)
 $stmt = $pdo->query("SELECT name, usd_price FROM locations ORDER BY name ASC");
 $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch extras for the modal
-$stmt_extras = $pdo->query("SELECT id, name, description, usd_price FROM extras WHERE is_active = 1");
-$extras = $stmt_extras->fetchAll(PDO::FETCH_ASSOC);
 
 // If vehicle not found, redirect to vehicles page
 if (!$vehicle) {
@@ -251,28 +247,6 @@ $other_vehicles = $stmt->fetchAll();
                                 </div>
                             </div>
                         </div>
-
-                        <!-- New: Extras Selection -->
-                        <?php if (!empty($extras)): ?>
-                        <div class="mb-4">
-                            <label class="form-label">Additional Extras</label>
-                            <div class="row">
-                                <?php foreach ($extras as $extra): ?>
-                                <div class="col-md-6 mb-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input extra-checkbox" type="checkbox" name="extras[]" value="<?php echo $extra['id']; ?>" id="extra_<?php echo $extra['id']; ?>" data-price="<?php echo $extra['usd_price']; ?>">
-                                        <label class="form-check-label" for="extra_<?php echo $extra['id']; ?>">
-                                            <?php echo htmlspecialchars($extra['name']); ?> ($<?php echo number_format($extra['usd_price'], 2); ?>)
-                                            <?php if (!empty($extra['description'])): ?>
-                                                <small class="text-muted d-block"><?php echo htmlspecialchars($extra['description']); ?></small>
-                                            <?php endif; ?>
-                                        </label>
-                                    </div>
-                                </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                        <?php endif; ?>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
